@@ -4,6 +4,8 @@ module.exports = {
     'plugin:@next/next/recommended',
     'plugin:jest/recommended',
     'plugin:storybook/recommended',
+    'plugin:prettier/recommended',
+    'prettier',
   ],
   plugins: ['testing-library', 'jest'],
   overrides: [
