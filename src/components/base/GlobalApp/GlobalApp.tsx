@@ -1,11 +1,17 @@
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
+import {
+  MantineProvider,
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineThemeColors,
+} from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { setCookies } from 'cookies-next';
 import { NextComponentType, NextPageContext } from 'next';
 import { AppProps } from 'next/app';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Primary } from '../../../recoil/Primary/Primary';
+import { useSSRCompletedState } from '../../../recoil/SSR/SSRCompleted';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -16,6 +22,8 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
     setColorScheme(nextColorScheme);
     setCookies('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
   };
+  const setSSRCompleted = useSSRCompletedState();
+  useEffect(setSSRCompleted, [setSSRCompleted]);
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider

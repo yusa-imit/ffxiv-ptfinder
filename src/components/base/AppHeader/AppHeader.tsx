@@ -1,6 +1,9 @@
 import { Burger, Button, Container, Group, Header, Title } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { HEADER_HEIGHT } from '../../../constant/StyelValues';
 import useNav from '../../../recoil/Nav/useNav';
+import PrimaryColorPicker from '../PrimaryColorPicker/PrimaryColorPicker';
+import { SimpleToggleColorSheme } from '../ToggleColorScheme/SimpleToggleColorSheme';
 import AppHeaderStyles from './AppHeader.styles';
 
 interface AppHeaderProps {
@@ -32,7 +35,9 @@ export default function AppHeader({
           <Title>{title}</Title>
         </Group>
         <Group />
-        <Group>
+        <Group spacing="xs">
+          <PrimaryColorPicker />
+          <SimpleToggleColorSheme />
           <Button>{buttonText}</Button>
         </Group>
       </Container>
