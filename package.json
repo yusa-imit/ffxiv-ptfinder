@@ -40,7 +40,8 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "recoil": "^0.7.4",
-    "recoil-persist": "^4.2.0"
+    "recoil-persist": "^4.2.0",
+    "tabler-icons-react": "^1.51.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
