@@ -4,11 +4,14 @@ import { Sun, MoonStars } from 'tabler-icons-react';
 import { useRecoilValue } from 'recoil';
 import { Primary } from '../../../recoil/Primary/Primary';
 
-export function SimpleToggleColorSheme() {
+interface SimpleToggleColorSchemeProps {
+  className: string;
+}
+export function SimpleToggleColorSheme({ className }: SimpleToggleColorSchemeProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const app_primary = useRecoilValue(Primary);
   return (
-    <Group position="center" my="xl">
+    <Group position="center" my="xl" className={className}>
       <ActionIcon
         onClick={() => toggleColorScheme()}
         size="lg"

@@ -20,5 +20,15 @@ const AppHeaderStyles = createStyles((theme) => ({
       display: 'none',
     },
   },
+  primary: {
+    [theme.fn.smallerThan('xs')]: {
+      display: 'none',
+    },
+  },
+  theme: {
+    [theme.fn.smallerThan('xs')]: {
+      display: 'none',
+    },
+  },
 }));
 export default AppHeaderStyles;

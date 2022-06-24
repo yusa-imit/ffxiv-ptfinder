@@ -4,7 +4,10 @@ import PaletteIcon from '../../icons/PaletteIcon';
 import PrimaryColorPickerStyles from './PrimaryColorPicker.styles';
 import { Primary } from '../../../recoil/Primary/Primary';
 
-export default function PrimaryColorPicker() {
+interface PrimaryColorPickerProps {
+  className: string;
+}
+export default function PrimaryColorPicker({ className }: PrimaryColorPickerProps) {
   const [app_primary, setPrimary] = useRecoilState(Primary);
   const theme = useMantineTheme();
   const ColorItems = Object.keys(theme.colors).map((color) => {
@@ -27,6 +30,7 @@ export default function PrimaryColorPicker() {
       mx={0}
       px={0}
       control={<PaletteIcon />}
+      className={className}
       styles={{
         body: {
           marginTop: 15,
