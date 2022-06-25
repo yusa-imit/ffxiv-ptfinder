@@ -1,6 +1,6 @@
 import { useViewportSize } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { MantineBreakPoints } from '../types/MantineBreakPoints';
+import { MantineBreakPoints } from '../type/MantineBreakPoints';
 
 export default function useBreakPoints(): MantineBreakPoints {
   const [bp, setBp] = useState<MantineBreakPoints>('xs');

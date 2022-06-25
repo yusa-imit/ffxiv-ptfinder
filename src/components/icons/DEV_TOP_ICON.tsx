@@ -1,7 +1,7 @@
 import { ThreeDCubeSphere } from 'tabler-icons-react';
-import { ActionIcon, MantineSize, MantineThemeColors, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, MantineSize, MantineThemeColors } from '@mantine/core';
 import { useRecoilValue } from 'recoil';
-import { Primary } from '../../recoil/Primary/Primary';
+import { Primary } from '../../recoil/Primary';
 
 export default function DEV_TOP_ICON({
   color,

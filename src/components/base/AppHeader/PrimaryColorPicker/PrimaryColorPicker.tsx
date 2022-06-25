@@ -1,5 +1,5 @@
 import { Center, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { Primary } from '@recoil/Primary';
 import PaletteIconForwarded from './PaletteIconForwarded';
 
@@ -7,7 +7,7 @@ interface PrimaryColorPickerProps {
   className: string;
 }
 export default function PrimaryColorPicker({ className }: PrimaryColorPickerProps) {
-  const [app_primary, setPrimary] = useRecoilState(Primary);
+  const setPrimary = useSetRecoilState(Primary);
   const theme = useMantineTheme();
   const ColorItems = Object.keys(theme.colors).map((color) => {
     return (
