@@ -1,4 +1,5 @@
-import { Title, Text, Anchor } from '@mantine/core';
+import { Title, Text, Button, Space, Center } from '@mantine/core';
+import Link from 'next/link';
 import useStyles from './Welcome.styles';
 
 export function Welcome() {
@@ -7,19 +8,18 @@ export function Welcome() {
   return (
     <>
       <Title className={classes.title} align="center" mt={100}>
-        Welcome to{' '}
+        Welcome!{'\n'}
+      </Title>
+      <Title className={classes.title} align="center" mb={100}>
         <Text inherit variant="gradient" component="span">
-          Mantine
+          Kozue is Currently on Development{'\n'}
         </Text>
       </Title>
-      <Text color="dimmed" align="center" size="lg" sx={{ maxWidth: 580 }} mx="auto" mt="xl">
-        This starter Next.js project includes a minimal setup for server side rendering, if you want
-        to learn more on Mantine + Next.js integration follow{' '}
-        <Anchor href="https://mantine.dev/theming/next/" size="lg">
-          this guide
-        </Anchor>
-        . To get started edit index.tsx file.
-      </Text>
+      <Center>
+        <Link href="/dev" passHref>
+          <Button component="a">Go to Current Dev</Button>
+        </Link>
+      </Center>
     </>
   );
 }

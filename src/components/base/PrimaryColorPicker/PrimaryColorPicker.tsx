@@ -1,8 +1,8 @@
 import { Center, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
 import { useRecoilState } from 'recoil';
-import PaletteIcon from '../../icons/PaletteIcon';
 import PrimaryColorPickerStyles from './PrimaryColorPicker.styles';
 import { Primary } from '../../../recoil/Primary/Primary';
+import PaletteIconForwarded from './PaletteIconForwarded';
 
 interface PrimaryColorPickerProps {
   className: string;
@@ -26,14 +26,15 @@ export default function PrimaryColorPicker({ className }: PrimaryColorPickerProp
   });
   return (
     <Menu
-      my="xl"
+      mt={13}
+      mb={13}
       mx={0}
       px={0}
-      control={<PaletteIcon />}
+      control={<PaletteIconForwarded />}
       className={className}
       styles={{
         body: {
-          marginTop: 15,
+          marginTop: 0,
         },
       }}
     >

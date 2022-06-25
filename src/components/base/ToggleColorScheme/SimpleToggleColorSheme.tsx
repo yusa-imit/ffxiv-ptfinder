@@ -11,7 +11,7 @@ export function SimpleToggleColorSheme({ className }: SimpleToggleColorSchemePro
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const app_primary = useRecoilValue(Primary);
   return (
-    <Group position="center" my="xl" className={className}>
+    <Group position="center" my={13} className={className}>
       <ActionIcon
         onClick={() => toggleColorScheme()}
         size="lg"
