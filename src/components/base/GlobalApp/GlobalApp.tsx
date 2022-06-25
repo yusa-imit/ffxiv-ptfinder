@@ -1,12 +1,6 @@
-import {
-  MantineProvider,
-  ColorScheme,
-  ColorSchemeProvider,
-  MantineThemeColors,
-} from '@mantine/core';
+import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { setCookies } from 'cookies-next';
-import { NextComponentType, NextPageContext } from 'next';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
