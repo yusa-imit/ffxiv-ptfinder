@@ -1,5 +1,6 @@
 import { Burger, BurgerProps, Drawer, DrawerProps, Stack, useMantineTheme } from '@mantine/core';
-import { SetStateAction } from 'react';
+import { useResizeObserver, useViewportSize } from '@mantine/hooks';
+import { SetStateAction, useEffect } from 'react';
 import { SetterOrUpdater } from 'recoil';
 
 interface HeaderDrawerProps {
@@ -19,6 +20,12 @@ export function HeaderDrawer({
   title,
 }: HeaderDrawerProps): JSX.Element {
   const theme = useMantineTheme();
+  const viewport = useViewportSize();
+  useEffect(() => {
+    if (viewport.width < theme.breakpoints.xs) {
+      setOpen(false);
+    }
+  }, [viewport.width, setOpen]);
   return (
     <>
       <Drawer
