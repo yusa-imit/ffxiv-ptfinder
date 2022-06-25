@@ -7,6 +7,7 @@ import {
   Text,
   useMantineTheme,
   Center,
+  Divider,
 } from '@mantine/core';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -22,6 +23,9 @@ import { SimpleToggleColorSheme } from './ToggleColorScheme/SimpleToggleColorShe
 import AppHeaderStyles from './AppHeader.styles';
 import { HeaderDrawer } from './HeaderDrawer/HeaderDrawer';
 import PrimaryColorPicker from './PrimaryColorPicker/PrimaryColorPicker';
+import Navigator from './HeaderDrawer/Navigator';
+import NavToggleColorScheme from './ToggleColorScheme/NavToggleColorScheme';
+import NavPrimaryColorPicker from './PrimaryColorPicker/NavPrimaryColorPicker';
 
 interface AppHeaderProps {
   Logo: React.ReactNode;
@@ -45,19 +49,23 @@ export default function AppHeader({
   const breakPoint = useBreakPoints();
   const isSmall = breakPoint === 'xs' || breakPoint === 'sm';
   const [current, setCurrent] = useState(links[0].label);
-  const linkItems = links.map((link) => (
-    <Link href={link.link} passHref>
-      <a
-        key={link.label}
-        className={cx(classes.link, { [classes.linkActive]: current === link.label })}
-        {...allyButtonizer((e) => {
-          setCurrent(link.label);
-        })}
-      >
-        {link.label}
-      </a>
-    </Link>
-  ));
+  const linkItems = links.map((link) => {
+    if (!link.link) {
+      throw new Error('Nested link must have link property.');
+    }
+    return (
+      <Link href={link.link} passHref key={link.label}>
+        <a
+          className={cx(classes.link, { [classes.linkActive]: current === link.label })}
+          {...allyButtonizer((e) => {
+            setCurrent(link.label);
+          })}
+        >
+          {link.label}
+        </a>
+      </Link>
+    );
+  });
   return (
     <Header height={height || HEADER_HEIGHT} mb={120}>
       <Container className={classes.inner} fluid>
@@ -75,7 +83,7 @@ export default function AppHeader({
               padding: 'sm',
             }}
             title={
-              <Center>
+              <Center mb="xl">
                 <Group align="center" position="center">
                   {LogoForNav || Logo}
                   <Title order={1} align="center">
@@ -85,9 +93,14 @@ export default function AppHeader({
               </Center>
             }
           >
-            <Group position="left" direction="column">
-              <Text>DEV_DRAWER</Text>
-            </Group>
+            <>
+              <Navigator links={DEV_HEADER_DATA} />
+              <Divider my="md" />
+              <Group spacing={0} direction="column" grow>
+                <NavToggleColorScheme />
+                <NavPrimaryColorPicker />
+              </Group>
+            </>
           </HeaderDrawer>
           {!isSmall && Logo}
           <Title order={isSmall ? 4 : 1}>{title}</Title>

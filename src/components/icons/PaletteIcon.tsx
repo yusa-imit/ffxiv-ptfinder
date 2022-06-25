@@ -2,7 +2,7 @@ import { Palette } from 'tabler-icons-react';
 import { ActionIcon, ActionIconProps, MantineNumberSize, Sx } from '@mantine/core';
 import { useRecoilValue } from 'recoil';
 import { RefObject } from 'react';
-import { Primary } from '../../recoil/Primary/Primary';
+import { Primary } from '../../recoil/Primary';
 
 interface PaletteIconProps extends ActionIconProps<'button'> {
   ref?: ((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null;

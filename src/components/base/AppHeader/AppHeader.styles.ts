@@ -65,5 +65,7 @@ const AppHeaderStyles = createStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  nav_primary: {},
+  nav_theme: {},
 }));
 export default AppHeaderStyles;
