@@ -1,7 +1,6 @@
 import { Burger, BurgerProps, Drawer, DrawerProps, Stack, useMantineTheme } from '@mantine/core';
 import { SetStateAction } from 'react';
 import { SetterOrUpdater } from 'recoil';
-import { HEADER_HEIGHT } from '../../../constant/StyelValues';
 
 interface HeaderDrawerProps {
   open: boolean;

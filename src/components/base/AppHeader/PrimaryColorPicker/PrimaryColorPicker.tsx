@@ -1,7 +1,6 @@
 import { Center, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
 import { useRecoilState } from 'recoil';
-import PrimaryColorPickerStyles from './PrimaryColorPicker.styles';
-import { Primary } from '../../../recoil/Primary/Primary';
+import { Primary } from '@recoil/Primary';
 import PaletteIconForwarded from './PaletteIconForwarded';
 
 interface PrimaryColorPickerProps {

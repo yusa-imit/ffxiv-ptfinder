@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const nav = atom<boolean>({
+export const Nav = atom<boolean>({
   key: 'nav',
   default: false,
 });

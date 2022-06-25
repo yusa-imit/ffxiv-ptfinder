@@ -1,8 +1,8 @@
 import { useRecoilState } from 'recoil';
-import { nav } from './Nav';
+import { Nav } from '.';
 
 const useNav: () => [boolean, () => void] = () => {
-  const [value, setValue] = useRecoilState(nav);
+  const [value, setValue] = useRecoilState(Nav);
   const toggle = () => {
     setValue(!value);
   };

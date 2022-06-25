@@ -2,7 +2,7 @@ import React from 'react';
 import { useMantineColorScheme, ActionIcon, Group } from '@mantine/core';
 import { Sun, MoonStars } from 'tabler-icons-react';
 import { useRecoilValue } from 'recoil';
-import { Primary } from '../../../recoil/Primary/Primary';
+import { Primary } from '@recoil/Primary';
 
 interface SimpleToggleColorSchemeProps {
   className: string;

@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { forwardRef } from 'react';
 import { ActionIcon } from '@mantine/core';
 import { Palette } from 'tabler-icons-react';
-import { Primary } from '../../../recoil/Primary/Primary';
+import { Primary } from '@recoil/Primary';
 
 interface PalleteIconProps extends React.ComponentPropsWithoutRef<'button'> {}
 const PaletteIconForwarded = forwardRef<HTMLButtonElement, PalleteIconProps>(

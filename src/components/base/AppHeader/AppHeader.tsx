@@ -12,16 +12,17 @@ import {
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { HEADER_HEIGHT } from '../../../constant/StyelValues';
-import useBreakPoints from '../../../lib/useBreakPoints';
-import { HeaderLinks } from '../../../types/HeaderLinks';
-import PrimaryColorPicker from '../PrimaryColorPicker/PrimaryColorPicker';
-import { SimpleToggleColorSheme } from '../ToggleColorScheme/SimpleToggleColorSheme';
+import { HEADER_HEIGHT } from '@constant/StyelValues';
+
+import useBreakPoints from '@lib/useBreakPoints';
+import { DEV_HEADER_DATA } from '@constant/DEV/DEV_HEADER_DATA';
+import { allyButtonizer } from '@lib/allyButtonizer';
+import { Nav } from '@recoil/Nav';
+import { HeaderLinks } from '@type/HeaderLinks';
+import { SimpleToggleColorSheme } from './ToggleColorScheme/SimpleToggleColorSheme';
 import AppHeaderStyles from './AppHeader.styles';
-import { DEV_HEADER_DATA } from '../../../constant/DEV/DEV_HEADER_DATA';
-import { allyButtonizer } from '../../../lib/allyButtonizer';
-import { HeaderDrawer } from '../HeaderDrawer/HeaderDrawer';
-import { nav } from '../../../recoil/Nav/Nav';
+import { HeaderDrawer } from './HeaderDrawer/HeaderDrawer';
+import PrimaryColorPicker from './PrimaryColorPicker/PrimaryColorPicker';
 
 interface AppHeaderProps {
   Logo: React.ReactNode;
@@ -41,7 +42,7 @@ export default function AppHeader({
 }: AppHeaderProps): JSX.Element {
   const theme = useMantineTheme();
   const { classes, cx } = AppHeaderStyles();
-  const [openNav, setOpen] = useRecoilState(nav);
+  const [openNav, setOpen] = useRecoilState(Nav);
   const breakPoint = useBreakPoints();
   const isSmall = breakPoint === 'xs' || breakPoint === 'sm';
   const [current, setCurrent] = useState(links[0].label);

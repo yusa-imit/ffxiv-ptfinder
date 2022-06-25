@@ -1,11 +1,11 @@
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { Primary } from '@recoil/Primary';
+import { useSSRCompletedState } from '@recoil/SSR/SSRCompleted';
 import { setCookies } from 'cookies-next';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Primary } from '../../../recoil/Primary/Primary';
-import { useSSRCompletedState } from '../../../recoil/SSR/SSRCompleted';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
