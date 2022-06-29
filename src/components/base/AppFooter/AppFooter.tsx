@@ -25,7 +25,7 @@ export default function AppFooter({ Logo, title, links }: FooterSimpleProps) {
   ));
 
   return (
-    <div className={classes.footer}>
+    <footer className={classes.footer}>
       <BigContainer className={classes.inner}>
         <Group align="center" position="center">
           {Logo}
@@ -45,6 +45,6 @@ export default function AppFooter({ Logo, title, links }: FooterSimpleProps) {
           </Text>
         </Group>
       </BigContainer>
-    </div>
+    </footer>
   );
 }
