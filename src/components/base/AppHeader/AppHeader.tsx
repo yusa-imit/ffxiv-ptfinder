@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   Group,
   Header,
   Title,
@@ -26,6 +25,7 @@ import PrimaryColorPicker from './PrimaryColorPicker/PrimaryColorPicker';
 import Navigator from './HeaderDrawer/Navigator';
 import NavToggleColorScheme from './ToggleColorScheme/NavToggleColorScheme';
 import NavPrimaryColorPicker from './PrimaryColorPicker/NavPrimaryColorPicker';
+import BigContainer from '../Container';
 
 interface AppHeaderProps {
   Logo: React.ReactNode;
@@ -68,7 +68,7 @@ export default function AppHeader({
   });
   return (
     <Header height={height || HEADER_HEIGHT} mb={120}>
-      <Container className={classes.inner} fluid>
+      <BigContainer className={classes.inner}>
         <Group noWrap spacing="xs">
           <HeaderDrawer
             open={openNav}
@@ -115,7 +115,7 @@ export default function AppHeader({
             {buttonText}
           </Button>
         </Group>
-      </Container>
+      </BigContainer>
     </Header>
   );
 }

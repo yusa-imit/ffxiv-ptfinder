@@ -6,6 +6,7 @@ import { setCookies } from 'cookies-next';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import Viewport from './Viewport';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -26,7 +27,9 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
         withNormalizeCSS
       >
         <NotificationsProvider>
-          <Component {...pageProps} />
+          <Viewport>
+            <Component {...pageProps} />
+          </Viewport>
         </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>

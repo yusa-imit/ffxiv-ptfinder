@@ -1,5 +1,5 @@
 import { Burger, BurgerProps, Drawer, DrawerProps, Stack, useMantineTheme } from '@mantine/core';
-import { useResizeObserver, useViewportSize } from '@mantine/hooks';
+import { useViewportSize } from '@mantine/hooks';
 import { SetStateAction, useEffect } from 'react';
 import { SetterOrUpdater } from 'recoil';
 
