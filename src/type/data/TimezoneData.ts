@@ -1,8 +1,9 @@
 import { Timezone } from './Timezone';
 
-export interface TimezoneData {
-  Abbreviation: Timezone;
-  DisplayName: string;
-  Name: string;
-  Offset: string;
+export type TimezoneData = Record<Timezone, AbbrData>;
+
+interface AbbrData {
+  displayName: string;
+  name: string;
+  offset: number;
 }
