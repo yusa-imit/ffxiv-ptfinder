@@ -26,9 +26,9 @@ interface Dungeon {
 /**
  * @interface Schedule
  * 아티클의 스케쥴 지정
- * @param writtenInDescription 스케줄을 어플리케이션에서 정해준 타입에 따라 입력할 것인지 (false), 아니면 직접 description에 입력할 것인지(true)
- *    이 변수가 true일 경우, 이하의 변수들은 모두 기본형으로 설정
- * @param negotiable 스케줄을 협상 가능한지 여부
+ * @param wholeWrittenInDescription 모든 스케줄을 어플리케이션에서 정해준 타입에 따라 입력할 것인지 (false), 아니면 직접 description에 입력할 것인지(true)
+ * @param dateTime unix timestamp - 이 기사가 임시/대타 모집인 경우, dateTime으로 시간/날짜를 특정함.
+ * @param adjustable 스케줄을 협상 가능한지 여부
  * @param day 활동일 배열. 길이 7이 강제되는 Array. 0일 경우 활동일 아님, 1일경우 활동일.
  * @param timeType 활동시간 배열의 타입 time 참고
  * @param time 활동 시간 배열. 기본적인 구조는 day 데이터와 같음
@@ -39,8 +39,9 @@ interface Dungeon {
  * @param timezone 작성자의 timezone
  */
 interface Schedule {
-  writtenInDescription: boolean;
-  negotiable?: boolean;
+  wholeWrittenInDescription: boolean;
+  dateTime?: number;
+  adjustable?: boolean;
   day?: FixedLengthArray<0 | 1, 7>;
   timeType?: 0 | 1 | 2;
   time?:
@@ -59,12 +60,12 @@ interface Schedule {
  * @param firstWeekClear 첫 주 공략 목적
  * @param worldFirstRace 세계 1st 레이스 목적
  * @param voiceChat 0 : 보이스챗 필수, 1: 보이스 챗 사용, 듣톡 가능 2: 보이스챗 사용 안함
- * @param specifyUserRegion (optional) 유저의 datacenter를 제한함. (data-center travel이 가능하게 되었으므로 optional로 변경)
- * @param specifyUserLanguage @important (optioanl) 유저는 이 언어를 필수로 사용 가능해야 함을 나타냄
+ * @param specifyUserRegion (optional) 유저의 data-center를 제한함. (data-center travel이 가능하게 되었으므로 optional로 변경)
+ * @param specifyUserLanguage @important (optioanl) 유저의 언어를 제한함. 유저는 이 언어를 필수로 사용 가능해야 함을 나타냄.
  */
 interface Specification {
   many: number;
-  jobs: Array<Job>;
+  jobs: FixedLengthArray<Array<Job>, number>;
   minimumWeek: number;
   firstWeekClear: boolean;
   worldFirstRace: boolean;

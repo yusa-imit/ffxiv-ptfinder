@@ -22,6 +22,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     // no-unused-vars as warning
     'no-unused-vars' : 'off',
+    'no-plusplus' : 'off',
     '@typescript-eslint/no-unused-vars': ["warn"],
   },
 };
