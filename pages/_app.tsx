@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { RecoilRoot } from 'recoil';
 import { appWithTranslation } from 'next-i18next';
 import { GlobalApp } from '../src/components/base/GlobalApp/GlobalApp';
+import nextI18NextConfig from '../next-i18next.config';
 
 function App(props: AppProps & { colorScheme: ColorScheme }) {
   return (

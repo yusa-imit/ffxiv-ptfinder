@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { RefObject } from 'react';
 import { Primary } from '../../recoil/Primary';
 
-interface PaletteIconProps extends ActionIconProps<'button'> {
+interface PaletteIconProps extends ActionIconProps {
   ref?: ((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null;
   sx?: Sx | (Sx | undefined)[];
   size?: MantineNumberSize;

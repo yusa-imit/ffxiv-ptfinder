@@ -9,8 +9,8 @@ const DEV_TEST_DATA: ArticleData = {
   description: '',
   isTemporary: false,
   game: {
-    version: 6,
-    patch: 1,
+    version: '6',
+    patch: '1',
   },
   type: 'raid',
   many: 0,

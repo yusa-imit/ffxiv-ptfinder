@@ -7,6 +7,7 @@ import {
   useMantineTheme,
   Center,
   Divider,
+  Stack,
 } from '@mantine/core';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -96,10 +97,10 @@ export default function AppHeader({
             <>
               <Navigator links={DEV_HEADER_DATA} />
               <Divider my="md" />
-              <Group spacing={0} direction="column" grow>
+              <Stack spacing={0}>
                 <NavToggleColorScheme />
                 <NavPrimaryColorPicker />
-              </Group>
+              </Stack>
             </>
           </HeaderDrawer>
           {!isSmall && Logo}

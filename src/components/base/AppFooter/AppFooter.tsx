@@ -36,14 +36,14 @@ export default function AppFooter({ Logo, title, links }: FooterSimpleProps) {
         <Group className={classes.links}>{items}</Group>
       </BigContainer>
       <BigContainer className={classes.afterFooter} size="xl">
-        <Group direction="column" spacing={0}>
+        <Stack spacing={0}>
           <Text color="dimmed" size="sm">
             © 2022 DEV_APP_URL All rights reserved.
           </Text>
           <Text color="dimmed" size="sm">
             © 2010 - 2022 SQUARE ENIX CO., LTD. All Rights Reserved.
           </Text>
-        </Group>
+        </Stack>
       </BigContainer>
     </footer>
   );

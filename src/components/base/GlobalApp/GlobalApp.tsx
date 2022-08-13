@@ -20,18 +20,20 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const setSSRCompleted = useSSRCompletedState();
   useEffect(setSSRCompleted, [setSSRCompleted]);
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider
-        theme={{ primaryColor: app_primary, colorScheme }}
-        withGlobalStyles
-        withNormalizeCSS
-      >
-        <NotificationsProvider>
-          <Viewport>
-            <Component {...pageProps} />
-          </Viewport>
-        </NotificationsProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
+    <div dir="ltr">
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+        <MantineProvider
+          theme={{ primaryColor: app_primary, colorScheme }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
+          <NotificationsProvider>
+            <Viewport>
+              <Component {...pageProps} />
+            </Viewport>
+          </NotificationsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </div>
   );
 }

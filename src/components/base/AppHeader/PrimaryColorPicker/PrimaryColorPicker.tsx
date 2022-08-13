@@ -1,5 +1,5 @@
-import { Center, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
-import { useSetRecoilState } from 'recoil';
+import { Center, CheckIcon, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Primary } from '@recoil/Primary';
 import PaletteIconForwarded from './PaletteIconForwarded';
 
@@ -7,6 +7,7 @@ interface PrimaryColorPickerProps {
   className: string;
 }
 export default function PrimaryColorPicker({ className }: PrimaryColorPickerProps) {
+  const primary = useRecoilValue(Primary);
   const setPrimary = useSetRecoilState(Primary);
   const theme = useMantineTheme();
   const ColorItems = Object.keys(theme.colors).map((color) => {
@@ -15,32 +16,30 @@ export default function PrimaryColorPicker({ className }: PrimaryColorPickerProp
         key={color}
         color={theme.colors[color][6]}
         style={{
+          color: theme.white,
           cursor: 'pointer',
         }}
         onClick={() => {
           setPrimary(color);
         }}
-      />
+      >
+        {primary === color && <CheckIcon width={13} />}
+      </ColorSwatch>
     );
   });
   return (
-    <Menu
-      mt={13}
-      mb={13}
-      mx={0}
-      px={0}
-      control={<PaletteIconForwarded />}
-      className={className}
-      styles={{
-        body: {
-          marginTop: 0,
-        },
-      }}
-    >
-      <Menu.Label>Change Primary Color</Menu.Label>
-      <Center>
-        <Group p={12}>{ColorItems}</Group>
-      </Center>
+    <Menu styles={{}}>
+      <Menu.Target>
+        <PaletteIconForwarded className={className} />
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Label>Change Primary Color</Menu.Label>
+        <Center>
+          <Group p={12} spacing="xs" style={{ maxWidth: '160px' }}>
+            {ColorItems}
+          </Group>
+        </Center>
+      </Menu.Dropdown>
     </Menu>
   );
 }

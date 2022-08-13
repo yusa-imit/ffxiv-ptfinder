@@ -1,5 +1,6 @@
 import {
   Center,
+  CheckIcon,
   ColorSwatch,
   Group,
   Menu,
@@ -28,6 +29,7 @@ interface NavPrimaryColorPickerProps {
   className?: string;
 }
 export default function NavPrimaryColorPicker({ className }: NavPrimaryColorPickerProps) {
+  const primary = useRecoilValue(Primary);
   const setPrimary = useSetRecoilState(Primary);
   const theme = useMantineTheme();
   const ColorItems = Object.keys(theme.colors).map((color) => {
@@ -35,25 +37,28 @@ export default function NavPrimaryColorPicker({ className }: NavPrimaryColorPick
       <ColorSwatch
         key={color}
         color={theme.colors[color][6]}
-        style={{
-          cursor: 'pointer',
-        }}
+        style={{ color: theme.white, cursor: 'pointer' }}
         onClick={() => {
           setPrimary(color);
         }}
-      />
+      >
+        {primary === color && <CheckIcon width={13} />}
+      </ColorSwatch>
     );
   });
   return (
-    <Menu
-      control={<PaletteIconForwarded />}
-      className={className}
-      styles={{ root: { maxWidth: '100%' } }}
-    >
-      <Menu.Label>Change Primary Color</Menu.Label>
-      <Center>
-        <Group p={12}>{ColorItems}</Group>
-      </Center>
+    <Menu>
+      <Menu.Target>
+        <PaletteIconForwarded className={className} />
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Label>Change Primary Color</Menu.Label>
+        <Center>
+          <Group p={12} style={{ maxWidth: '180px' }}>
+            {ColorItems}
+          </Group>
+        </Center>
+      </Menu.Dropdown>
     </Menu>
   );
 }

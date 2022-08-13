@@ -22,7 +22,7 @@ export function ArticleMakerSteppper({
   const nextStep = () =>
     setCurrent((c) => {
       setIncreasing(true);
-      return c < 4 ? c + 1 : c;
+      return c < 5 ? c + 1 : c;
     });
   const prevStep = () =>
     setCurrent((c) => {
@@ -54,6 +54,10 @@ export function ArticleMakerSteppper({
             <Stepper.Step
               label={t('maker_fourth_step_label')}
               description={t('maker_fourth_step_desc')}
+            ></Stepper.Step>
+            <Stepper.Step
+              label={t('maker_fifth_step_label')}
+              description={t('maker_fifth_step_desc')}
             ></Stepper.Step>
           </Stepper>
           {children}

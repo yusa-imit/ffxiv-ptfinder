@@ -23,6 +23,22 @@ export const Phase1Styles = createStyles((theme) => ({
     justifyContent: 'flex-start',
     flexDirection: 'row',
   },
+  groupAsStack: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  responsiveGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.fn.smallerThan('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: 5,
+    },
+  },
   gameLabelToLeft: {
     width: '100%',
     display: 'flex',

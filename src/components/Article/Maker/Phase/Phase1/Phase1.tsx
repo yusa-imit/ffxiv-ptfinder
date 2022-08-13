@@ -108,33 +108,46 @@ export default function Phase1({ current, increasing }: { current: number; incre
     >
       {(styles) => (
         <BigContainer className={classes.inner} style={styles}>
-          <TextInput
-            className={classes.title}
-            placeholder={t('phase1_title_placeholder')}
-            label={t('phase1_title_label')}
-            required
-            onChange={titleOnChange}
-            error={phase1Error.titleError()}
-          />
-          <div className={classes.toLeft}>
-            <Tooltip label={t('phase1_isTemporary_tooltip_label')}>
-              <Checkbox
-                label={t('phase1_isTemporary_label')}
-                styles={{ label: { fontWeight: 600 } }}
-                checked={article.isTemporary}
-                onChange={(e) => {
-                  const newArticle = { ...article };
-                  newArticle.isTemporary = e.currentTarget.checked;
-                  changeArticle(newArticle);
-                }}
-              />
+          <Group className={classes.groupAsStack}>
+            <Text size="md" weight={700}>
+              {t('phase1_article_basic')}
+            </Text>
+            <TextInput
+              className={classes.title}
+              placeholder={t('phase1_title_placeholder')}
+              label={t('phase1_title_label')}
+              required
+              onChange={titleOnChange}
+              error={phase1Error.titleError()}
+            />
+            <Tooltip
+              label={t('phase1_isTemporary_tooltip_label')}
+              multiline
+              styles={{ tooltip: { maxWidth: '80%' } }}
+            >
+              <Group className={classes.responsiveGroup}>
+                <Text size="sm" weight={500}>
+                  {t('phase1_isTemporary')}
+                </Text>
+
+                <Checkbox
+                  label={t('phase1_isTemporary_label')}
+                  styles={{ label: { fontWeight: 600 } }}
+                  checked={article.isTemporary}
+                  onChange={(e) => {
+                    const newArticle = { ...article };
+                    newArticle.isTemporary = e.currentTarget.checked;
+                    changeArticle(newArticle);
+                  }}
+                />
+              </Group>
             </Tooltip>
-          </div>
-          <Group direction="column" className={classes.gameLabelToLeft}>
-            <Text size="sm" weight={600}>
+          </Group>
+          <Group className={classes.groupAsStack}>
+            <Text size="md" weight={700}>
               {t('phase1_game_label')}
             </Text>
-            <Group>
+            <Group className={classes.responsiveGroup}>
               <Text size="sm" weight={600}>
                 {t('phase1_game_version')}
               </Text>
@@ -172,39 +185,41 @@ export default function Phase1({ current, increasing }: { current: number; incre
                 transitionTimingFunction="ease"
               ></Select>
             </Group>
-          </Group>
-          <Group direction="column" className={classes.gameLabelToLeft}>
-            <Text size="sm" weight={600}>
-              {t('phase1_dungeon_type')}
-            </Text>
-            <Select
-              data={SelectData.DungeonTypeData}
-              value={article.type}
-              onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.type = value === null ? 'etc' : (value as DungeonType);
-                changeArticle(newArticle);
-              }}
-              transition="pop"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-            />
-          </Group>
-          <Group direction="column" className={classes.gameLabelToLeft}>
-            <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Group className={classes.responsiveGroup}>
               <Text size="sm" weight={600}>
+                {t('phase1_dungeon_type')}
+              </Text>
+              <Select
+                data={SelectData.DungeonTypeData}
+                value={article.type}
+                onChange={(value) => {
+                  const newArticle = { ...article };
+                  newArticle.type = value === null ? 'etc' : (value as DungeonType);
+                  changeArticle(newArticle);
+                }}
+                transition="pop"
+                transitionDuration={100}
+                transitionTimingFunction="ease"
+              />
+            </Group>
+          </Group>
+          <Group className={classes.groupAsStack}>
+            <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Text size="md" weight={700}>
                 {t('phase1_international')}
               </Text>
               <Tooltip
                 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                 label={t('phase1_international_tooltip')}
+                multiline
+                styles={{ tooltip: { maxWidth: '80%' } }}
               >
                 <ThemeIcon radius={9999} size="sm">
                   <Help />
                 </ThemeIcon>
               </Tooltip>
             </Group>
-            <Group>
+            <Group className={classes.responsiveGroup}>
               <Text size="sm" weight={600}>
                 {t('phase1_region')}
               </Text>
