@@ -4,9 +4,10 @@ import { AppProps } from 'next/app';
 import { getCookie } from 'cookies-next';
 import Head from 'next/head';
 import { RecoilRoot } from 'recoil';
+import { appWithTranslation } from 'next-i18next';
 import { GlobalApp } from '../src/components/base/GlobalApp/GlobalApp';
 
-export default function App(props: AppProps & { colorScheme: ColorScheme }) {
+function App(props: AppProps & { colorScheme: ColorScheme }) {
   return (
     <>
       <Head>
@@ -24,3 +25,5 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
   colorScheme: getCookie('mantine-color-scheme', ctx) || 'light',
 });
+
+export default appWithTranslation(App);

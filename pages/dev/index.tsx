@@ -1,9 +1,12 @@
 import AppFooter from '@components/base/AppFooter/AppFooter';
+import { Locale } from '@type/Locale';
+import { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AppHeader from '../../src/components/base/AppHeader/AppHeader';
 import DEV_TOP_ICON from '../../src/components/icons/DEV_TOP_ICON';
 import { DEV_FOOTER_DATA } from '../../src/constant/DEV/DEV_FOOTER_DATA';
 
-export default function dev() {
+function dev(props: GetStaticProps) {
   return (
     <>
       <AppHeader
@@ -16,3 +19,11 @@ export default function dev() {
     </>
   );
 }
+
+export const getStaticProps = async ({ locale }: { locale: Locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['article'])),
+  },
+});
+
+export default dev;

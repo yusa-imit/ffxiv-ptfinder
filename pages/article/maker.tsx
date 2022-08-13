@@ -1,4 +1,6 @@
 import { ArticleMaker } from '@components/Article/Maker/ArticleMaker';
+import { Locale } from '@type/Locale';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { ArticleData } from '../../src/type/data/ArticleData';
 
 const DEV_TEST_DATA: ArticleData = {
@@ -21,6 +23,14 @@ const DEV_TEST_DATA: ArticleData = {
   language: 'JP',
   answerType: 0,
 };
-export default function article() {
+function maker() {
   return <ArticleMaker data={DEV_TEST_DATA} />;
 }
+
+export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['article'])),
+  },
+});
+
+export default maker;
