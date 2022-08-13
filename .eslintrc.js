@@ -20,6 +20,7 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react/self-closing-comp' : 'off',
     // no-unused-vars as warning
     'no-unused-vars' : 'off',
     'no-plusplus' : 'off',

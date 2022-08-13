@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles, Group, Anchor, Title, Stack, Divider, Text } from '@mantine/core';
 import { FooterLinks } from '@type/FooterLinks';
 import AppFooterStyles from './AppFooter.styles';
-import BigContainer from '../Container';
+import BigContainer from '../BigContainer';
 
 interface FooterSimpleProps {
   Logo: React.ReactNode;

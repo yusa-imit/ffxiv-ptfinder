@@ -1,5 +1,3 @@
-import { Center } from '@mantine/core';
-
 interface ViewportProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }

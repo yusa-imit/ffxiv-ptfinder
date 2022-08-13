@@ -25,7 +25,7 @@ import PrimaryColorPicker from './PrimaryColorPicker/PrimaryColorPicker';
 import Navigator from './HeaderDrawer/Navigator';
 import NavToggleColorScheme from './ToggleColorScheme/NavToggleColorScheme';
 import NavPrimaryColorPicker from './PrimaryColorPicker/NavPrimaryColorPicker';
-import BigContainer from '../Container';
+import BigContainer from '../BigContainer';
 
 interface AppHeaderProps {
   Logo: React.ReactNode;
