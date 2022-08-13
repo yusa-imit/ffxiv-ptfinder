@@ -50,7 +50,7 @@ export default function Phase1({ current, increasing }: { current: number; incre
   const phase1Error = {
     titleError: () => {
       if (titleCheck) return false;
-      return 'phase1_title_necessary';
+      return t('phase1_title_necessary');
     },
   };
   const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -154,7 +154,7 @@ export default function Phase1({ current, increasing }: { current: number; incre
                 transitionTimingFunction="ease"
               ></Select>
               <Text size="sm" weight={600}>
-                {t('phase1_major_patch')}
+                {t('phase1_game_major_patch')}
               </Text>
               <Select
                 data={Major_Patch}
