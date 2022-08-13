@@ -1,7 +1,3 @@
-import BigContainer from '@components/base/BigContainer';
-import { ContainerProps } from '@mantine/core';
-import { CSSProperties } from 'react';
-
 interface PhaseViewPortProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }

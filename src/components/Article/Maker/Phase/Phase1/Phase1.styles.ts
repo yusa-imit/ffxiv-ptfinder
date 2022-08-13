@@ -10,8 +10,25 @@ export const Phase1Styles = createStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    [theme.fn.smallerThan('sm')]: {
+      gap: theme.spacing.sm,
+    },
   },
   title: {
+    width: '100%',
+  },
+  toLeft: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+  },
+  gameLabelToLeft: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+  },
+  divider: {
     width: '100%',
   },
 }));

@@ -20,12 +20,7 @@ export function ArticleMaker({ data }: ArticleMakerProps) {
     return <></>;
   };
   return (
-    <ArticleMakerSteppper
-      current={step}
-      setCurrent={setStep}
-      increasing={inc}
-      setIncreasing={setInc}
-    >
+    <ArticleMakerSteppper current={step} setCurrent={setStep} setIncreasing={setInc}>
       <PhaseViewPort>
         <Phase1 current={step} increasing={inc} />
       </PhaseViewPort>

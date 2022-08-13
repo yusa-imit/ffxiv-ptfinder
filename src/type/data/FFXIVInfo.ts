@@ -23,8 +23,8 @@ export type Language = typeof Language_Value[number];
  * @param patch 게임 메이저 패치 버전 ex) .1, .2
  */
 export interface Game {
-  version: number;
-  patch: number;
+  version: string;
+  patch: string;
 }
 
 /**

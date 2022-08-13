@@ -8,7 +8,7 @@ export const Article = atom<ArticleData>({
     title: '',
     description: '',
     isTemporary: false,
-    game: { version: 6, patch: 0 },
+    game: { version: '6', patch: '0' },
     schedule: {
       writtenInDescription: false,
     },
