@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { Help } from 'tabler-icons-react';
+import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import { Article } from '../../../../../recoil/Article/index';
 import { Phase1Styles } from './Phase1.styles';
 import {
@@ -23,6 +24,7 @@ import {
   Language,
   Language_Value,
 } from '../../../../../type/data/FFXIVInfo';
+import { PhaseStack } from '../PhaseStack';
 
 const DEV_Game_Version = [
   { value: '6', label: '6' },
@@ -108,10 +110,7 @@ export default function Phase1({ current, increasing }: { current: number; incre
     >
       {(styles) => (
         <BigContainer className={classes.inner} style={styles}>
-          <Group className={classes.groupAsStack}>
-            <Text size="md" weight={700}>
-              {t('phase1_article_basic')}
-            </Text>
+          <PhaseStack title={t('phase1_article_basic')}>
             <TextInput
               className={classes.title}
               placeholder={t('phase1_title_placeholder')}
@@ -120,11 +119,7 @@ export default function Phase1({ current, increasing }: { current: number; incre
               onChange={titleOnChange}
               error={phase1Error.titleError()}
             />
-            <Tooltip
-              label={t('phase1_isTemporary_tooltip_label')}
-              multiline
-              styles={{ tooltip: { maxWidth: '80%' } }}
-            >
+            <WidthLimitedTooltip label={t('phase1_isTemporary_tooltip_label')}>
               <Group className={classes.responsiveGroup}>
                 <Text size="sm" weight={500}>
                   {t('phase1_isTemporary')}
@@ -141,12 +136,9 @@ export default function Phase1({ current, increasing }: { current: number; incre
                   }}
                 />
               </Group>
-            </Tooltip>
-          </Group>
-          <Group className={classes.groupAsStack}>
-            <Text size="md" weight={700}>
-              {t('phase1_game_label')}
-            </Text>
+            </WidthLimitedTooltip>
+          </PhaseStack>
+          <PhaseStack title={t('phase1_game_label')}>
             <Group className={classes.responsiveGroup}>
               <Text size="sm" weight={600}>
                 {t('phase1_game_version')}
@@ -202,23 +194,11 @@ export default function Phase1({ current, increasing }: { current: number; incre
                 transitionTimingFunction="ease"
               />
             </Group>
-          </Group>
-          <Group className={classes.groupAsStack}>
-            <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Text size="md" weight={700}>
-                {t('phase1_international')}
-              </Text>
-              <Tooltip
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                label={t('phase1_international_tooltip')}
-                multiline
-                styles={{ tooltip: { maxWidth: '80%' } }}
-              >
-                <ThemeIcon radius={9999} size="sm">
-                  <Help />
-                </ThemeIcon>
-              </Tooltip>
-            </Group>
+          </PhaseStack>
+          <PhaseStack
+            title={t('phase1_international')}
+            titleHelp={t('phase1_international_tooltip')}
+          >
             <Group className={classes.responsiveGroup}>
               <Text size="sm" weight={600}>
                 {t('phase1_region')}
@@ -251,7 +231,7 @@ export default function Phase1({ current, increasing }: { current: number; incre
                 transitionTimingFunction="ease"
               />
             </Group>
-          </Group>
+          </PhaseStack>
         </BigContainer>
       )}
     </Transition>
