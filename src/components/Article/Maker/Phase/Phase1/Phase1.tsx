@@ -9,7 +9,7 @@ import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 import HelpIcon from '@components/icons/HelpIcon';
 import { UseListStateHandlers } from '@mantine/hooks';
 import { Article } from '../../../../../recoil/Article/index';
-import { Phase1Styles } from './Phase1.styles';
+import { PhaseStyles } from '../Phase.styles';
 import {
   DungeonType,
   Region,
@@ -49,7 +49,7 @@ export default function Phase1({
   errorMessageHandler,
 }: Phase1Props) {
   const route = useRouter();
-  const { classes } = Phase1Styles();
+  const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
@@ -184,6 +184,7 @@ export default function Phase1({
                   transition="pop"
                   transitionDuration={100}
                   transitionTimingFunction="ease"
+                  withinPortal
                 ></Select>
               </HorizontalGroupWithText>
               <HorizontalGroupWithText text={t('phase1_game_major_patch')}>
@@ -201,6 +202,7 @@ export default function Phase1({
                   transition="pop"
                   transitionDuration={100}
                   transitionTimingFunction="ease"
+                  withinPortal
                 ></Select>
               </HorizontalGroupWithText>
             </Group>
@@ -216,6 +218,7 @@ export default function Phase1({
                 transition="pop"
                 transitionDuration={100}
                 transitionTimingFunction="ease"
+                withinPortal
               />
             </HorizontalGroupWithText>
           </PhaseStack>
@@ -236,6 +239,7 @@ export default function Phase1({
                   transition="pop"
                   transitionDuration={100}
                   transitionTimingFunction="ease"
+                  withinPortal
                 />
               </HorizontalGroupWithText>
               <HorizontalGroupWithText text={t('phase1_language')}>
@@ -250,6 +254,7 @@ export default function Phase1({
                   transition="pop"
                   transitionDuration={100}
                   transitionTimingFunction="ease"
+                  withinPortal
                 />
               </HorizontalGroupWithText>
             </Group>

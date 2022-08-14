@@ -1,6 +1,6 @@
 import { createStyles } from '@mantine/core';
 
-export const Phase1Styles = createStyles((theme) => ({
+export const PhaseStyles = createStyles((theme) => ({
   inner: {
     paddingTop: theme.spacing.md,
     paddingBottom: theme.spacing.md,

@@ -32,6 +32,7 @@ export const ArticleMakerStepperStyles = createStyles((theme) => ({
     },
   },
   bottomButton: {
+    position: 'relative',
     marginTop: theme.spacing.md,
     marginBottom: theme.spacing.xl,
     display: 'flex',
