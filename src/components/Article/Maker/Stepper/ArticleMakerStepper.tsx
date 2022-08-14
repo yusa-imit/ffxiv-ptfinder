@@ -1,5 +1,7 @@
 import BigContainer from '@components/base/BigContainer';
 import Viewport from '@components/base/GlobalApp/Viewport';
+import ErrorIcon from '@components/icons/ErrorIcon';
+import { MessageList } from '@components/MessageLists/MessageList';
 import { Button, Group, ScrollArea, Stepper } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import React, { SetStateAction } from 'react';
@@ -10,12 +12,14 @@ interface ArticleMakerStepperProps {
   setCurrent: React.Dispatch<SetStateAction<number>>;
   setIncreasing: React.Dispatch<SetStateAction<boolean>>;
   children?: React.ReactNode;
+  errorMessages: string[];
 }
 export function ArticleMakerSteppper({
   current,
   setCurrent,
   setIncreasing,
   children,
+  errorMessages,
 }: ArticleMakerStepperProps) {
   const { classes } = ArticleMakerStepperStyles();
   const { t } = useTranslation('article');
@@ -61,10 +65,21 @@ export function ArticleMakerSteppper({
         </Stepper>
         {children}
         <Group position="center" mt="xl" mb="xl" className={classes.bottomButton}>
-          <Button variant="default" onClick={prevStep}>
-            {t('maker_button_prev')}
-          </Button>
-          <Button onClick={nextStep}>{t('maker_button_next')}</Button>
+          <Group>
+            <Button variant="default" onClick={prevStep} disabled={current <= 0}>
+              {t('maker_button_prev')}
+            </Button>
+            <Button onClick={nextStep} disabled={errorMessages.length !== 0}>
+              {t('maker_button_next')}
+            </Button>
+          </Group>
+          <MessageList
+            data={errorMessages}
+            icon={<ErrorIcon />}
+            sx={(theme) => ({
+              color: theme.colors.red[6],
+            })}
+          />
         </Group>
       </BigContainer>
     </ScrollArea>

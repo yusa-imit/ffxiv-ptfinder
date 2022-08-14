@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 import HelpIcon from '@components/icons/HelpIcon';
+import { UseListStateHandlers } from '@mantine/hooks';
 import { Article } from '../../../../../recoil/Article/index';
 import { Phase1Styles } from './Phase1.styles';
 import {
@@ -38,30 +39,43 @@ const Major_Patch = [
 interface Phase1Props {
   current: number;
   increasing: boolean;
-  errorHandler: React.Dispatch<SetStateAction<boolean>>;
+  errorMessages: string[];
+  errorMessageHandler: UseListStateHandlers<string>;
 }
-export default function Phase1({ current, increasing, errorHandler }: Phase1Props) {
+export default function Phase1({
+  current,
+  increasing,
+  errorMessages,
+  errorMessageHandler,
+}: Phase1Props) {
   const route = useRouter();
   const { classes } = Phase1Styles();
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
   const phase1Error = {
-    titleError: () => {
+    titleErrorListHandler: () => {
       if (titleCheck) {
-        errorHandler(false);
+        errorMessageHandler.filter((v) => v !== t('phase1_title_necessary'));
+        return;
+      }
+      if (!errorMessages.includes(t('phase1_title_necessary'))) {
+        errorMessageHandler.append(t('phase1_title_necessary'));
+      }
+    },
+    getTitleErrorLabelText: () => {
+      if (titleCheck) {
         return false;
       }
-      errorHandler(true);
       return t('phase1_title_necessary');
     },
   };
   const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newArticle = { ...article };
+    newArticle.title = event.currentTarget.value;
+    changeArticle(newArticle);
     if (event.currentTarget.value !== '') {
-      const newArticle = { ...article };
       setTitleCheck(true);
-      newArticle.title = event.currentTarget.value;
-      changeArticle(newArticle);
     } else {
       setTitleCheck(false);
     }
@@ -102,6 +116,9 @@ export default function Phase1({ current, increasing, errorHandler }: Phase1Prop
     }
     changeArticle(newArticle);
   }, []);
+  useEffect(() => {
+    phase1Error.titleErrorListHandler();
+  }, [titleCheck]);
   return (
     <Transition
       transition={increasing ? 'slide-right' : 'slide-left'}
@@ -113,12 +130,13 @@ export default function Phase1({ current, increasing, errorHandler }: Phase1Prop
         <BigContainer className={classes.inner} style={styles}>
           <PhaseStack title={t('phase1_article_basic')}>
             <TextInput
+              value={article.title}
               className={classes.title}
               placeholder={t('phase1_title_placeholder')}
               label={t('phase1_title_label')}
               required
               onChange={titleOnChange}
-              error={phase1Error.titleError()}
+              error={phase1Error.getTitleErrorLabelText()}
             />
             <WidthLimitedTooltip label={t('phase1_isTemporary_tooltip_label')}>
               <Group className={classes.responsiveGroup}>
