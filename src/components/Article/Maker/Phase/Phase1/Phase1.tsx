@@ -1,20 +1,12 @@
 import BigContainer from '@components/base/BigContainer';
-import {
-  Checkbox,
-  Group,
-  Select,
-  Text,
-  TextInput,
-  ThemeIcon,
-  Tooltip,
-  Transition,
-} from '@mantine/core';
+import { Checkbox, Group, Select, Text, TextInput, Transition } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { Help } from 'tabler-icons-react';
 import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
+import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
+import HelpIcon from '@components/icons/HelpIcon';
 import { Article } from '../../../../../recoil/Article/index';
 import { Phase1Styles } from './Phase1.styles';
 import {
@@ -43,7 +35,12 @@ const Major_Patch = [
   { label: '5', value: '5' },
 ];
 
-export default function Phase1({ current, increasing }: { current: number; increasing: boolean }) {
+interface Phase1Props {
+  current: number;
+  increasing: boolean;
+  errorHandler: React.Dispatch<SetStateAction<boolean>>;
+}
+export default function Phase1({ current, increasing, errorHandler }: Phase1Props) {
   const route = useRouter();
   const { classes } = Phase1Styles();
   const { t } = useTranslation('article');
@@ -51,7 +48,11 @@ export default function Phase1({ current, increasing }: { current: number; incre
   const [article, changeArticle] = useRecoilState(Article);
   const phase1Error = {
     titleError: () => {
-      if (titleCheck) return false;
+      if (titleCheck) {
+        errorHandler(false);
+        return false;
+      }
+      errorHandler(true);
       return t('phase1_title_necessary');
     },
   };
@@ -121,9 +122,19 @@ export default function Phase1({ current, increasing }: { current: number; incre
             />
             <WidthLimitedTooltip label={t('phase1_isTemporary_tooltip_label')}>
               <Group className={classes.responsiveGroup}>
-                <Text size="sm" weight={500}>
-                  {t('phase1_isTemporary')}
-                </Text>
+                <Group
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Text size="sm" weight={500}>
+                    {t('phase1_isTemporary')}
+                  </Text>
+                  <HelpIcon />
+                </Group>
 
                 <Checkbox
                   label={t('phase1_isTemporary_label')}
@@ -140,47 +151,42 @@ export default function Phase1({ current, increasing }: { current: number; incre
           </PhaseStack>
           <PhaseStack title={t('phase1_game_label')}>
             <Group className={classes.responsiveGroup}>
-              <Text size="sm" weight={600}>
-                {t('phase1_game_version')}
-              </Text>
-              <Select
-                data={DEV_Game_Version}
-                value={article.game.version}
-                onChange={(value) => {
-                  const newArticle = { ...article };
-                  newArticle.game = {
-                    version: value === null ? '' : value,
-                    patch: newArticle.game.patch,
-                  };
-                  changeArticle(newArticle);
-                }}
-                transition="pop"
-                transitionDuration={100}
-                transitionTimingFunction="ease"
-              ></Select>
-              <Text size="sm" weight={600}>
-                {t('phase1_game_major_patch')}
-              </Text>
-              <Select
-                data={Major_Patch}
-                value={article.game.patch}
-                onChange={(value) => {
-                  const newArticle = { ...article };
-                  newArticle.game = {
-                    patch: value === null ? '' : value,
-                    version: newArticle.game.version,
-                  };
-                  changeArticle(newArticle);
-                }}
-                transition="pop"
-                transitionDuration={100}
-                transitionTimingFunction="ease"
-              ></Select>
+              <HorizontalGroupWithText text={t('phase1_game_version')}>
+                <Select
+                  data={DEV_Game_Version}
+                  value={article.game.version}
+                  onChange={(value) => {
+                    const newArticle = { ...article };
+                    newArticle.game = {
+                      version: value === null ? '' : value,
+                      patch: newArticle.game.patch,
+                    };
+                    changeArticle(newArticle);
+                  }}
+                  transition="pop"
+                  transitionDuration={100}
+                  transitionTimingFunction="ease"
+                ></Select>
+              </HorizontalGroupWithText>
+              <HorizontalGroupWithText text={t('phase1_game_major_patch')}>
+                <Select
+                  data={Major_Patch}
+                  value={article.game.patch}
+                  onChange={(value) => {
+                    const newArticle = { ...article };
+                    newArticle.game = {
+                      patch: value === null ? '' : value,
+                      version: newArticle.game.version,
+                    };
+                    changeArticle(newArticle);
+                  }}
+                  transition="pop"
+                  transitionDuration={100}
+                  transitionTimingFunction="ease"
+                ></Select>
+              </HorizontalGroupWithText>
             </Group>
-            <Group className={classes.responsiveGroup}>
-              <Text size="sm" weight={600}>
-                {t('phase1_dungeon_type')}
-              </Text>
+            <HorizontalGroupWithText text={t('phase1_dungeon_type')}>
               <Select
                 data={SelectData.DungeonTypeData}
                 value={article.type}
@@ -193,43 +199,41 @@ export default function Phase1({ current, increasing }: { current: number; incre
                 transitionDuration={100}
                 transitionTimingFunction="ease"
               />
-            </Group>
+            </HorizontalGroupWithText>
           </PhaseStack>
           <PhaseStack
             title={t('phase1_international')}
             titleHelp={t('phase1_international_tooltip')}
           >
             <Group className={classes.responsiveGroup}>
-              <Text size="sm" weight={600}>
-                {t('phase1_region')}
-              </Text>
-              <Select
-                data={SelectData.RegionData}
-                value={article.region}
-                onChange={(value) => {
-                  const newArticle = { ...article };
-                  newArticle.region = value === null ? 'JP' : (value as Region);
-                  changeArticle(newArticle);
-                }}
-                transition="pop"
-                transitionDuration={100}
-                transitionTimingFunction="ease"
-              />
-              <Text size="sm" weight={600}>
-                {t('phase1_dungeon_type')}
-              </Text>
-              <Select
-                data={SelectData.LanguageData}
-                value={article.language}
-                onChange={(value) => {
-                  const newArticle = { ...article };
-                  newArticle.language = value === null ? 'JP' : (value as Language);
-                  changeArticle(newArticle);
-                }}
-                transition="pop"
-                transitionDuration={100}
-                transitionTimingFunction="ease"
-              />
+              <HorizontalGroupWithText text={t('phase1_region')}>
+                <Select
+                  data={SelectData.RegionData}
+                  value={article.region}
+                  onChange={(value) => {
+                    const newArticle = { ...article };
+                    newArticle.region = value === null ? 'JP' : (value as Region);
+                    changeArticle(newArticle);
+                  }}
+                  transition="pop"
+                  transitionDuration={100}
+                  transitionTimingFunction="ease"
+                />
+              </HorizontalGroupWithText>
+              <HorizontalGroupWithText text={t('phase1_language')}>
+                <Select
+                  data={SelectData.LanguageData}
+                  value={article.language}
+                  onChange={(value) => {
+                    const newArticle = { ...article };
+                    newArticle.language = value === null ? 'JP' : (value as Language);
+                    changeArticle(newArticle);
+                  }}
+                  transition="pop"
+                  transitionDuration={100}
+                  transitionTimingFunction="ease"
+                />
+              </HorizontalGroupWithText>
             </Group>
           </PhaseStack>
         </BigContainer>

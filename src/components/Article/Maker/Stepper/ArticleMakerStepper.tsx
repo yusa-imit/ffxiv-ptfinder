@@ -30,45 +30,43 @@ export function ArticleMakerSteppper({
       return c > 0 ? c - 1 : c;
     });
   return (
-    <Viewport className={classes.viewPort}>
-      <ScrollArea>
-        <BigContainer className={classes.inner}>
-          <Stepper
-            className={classes.stepper}
-            active={current}
-            onStepClick={setCurrent}
-            breakpoint="sm"
-          >
-            <Stepper.Step
-              label={t('maker_first_step_label')}
-              description={t('maker_first_step_desc')}
-            ></Stepper.Step>
-            <Stepper.Step
-              label={t('maker_second_step_label')}
-              description={t('maker_second_step_desc')}
-            ></Stepper.Step>
-            <Stepper.Step
-              label={t('maker_third_step_label')}
-              description={t('maker_third_step_desc')}
-            ></Stepper.Step>
-            <Stepper.Step
-              label={t('maker_fourth_step_label')}
-              description={t('maker_fourth_step_desc')}
-            ></Stepper.Step>
-            <Stepper.Step
-              label={t('maker_fifth_step_label')}
-              description={t('maker_fifth_step_desc')}
-            ></Stepper.Step>
-          </Stepper>
-          {children}
-          <Group position="center" mt="xl" className={classes.bottomButton}>
-            <Button variant="default" onClick={prevStep}>
-              {t('maker_button_prev')}
-            </Button>
-            <Button onClick={nextStep}>{t('maker_button_next')}</Button>
-          </Group>
-        </BigContainer>
-      </ScrollArea>
-    </Viewport>
+    <ScrollArea type="hover" classNames={{ root: classes.scrollBase, viewport: classes.viewPort }}>
+      <BigContainer className={classes.inner}>
+        <Stepper
+          className={classes.stepper}
+          active={current}
+          onStepClick={setCurrent}
+          breakpoint="sm"
+        >
+          <Stepper.Step
+            label={t('maker_first_step_label')}
+            description={t('maker_first_step_desc')}
+          ></Stepper.Step>
+          <Stepper.Step
+            label={t('maker_second_step_label')}
+            description={t('maker_second_step_desc')}
+          ></Stepper.Step>
+          <Stepper.Step
+            label={t('maker_third_step_label')}
+            description={t('maker_third_step_desc')}
+          ></Stepper.Step>
+          <Stepper.Step
+            label={t('maker_fourth_step_label')}
+            description={t('maker_fourth_step_desc')}
+          ></Stepper.Step>
+          <Stepper.Step
+            label={t('maker_fifth_step_label')}
+            description={t('maker_fifth_step_desc')}
+          ></Stepper.Step>
+        </Stepper>
+        {children}
+        <Group position="center" mt="xl" mb="xl" className={classes.bottomButton}>
+          <Button variant="default" onClick={prevStep}>
+            {t('maker_button_prev')}
+          </Button>
+          <Button onClick={nextStep}>{t('maker_button_next')}</Button>
+        </Group>
+      </BigContainer>
+    </ScrollArea>
   );
 }

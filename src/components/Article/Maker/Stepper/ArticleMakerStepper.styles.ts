@@ -6,22 +6,26 @@ export const ArticleMakerStepperStyles = createStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    height: 'fit-content',
-    marginTop: 20,
+    minHeight: '100vh',
     [theme.fn.smallerThan('sm')]: {
       justifyContent: 'space-between',
     },
   },
-  viewPort: {
+  scrollBase: {
     height: '100vh',
-    width: '100wh',
+    width: '100vw',
     [theme.fn.largerThan('sm')]: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
     },
   },
+  viewPort: {
+    height: '100vh',
+    width: '100vw',
+  },
   stepper: {
+    marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.md,
     [theme.fn.smallerThan('sm')]: {
       marginTop: theme.spacing.md,
@@ -29,6 +33,7 @@ export const ArticleMakerStepperStyles = createStyles((theme) => ({
   },
   bottomButton: {
     marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.xl,
     [theme.fn.smallerThan('sm')]: {
       marginBottom: theme.spacing.md,
     },

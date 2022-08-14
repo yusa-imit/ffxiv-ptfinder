@@ -8,21 +8,14 @@ interface ArticleMakerProps {
   data: ArticleData;
 }
 export function ArticleMaker({ data }: ArticleMakerProps) {
+  const [error, setError] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [step, setStep] = useState(0);
   const [inc, setInc] = useState(true);
-  const getPhase = () => {
-    switch (step) {
-      case 0:
-        return <Phase1 current={step} increasing={inc} />;
-      default:
-        break;
-    }
-    return <></>;
-  };
   return (
     <ArticleMakerSteppper current={step} setCurrent={setStep} setIncreasing={setInc}>
       <PhaseViewPort>
-        <Phase1 current={step} increasing={inc} />
+        <Phase1 current={step} increasing={inc} errorHandler={setError} />
       </PhaseViewPort>
     </ArticleMakerSteppper>
   );
