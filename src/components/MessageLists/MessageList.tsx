@@ -11,7 +11,7 @@ export function MessageList({ data, ...etc }: MessageListProps) {
   return data.length === 0 ? (
     <></>
   ) : (
-    <List center spacing="xs" size="md" {...etc}>
+    <List center spacing="xs" size="md" {...etc} px="xs">
       {setListItem()}
     </List>
   );

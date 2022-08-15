@@ -1,4 +1,4 @@
-import { createStyles, Group, GroupProps, Text, ThemeIcon, Tooltip } from '@mantine/core';
+import { createStyles, Group, GroupProps, Text, ThemeIcon, Title, Tooltip } from '@mantine/core';
 import { Help } from 'tabler-icons-react';
 
 interface StackLeftGroupProps extends GroupProps {
@@ -35,9 +35,7 @@ export function PhaseStack({ title, titleHelp, ...etc }: StackLeftGroupProps) {
           styles={{ tooltip: { maxWidth: '80%' } }}
         >
           <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Text size="md" weight={700}>
-              {title}
-            </Text>
+            <Title order={5}>{title}</Title>
 
             <ThemeIcon radius={9999} size="sm">
               <Help />

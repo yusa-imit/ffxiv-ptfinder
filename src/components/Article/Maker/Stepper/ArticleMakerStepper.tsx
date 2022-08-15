@@ -2,7 +2,8 @@ import BigContainer from '@components/base/BigContainer';
 import Viewport from '@components/base/GlobalApp/Viewport';
 import ErrorIcon from '@components/icons/ErrorIcon';
 import { MessageList } from '@components/MessageLists/MessageList';
-import { Button, Group, ScrollArea, Stepper } from '@mantine/core';
+import { Button, Group, ScrollArea, Stepper, Text, Title, useMantineTheme } from '@mantine/core';
+import { closeAllModals, openConfirmModal, openModal } from '@mantine/modals';
 import { useTranslation } from 'next-i18next';
 import React, { SetStateAction } from 'react';
 import { ArticleMakerStepperStyles } from './ArticleMakerStepper.styles';
@@ -10,36 +11,64 @@ import { ArticleMakerStepperStyles } from './ArticleMakerStepper.styles';
 interface ArticleMakerStepperProps {
   current: number;
   setCurrent: React.Dispatch<SetStateAction<number>>;
-  setIncreasing: React.Dispatch<SetStateAction<boolean>>;
   children?: React.ReactNode;
   errorMessages: string[];
 }
 export function ArticleMakerSteppper({
   current,
   setCurrent,
-  setIncreasing,
   children,
   errorMessages,
 }: ArticleMakerStepperProps) {
+  const theme = useMantineTheme();
   const { classes } = ArticleMakerStepperStyles();
   const { t } = useTranslation('article');
   const nextStep = () =>
     setCurrent((c) => {
-      setIncreasing(true);
       return c >= 4 ? c : c + 1;
     });
   const prevStep = () =>
     setCurrent((c) => {
-      setIncreasing(false);
       return c > 0 ? c - 1 : c;
     });
+  const openErrorModal = () => {
+    openModal({
+      title: <Title order={3}>{t('maker_cannot_clickable_modal_title')}</Title>,
+      children: (
+        <>
+          <Text size="sm">{t('maker_cannot_clickable_modal_desc')}</Text>
+          {errorMessages.map((v) => (
+            <Text color="red" size="sm">
+              {v}
+            </Text>
+          ))}
+          <Group position="right" mt={theme.spacing.lg}>
+            <Button
+              color="red"
+              onClick={() => {
+                closeAllModals();
+              }}
+            >
+              {t('maker_cannot_clickable_modal_confirm')}
+            </Button>
+          </Group>
+        </>
+      ),
+    });
+  };
   return (
     <ScrollArea type="hover" classNames={{ root: classes.scrollBase, viewport: classes.viewPort }}>
-      <BigContainer className={classes.inner}>
+      <BigContainer className={classes.inner} px={0}>
         <Stepper
           className={classes.stepper}
           active={current}
-          onStepClick={setCurrent}
+          onStepClick={(stepIndex) => {
+            if (errorMessages.length !== 0) {
+              openErrorModal();
+              return;
+            }
+            setCurrent(stepIndex);
+          }}
           breakpoint="sm"
         >
           <Stepper.Step
@@ -76,8 +105,8 @@ export function ArticleMakerSteppper({
           <MessageList
             data={errorMessages}
             icon={<ErrorIcon />}
-            sx={(theme) => ({
-              color: theme.colors.red[6],
+            sx={(th) => ({
+              color: th.colors.red[6],
             })}
           />
         </Group>

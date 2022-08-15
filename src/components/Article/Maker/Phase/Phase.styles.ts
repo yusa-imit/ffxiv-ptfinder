@@ -4,7 +4,6 @@ export const PhaseStyles = createStyles((theme) => ({
   inner: {
     paddingTop: theme.spacing.md,
     paddingBottom: theme.spacing.md,
-    width: '100%',
     minHeight: '60vh',
     display: 'flex',
     flexDirection: 'column',

@@ -1,4 +1,5 @@
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Primary } from '@recoil/Primary';
 import { useSSRCompletedState } from '@recoil/SSR/SSRCompleted';
@@ -28,9 +29,11 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
           withNormalizeCSS
         >
           <NotificationsProvider>
-            <Viewport>
-              <Component {...pageProps} />
-            </Viewport>
+            <ModalsProvider>
+              <Viewport>
+                <Component {...pageProps} />
+              </Viewport>
+            </ModalsProvider>
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
