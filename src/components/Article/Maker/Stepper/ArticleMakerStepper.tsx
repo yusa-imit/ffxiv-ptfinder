@@ -26,7 +26,7 @@ export function ArticleMakerSteppper({
   const nextStep = () =>
     setCurrent((c) => {
       setIncreasing(true);
-      return c < 5 ? c + 1 : c;
+      return c >= 4 ? c : c + 1;
     });
   const prevStep = () =>
     setCurrent((c) => {

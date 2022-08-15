@@ -36,18 +36,18 @@ const Major_Patch = [
   { label: '5', value: '5' },
 ];
 
-interface Phase1Props {
+interface Phase2Props {
   current: number;
   increasing: boolean;
   errorMessages: string[];
   errorMessageHandler: UseListStateHandlers<string>;
 }
-export default function Phase1({
+export default function Phase2({
   current,
   increasing,
   errorMessages,
   errorMessageHandler,
-}: Phase1Props) {
+}: Phase2Props) {
   const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
@@ -122,14 +122,14 @@ export default function Phase1({
   return (
     <Transition
       transition={!increasing ? 'slide-right' : 'slide-left'}
-      mounted={current === 0}
+      mounted={current === 1}
       duration={500}
       timingFunction="ease"
     >
       {(styles) => (
         <BigContainer
           className={classes.inner}
-          style={{ position: current !== 0 ? 'absolute' : 'relative', ...styles }}
+          style={{ position: current !== 1 ? 'absolute' : 'relative', ...styles }}
         >
           <PhaseStack title={t('phase1_article_basic')}>
             <TextInput
