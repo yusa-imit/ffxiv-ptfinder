@@ -203,4 +203,4 @@ const TimezonesValue = [
   'Yekaterinburg Summer Time',
   ' Yekaterinburg Time',
 ] as const;
-export type Timezone = keyof typeof TimezonesValue;
+export type Timezone = typeof TimezonesValue[number];

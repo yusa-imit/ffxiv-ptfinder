@@ -27,13 +27,10 @@ const DEV_Game_Version = [
   { value: '2', label: '2' },
 ];
 
-const Major_Patch = [
+const Voice_Chat = [
   { label: '0', value: '0' },
   { label: '1', value: '1' },
   { label: '2', value: '2' },
-  { label: '3', value: '3' },
-  { label: '4', value: '4' },
-  { label: '5', value: '5' },
 ];
 
 interface Phase2Props {
@@ -77,6 +74,7 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
     DungeonTypeData: { label: string; value: DungeonType }[];
     RegionData: { label: string; value: Region }[];
     LanguageData: { label: string; value: Language }[];
+    VoiceChatData: { label: string; value: '0' | '1' | '2' }[];
   } = {
     DungeonTypeData: [
       { label: t('phase1_dungeon_type_raid'), value: 'raid' },
@@ -90,6 +88,11 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       label: t(`phase1_language_${v}`),
       value: v,
     })),
+    VoiceChatData: [
+      { label: t('phase2_voicechat_value_0'), value: '0' },
+      { label: t('phase2_voicechat_value_1'), value: '1' },
+      { label: t('phase2_voicechat_value_2'), value: '2' },
+    ],
   };
 
   useEffect(() => {
@@ -143,28 +146,47 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             }}
           />
         </HorizontalGroupWithText>
-        <Checkbox
-          label={t('phase2_isFirstWeekClear')}
-          styles={{ label: { fontWeight: 500 } }}
-          checked={article.firstWeekClear}
-          onChange={(event) => {
-            const newArticle = { ...article };
-            newArticle.firstWeekClear = event.currentTarget.checked;
-            changeArticle(newArticle);
-          }}
-        />
-        <Checkbox
-          label={t('phase2_worldFirstRace')}
-          styles={{ label: { fontWeight: 500 } }}
-          checked={article.worldFirstRace}
-          onChange={(event) => {
-            const newArticle = { ...article };
-            newArticle.worldFirstRace = event.currentTarget.checked;
-            changeArticle(newArticle);
-          }}
-        />
+        <HorizontalGroupWithText text={t('phase2_isFisrWeekClear_title')}>
+          <Checkbox
+            label={t('phase2_isFirstWeekClear_desc')}
+            styles={{ label: { fontWeight: 500 } }}
+            checked={article.firstWeekClear}
+            onChange={(event) => {
+              const newArticle = { ...article };
+              newArticle.firstWeekClear = event.currentTarget.checked;
+              changeArticle(newArticle);
+            }}
+          />
+        </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase2_worldFisrtRace_title')}>
+          <Checkbox
+            label={t('phase2_worldFirstRace_desc')}
+            styles={{ label: { fontWeight: 500 } }}
+            checked={article.worldFirstRace}
+            onChange={(event) => {
+              const newArticle = { ...article };
+              newArticle.worldFirstRace = event.currentTarget.checked;
+              changeArticle(newArticle);
+            }}
+          />
+        </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase2_voicechat_title')}>
+          <Select
+            data={SelectData.VoiceChatData}
+            value={String(article.voiceChat)}
+            onChange={(value) => {
+              const newArticle = { ...article };
+              newArticle.voiceChat = Number(value as '0' | '1' | '2') as 0 | 1 | 2;
+              changeArticle(newArticle);
+            }}
+            transition="pop"
+            transitionDuration={100}
+            transitionTimingFunction="ease"
+            withinPortal
+          />
+        </HorizontalGroupWithText>
       </PhaseStack>
-      <PhaseStack title={t('phase1_international')} titleHelp={t('phase1_international_tooltip')}>
+      <PhaseStack title={t('phase2_international')} titleHelp={t('phase2_international_tooltip')}>
         <Group className={classes.responsiveGroup}>
           <HorizontalGroupWithText text={t('phase1_region')}>
             <Select

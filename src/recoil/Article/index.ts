@@ -11,6 +11,12 @@ export const Article = atom<ArticleData>({
     game: { version: '6', patch: '0' },
     schedule: {
       writtenInDescription: false,
+      dateTime: undefined,
+      adjustable: false,
+      day: [0, 0, 0, 0, 0, 0, 0],
+      timeType: 0,
+      time: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      timezone: 'Pacific Daylight Time',
     },
     type: 'raid',
     many: 0,
