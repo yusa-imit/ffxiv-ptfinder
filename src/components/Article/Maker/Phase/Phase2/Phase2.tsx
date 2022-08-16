@@ -53,6 +53,7 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
+  const [language, setLanguage] = useState(false);
   const phase1Error = {
     titleErrorListHandler: () => {
       if (titleCheck) {
@@ -119,6 +120,12 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       diff--;
     }
   }, [article.many]);
+  useEffect(() => {
+    if (article.specifyUserLanguage !== undefined) return;
+    const newArticle = { ...article };
+    newArticle.specifyUserLanguage = newArticle.language;
+    changeArticle(newArticle);
+  }, [language]);
   return (
     <BigContainer
       className={classes.inner}
@@ -160,6 +167,33 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             }}
           />
         </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase2_farm_title')}>
+          <Checkbox
+            label={t('phase2_farm_desc')}
+            styles={{ label: { fontWeight: 500 } }}
+            checked={article.farm}
+            onChange={(event) => {
+              const newArticle = { ...article };
+              newArticle.farm = event.currentTarget.checked;
+              changeArticle(newArticle);
+            }}
+          />
+        </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase2_voicechat_title')}>
+          <Select
+            data={SelectData.VoiceChatData}
+            value={String(article.voiceChat)}
+            onChange={(value) => {
+              const newArticle = { ...article };
+              newArticle.voiceChat = Number(value as '0' | '1' | '2') as 0 | 1 | 2;
+              changeArticle(newArticle);
+            }}
+            transition="pop"
+            transitionDuration={100}
+            transitionTimingFunction="ease"
+            withinPortal
+          />
+        </HorizontalGroupWithText>
         <HorizontalGroupWithText text={t('phase2_isFisrWeekClear_title')}>
           <Checkbox
             label={t('phase2_isFirstWeekClear_desc')}
@@ -184,89 +218,37 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             }}
           />
         </HorizontalGroupWithText>
-        <HorizontalGroupWithText text={t('phase2_voicechat_title')}>
+      </PhaseStack>
+      <PhaseStack
+        title={t('phase2_language_restriction_title')}
+        titleHelp={t('phase2_language_restriction_tooltip')}
+      >
+        <HorizontalGroupWithText text={t('phase2_language_restriction_set')}>
+          <Checkbox
+            label={t('phase2_language_restriction_set_desc')}
+            styles={{ label: { fontWeight: 500 } }}
+            checked={language}
+            onChange={(event) => {
+              setLanguage(event.currentTarget.checked);
+            }}
+          />
+        </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase2_language_restriction_select')}>
           <Select
-            data={SelectData.VoiceChatData}
-            value={String(article.voiceChat)}
+            data={SelectData.LanguageData}
+            value={article.specifyUserLanguage === undefined ? 'JP' : article.specifyUserLanguage}
             onChange={(value) => {
               const newArticle = { ...article };
-              newArticle.voiceChat = Number(value as '0' | '1' | '2') as 0 | 1 | 2;
+              newArticle.specifyUserLanguage = value === null ? 'JP' : (value as Language);
               changeArticle(newArticle);
             }}
             transition="pop"
             transitionDuration={100}
             transitionTimingFunction="ease"
             withinPortal
+            disabled={!language}
           />
         </HorizontalGroupWithText>
-      </PhaseStack>
-      <PhaseStack title={t('phase2_international')} titleHelp={t('phase2_international_tooltip')}>
-        <Group className={classes.responsiveGroup}>
-          <HorizontalGroupWithText text={t('phase1_region')}>
-            <Select
-              data={SelectData.RegionData}
-              value={article.region}
-              onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.region = value === null ? 'JP' : (value as Region);
-                changeArticle(newArticle);
-              }}
-              transition="pop"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-              withinPortal
-            />
-          </HorizontalGroupWithText>
-          <HorizontalGroupWithText text={t('phase1_language')}>
-            <Select
-              data={SelectData.LanguageData}
-              value={article.language}
-              onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.language = value === null ? 'JP' : (value as Language);
-                changeArticle(newArticle);
-              }}
-              transition="pop"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-              withinPortal
-            />
-          </HorizontalGroupWithText>
-        </Group>
-      </PhaseStack>
-      <PhaseStack title={t('phase2_international')} titleHelp={t('phase2_international_tooltip')}>
-        <Group className={classes.responsiveGroup}>
-          <HorizontalGroupWithText text={t('phase1_region')}>
-            <Select
-              data={SelectData.RegionData}
-              value={article.region}
-              onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.region = value === null ? 'JP' : (value as Region);
-                changeArticle(newArticle);
-              }}
-              transition="pop"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-              withinPortal
-            />
-          </HorizontalGroupWithText>
-          <HorizontalGroupWithText text={t('phase1_language')}>
-            <Select
-              data={SelectData.LanguageData}
-              value={article.language}
-              onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.language = value === null ? 'JP' : (value as Language);
-                changeArticle(newArticle);
-              }}
-              transition="pop"
-              transitionDuration={100}
-              transitionTimingFunction="ease"
-              withinPortal
-            />
-          </HorizontalGroupWithText>
-        </Group>
       </PhaseStack>
     </BigContainer>
   );

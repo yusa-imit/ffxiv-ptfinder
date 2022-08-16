@@ -39,6 +39,7 @@ export interface ArticleData {
   minimumWeek: number;
   firstWeekClear: boolean;
   worldFirstRace: boolean;
+  farm: boolean;
   voiceChat: 0 | 1 | 2;
   region: Region;
   language: Language;
@@ -58,7 +59,7 @@ export interface ArticleData {
  * @param timeType 활동시간 배열의 타입 time 참고
  * @param time 활동 시간 배열. 기본적인 구조는 day 데이터와 같음
  * timeType 선택에 따라 일주일 전체 적용/평일*주말/일주일 각각 을 선택가능함
- * 0일 경우 : 현재 활동 시간을 활동일 전체에 적용. 자료형 : FixedLengthArray<0 | 1, 24>
+ * 0일 경우 : 시작시간, 지속시간을 배열로 받음.
  * 1일 경우 : 현재 선택된 활동 시간을 첫번째 배열은 평일에, 두번째 배열은 주말에 적용. 자료형 : FixedLengthArray<FixedLengthArray<0 | 1, 24>, 2>
  * 2일 경우 : 월화수목금토일 각각 활동시간을 직접 작성. 자료형 : FixedLengthArray<FixedLengthArray<0 | 1, 24>, 7>
  * @param timezone 작성자의 timezone ex) Korean Standard Time, Japan Standard Time
@@ -68,10 +69,11 @@ interface Schedule {
   dateTime?: number;
   adjustable?: boolean;
   day?: FixedLengthArray<0 | 1, 7>;
+  dayPerWeek?: number;
   timeType?: 0 | 1 | 2;
   time?:
-    | FixedLengthArray<0 | 1, 24>
-    | FixedLengthArray<FixedLengthArray<0 | 1, 24>, 2>
-    | FixedLengthArray<FixedLengthArray<0 | 1, 24>, 7>;
+    | FixedLengthArray<number, 2>
+    | FixedLengthArray<FixedLengthArray<number, 2>, 2>
+    | FixedLengthArray<FixedLengthArray<number, 2>, 7>;
   timezone?: Timezone;
 }

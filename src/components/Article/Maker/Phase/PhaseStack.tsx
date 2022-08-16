@@ -33,6 +33,7 @@ export function PhaseStack({ title, titleHelp, ...etc }: StackLeftGroupProps) {
           label={titleHelp}
           multiline
           styles={{ tooltip: { maxWidth: '80%' } }}
+          events={{ hover: true, focus: true, touch: true }}
         >
           <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Title order={5}>{title}</Title>
