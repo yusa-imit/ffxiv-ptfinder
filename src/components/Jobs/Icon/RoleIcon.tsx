@@ -1,59 +1,68 @@
 import { Role } from '@type/data/FFXIVInfo';
-import { Image, UnstyledButton, UnstyledButtonProps } from '@mantine/core';
+import { Box, Image, Stack, UnstyledButton, UnstyledButtonProps } from '@mantine/core';
 import { url } from 'inspector';
-import { ForwardedRef, MouseEventHandler } from 'react';
+import { ForwardedRef, forwardRef, MouseEventHandler, useEffect, useState } from 'react';
+import { JobSort } from '@constant/JobSort';
 
-export interface RoleIconProps extends UnstyledButtonProps {
-  roles: Role[];
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  ref?: ForwardedRef<HTMLButtonElement>;
-}
-export default function RoleIcon({ roles, onClick, ref, ...etc }: RoleIconProps) {
-  return (
-    <UnstyledButton
-      ref={ref}
-      onClick={onClick}
-      sx={(theme) => ({
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 34,
-        height: 34,
-        overflow: 'hidden',
-        borderRadius: 6,
-        '&:hover': {
-          backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.fn.lighten('#5865F2', 0.05)
-              : theme.fn.darken('#5865F2', 0.05),
-        },
-        zIndex: 1,
-      })}
-      {...etc}
-    >
-      <Image
-        src="/job_icons/role-sprite.png"
-        sx={(theme) => ({
-          transform: 'scale(3.9) translateX(-6.2px) translateY(-22.6px)',
-          zIndex: 0,
-        })}
-      />
-      <Image
-        src="/job_icons/role-sprite.png"
-        sx={(theme) => ({
-          position: 'absolute',
-          transform: 'scale(4.2) translateX(-6.2px) translateY(20px)',
-          zIndex: 0,
-        })}
-      ></Image>
-    </UnstyledButton>
-  );
+export interface RoleIconProps extends React.ComponentPropsWithoutRef<'button'> {
+  roles: { t: boolean; h: boolean; d: boolean };
 }
 
-const transform = {
-  th: 'scale(4) translateX(-2px) translateY(-13px)',
-  td: 'scale(4) translateX(11.5px) translateY(-22.5px)',
-  dh: 'scale(4) translateX(3px) translateY(-22.5px)',
-  tdh: 'scale(3.9) translateX(-6.2px) translateY(-22.6px)',
-};
+const RoleIcon = forwardRef<HTMLButtonElement, RoleIconProps>(
+  ({ roles, ...etc }: RoleIconProps, ref) => {
+    const [name, setName] = useState('x');
+    useEffect(() => {
+      const newName = ['', '', ''];
+      if (roles.t) newName[0] = 't';
+      if (roles.h) newName[1] = 'h';
+      if (roles.d) newName[2] = 'd';
+      setName(newName.join('') === '' ? 'x' : newName.join(''));
+    }, [...Object.values(roles)]);
+    return (
+      <UnstyledButton
+        ref={ref}
+        sx={(_theme) => ({
+          width: 36,
+          height: 36,
+          borderRadius: 6,
+          overflow: 'hidden',
+          //backgroundColor: theme.primaryColor,
+          '&:hover': {
+            filter: 'brightness(0.8)',
+          },
+        })}
+        {...etc}
+      >
+        <Stack
+          spacing={0}
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          {name.split('').map((v, i) => (
+            <Box
+              key={v + i}
+              sx={(theme) => ({
+                flex: '1 1 0px',
+                backgroundColor:
+                  v === 't'
+                    ? theme.colors.blue[8]
+                    : v === 'h'
+                    ? theme.colors.green[6]
+                    : v === 'd'
+                    ? theme.colors.red[8]
+                    : theme.colors.gray[4],
+              })}
+            ></Box>
+          ))}
+        </Stack>
+      </UnstyledButton>
+    );
+  }
+);
+
+export default RoleIcon;

@@ -35,7 +35,7 @@ export interface ArticleData {
   game: Game;
   type: DungeonType;
   many: number;
-  jobs: FixedLengthArray<Array<Job>, number>;
+  jobs: Job[][];
   minimumWeek: number;
   firstWeekClear: boolean;
   worldFirstRace: boolean;

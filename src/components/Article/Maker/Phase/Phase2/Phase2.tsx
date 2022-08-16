@@ -1,5 +1,14 @@
 import BigContainer from '@components/base/BigContainer';
-import { Checkbox, Group, NumberInput, Select, Text, TextInput } from '@mantine/core';
+import {
+  Checkbox,
+  Group,
+  JsonInput,
+  NumberInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -95,6 +104,21 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       { label: t('phase2_voicechat_value_2'), value: '2' },
     ],
   };
+  useEffect(() => {
+    const newArticle = { ...article };
+    const newJobs = [...article.jobs];
+    let diff = Math.abs(article.jobs.length - article.many);
+    while (diff > 0) {
+      if (article.jobs.length < article.many) {
+        newJobs.push([]);
+      } else {
+        newJobs.pop();
+      }
+      newArticle.jobs = newJobs;
+      changeArticle(newArticle);
+      diff--;
+    }
+  }, [article.many]);
   return (
     <BigContainer
       className={classes.inner}
@@ -113,7 +137,16 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             }}
           />
         </HorizontalGroupWithText>
-        <JobSelection />
+        <Stack>
+          <Text size="sm" weight={500}>
+            {t('phase2_job_selection')}
+          </Text>
+          <Group>
+            {article.jobs.map((jobs, i) => (
+              <JobSelection jobs={jobs} key={i} index={i} />
+            ))}
+          </Group>
+        </Stack>
       </PhaseStack>
       <PhaseStack title={t('phase2_static_title')}>
         <HorizontalGroupWithText text={t('phase2_minimum_week_label')}>
@@ -166,6 +199,40 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             withinPortal
           />
         </HorizontalGroupWithText>
+      </PhaseStack>
+      <PhaseStack title={t('phase2_international')} titleHelp={t('phase2_international_tooltip')}>
+        <Group className={classes.responsiveGroup}>
+          <HorizontalGroupWithText text={t('phase1_region')}>
+            <Select
+              data={SelectData.RegionData}
+              value={article.region}
+              onChange={(value) => {
+                const newArticle = { ...article };
+                newArticle.region = value === null ? 'JP' : (value as Region);
+                changeArticle(newArticle);
+              }}
+              transition="pop"
+              transitionDuration={100}
+              transitionTimingFunction="ease"
+              withinPortal
+            />
+          </HorizontalGroupWithText>
+          <HorizontalGroupWithText text={t('phase1_language')}>
+            <Select
+              data={SelectData.LanguageData}
+              value={article.language}
+              onChange={(value) => {
+                const newArticle = { ...article };
+                newArticle.language = value === null ? 'JP' : (value as Language);
+                changeArticle(newArticle);
+              }}
+              transition="pop"
+              transitionDuration={100}
+              transitionTimingFunction="ease"
+              withinPortal
+            />
+          </HorizontalGroupWithText>
+        </Group>
       </PhaseStack>
       <PhaseStack title={t('phase2_international')} titleHelp={t('phase2_international_tooltip')}>
         <Group className={classes.responsiveGroup}>

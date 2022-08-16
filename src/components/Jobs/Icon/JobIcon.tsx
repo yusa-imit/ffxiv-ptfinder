@@ -1,25 +1,52 @@
 import { JobSort } from '@constant/JobSort';
-import { UnstyledButton, UnstyledButtonProps } from '@mantine/core';
+import { Box, UnstyledButton, UnstyledButtonProps } from '@mantine/core';
+import { Article } from '@recoil/Article';
 import { Job } from '@type/data/FFXIVInfo';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
+import { Check } from 'tabler-icons-react';
 
-interface JobIconProps extends UnstyledButtonProps {
+interface JobIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   job: Job;
+  isChecked: boolean;
 }
-export default function JobIcon({ job, ...etc }: JobIconProps) {
+export default function JobIcon({ job, isChecked, ...etc }: JobIconProps) {
   return (
     <UnstyledButton
-      sx={(theme) => ({
+      sx={(_theme) => ({
+        width: 32,
+        height: 32,
+        position: 'relative',
         '&:hover': {
-          backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.fn.lighten('#5865F2', 0.05)
-              : theme.fn.darken('#5865F2', 0.05),
+          filter: 'brightness(0.8)',
         },
       })}
       {...etc}
     >
-      <Image src={`/JobIcon/${JobSort[job].role}/${JobSort[job].d_role}/${job}.png`} />
+      {isChecked && (
+        <Box
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 255, 0, 0.25)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontWeight: 700,
+            zIndex: 1,
+            borderRadius: 8,
+          }}
+        >
+          <Check strokeWidth={3} />
+        </Box>
+      )}
+      <Image
+        src={`/job_icons/${JobSort[job].role}/${JobSort[job].d_role}/${job}.png`}
+        width={32}
+        height={32}
+      />
     </UnstyledButton>
   );
 }
