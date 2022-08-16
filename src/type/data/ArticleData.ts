@@ -21,7 +21,6 @@ import { Timezone } from './Timezone';
  * @param worldFirstRace 세계 1st 레이스 목적
  * @param voiceChat 0 : 보이스챗 필수, 1: 보이스 챗 사용, 듣톡 가능 2: 보이스챗 사용 안함
  * @param region 파판 데이터센터
- * @param specifyUserRegion (optional) 유저의 data-center를 제한함. (data-center travel이 가능하게 되었으므로 optional로 변경)
  * @param language 쓰여진 언어(클라이언트)
  * @param specifyUserLanguage @important (optioanl) 모집할 유저의 언어를 제한함. 유저는 이 언어를 필수로 사용 가능해야 함을 나타냄.
  * @param answerType 0 : 직접 연락 1: 시스템으로부터 연락을 받음 2: 코멘트 3: 사이트 채팅 기능 이용
@@ -42,7 +41,6 @@ export interface ArticleData {
   worldFirstRace: boolean;
   voiceChat: 0 | 1 | 2;
   region: Region;
-  specifyUserRegion?: Region;
   language: Language;
   specifyUserLanguage?: Language;
   answerType: 0 | 1 | 2 | 3;

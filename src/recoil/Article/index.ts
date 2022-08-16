@@ -27,6 +27,7 @@ export const Article = atom<ArticleData>({
     voiceChat: 0,
     region: 'JP',
     language: 'JP',
+    specifyUserLanguage: 'JP',
     answerType: 0,
     answerAddress: '',
   },

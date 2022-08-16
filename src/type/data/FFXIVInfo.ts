@@ -17,6 +17,16 @@ export type Caster = typeof Caster_Value[number];
 export type Limited = typeof Limited_Value[number];
 export type Language = typeof Language_Value[number];
 
+export type Role = 'TANK' | 'HEALER' | 'DPS' | 'LIMITED';
+export type Detail_Role =
+  | 'TANK'
+  | 'B_HEALER'
+  | 'P_HEALER'
+  | 'MELEE'
+  | 'RANGE'
+  | 'CASTER'
+  | 'LIMITED';
+
 /**
  * @interface Game
  * @param version 게임 버전 ex) 6, 5, 4, 3, 2

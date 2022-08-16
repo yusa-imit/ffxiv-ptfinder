@@ -8,6 +8,7 @@ import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 import HelpIcon from '@components/icons/HelpIcon';
 import { UseListStateHandlers } from '@mantine/hooks';
+import JobSelection from '@components/Jobs/JobSelection/JobSelection';
 import { Article } from '../../../../../recoil/Article/index';
 import { PhaseStyles } from '../Phase.styles';
 import {
@@ -94,27 +95,6 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       { label: t('phase2_voicechat_value_2'), value: '2' },
     ],
   };
-
-  useEffect(() => {
-    const newArticle = { ...article };
-    if (route.locale === 'en' || !route.locale) {
-      newArticle.language = 'EN';
-      newArticle.region = 'NA';
-    } else if (route.locale === 'jp') {
-      newArticle.language = 'JP';
-      newArticle.region = 'JP';
-    } else if (route.locale === 'kr') {
-      newArticle.language = 'KR';
-      newArticle.region = 'KR';
-    } else if (route.locale === 'cn') {
-      newArticle.language = 'CN';
-      newArticle.region = 'CN';
-    }
-    changeArticle(newArticle);
-  }, []);
-  useEffect(() => {
-    phase1Error.titleErrorListHandler();
-  }, [titleCheck]);
   return (
     <BigContainer
       className={classes.inner}
@@ -133,6 +113,7 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
             }}
           />
         </HorizontalGroupWithText>
+        <JobSelection />
       </PhaseStack>
       <PhaseStack title={t('phase2_static_title')}>
         <HorizontalGroupWithText text={t('phase2_minimum_week_label')}>
