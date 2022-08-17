@@ -1,100 +1,33 @@
 import BigContainer from '@components/base/BigContainer';
-import {
-  Checkbox,
-  Group,
-  JsonInput,
-  NumberInput,
-  Select,
-  Stack,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { Checkbox, Group, NumberInput, Select, Stack, Text, TextInput } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
+
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
-import HelpIcon from '@components/icons/HelpIcon';
+
 import { UseListStateHandlers } from '@mantine/hooks';
 import JobSelection from '@components/Jobs/JobSelection/JobSelection';
 import { Article } from '../../../../../recoil/Article/index';
 import { PhaseStyles } from '../Phase.styles';
-import {
-  DungeonType,
-  Region,
-  Region_Value,
-  Language,
-  Language_Value,
-} from '../../../../../type/data/FFXIVInfo';
+import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
 import { PhaseStack } from '../PhaseStack';
-
-const DEV_Game_Version = [
-  { value: '6', label: '6' },
-  { value: '5', label: '5' },
-  { value: '4', label: '4' },
-  { value: '3', label: '3' },
-  { value: '2', label: '2' },
-];
-
-const Voice_Chat = [
-  { label: '0', value: '0' },
-  { label: '1', value: '1' },
-  { label: '2', value: '2' },
-];
 
 interface Phase2Props {
   errorMessages: string[];
   errorMessageHandler: UseListStateHandlers<string>;
 }
 export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Props) {
-  const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [titleCheck, setTitleCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
   const [language, setLanguage] = useState(false);
-  const phase1Error = {
-    titleErrorListHandler: () => {
-      if (titleCheck) {
-        errorMessageHandler.filter((v) => v !== t('phase1_title_necessary'));
-        return;
-      }
-      if (!errorMessages.includes(t('phase1_title_necessary'))) {
-        errorMessageHandler.append(t('phase1_title_necessary'));
-      }
-    },
-    getTitleErrorLabelText: () => {
-      if (titleCheck) {
-        return false;
-      }
-      return t('phase1_title_necessary');
-    },
-  };
-  const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newArticle = { ...article };
-    newArticle.title = event.currentTarget.value;
-    changeArticle(newArticle);
-    if (event.currentTarget.value !== '') {
-      setTitleCheck(true);
-    } else {
-      setTitleCheck(false);
-    }
-  };
+  const phase2Error = {};
   const SelectData: {
-    DungeonTypeData: { label: string; value: DungeonType }[];
-    RegionData: { label: string; value: Region }[];
     LanguageData: { label: string; value: Language }[];
     VoiceChatData: { label: string; value: '0' | '1' | '2' }[];
   } = {
-    DungeonTypeData: [
-      { label: t('phase1_dungeon_type_raid'), value: 'raid' },
-      { label: t('phase1_dungeon_type_extreme'), value: 'extreme' },
-      { label: t('phase1_dungeon_type_ultimate'), value: 'ultimate' },
-      { label: t('phase1_dungeon_type_alliance'), value: 'alliance' },
-      { label: t('phase1_dungeon_type_etc'), value: 'etc' },
-    ],
-    RegionData: Array.from(Region_Value, (v) => ({ label: t(`phase1_region_${v}`), value: v })),
     LanguageData: Array.from(Language_Value, (v) => ({
       label: t(`phase1_language_${v}`),
       value: v,
@@ -105,6 +38,7 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       { label: t('phase2_voicechat_value_2'), value: '2' },
     ],
   };
+  // on number of memeber changes.
   useEffect(() => {
     const newArticle = { ...article };
     const newJobs = [...article.jobs];
@@ -120,9 +54,19 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
       diff--;
     }
   }, [article.many]);
+  // On language restriction checkbox change
   useEffect(() => {
-    if (article.specifyUserLanguage !== undefined) return;
     const newArticle = { ...article };
+    // if check resolved, then set data into undefined.
+    if (!language) {
+      newArticle.specifyUserLanguage = undefined;
+      changeArticle(newArticle);
+      return;
+    }
+    // If checked
+    // if language restriction is already specified, return
+    if (article.specifyUserLanguage !== undefined) return;
+    // else change into user language.
     newArticle.specifyUserLanguage = newArticle.language;
     changeArticle(newArticle);
   }, [language]);
@@ -236,10 +180,10 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
         <HorizontalGroupWithText text={t('phase2_language_restriction_select')}>
           <Select
             data={SelectData.LanguageData}
-            value={article.specifyUserLanguage === undefined ? 'JP' : article.specifyUserLanguage}
+            value={article.specifyUserLanguage}
             onChange={(value) => {
               const newArticle = { ...article };
-              newArticle.specifyUserLanguage = value === null ? 'JP' : (value as Language);
+              newArticle.specifyUserLanguage = value === null ? undefined : (value as Language);
               changeArticle(newArticle);
             }}
             transition="pop"
@@ -253,15 +197,3 @@ export default function Phase2({ errorMessages, errorMessageHandler }: Phase2Pro
     </BigContainer>
   );
 }
-
-/**
-  <Transition
-    transition={!increasing ? 'slide-right' : 'slide-left'}
-    mounted={current === 0}
-    duration={500}
-    timingFunction="ease"
-  >
-    {(styles) => (
-      
-    )}
-  </Transition> */
