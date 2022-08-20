@@ -6,10 +6,12 @@ import {
   getProviders,
   LiteralUnion,
   signIn,
+  SignInOptions,
 } from 'next-auth/react';
 import { UserConfig, useTranslation } from 'next-i18next';
 import { Locale } from '@type/Locale';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
 
 interface SignInPageServerSideProps {
   csrfToken: string;
@@ -146,16 +148,18 @@ const buttonTheme = createStyles((theme) => ({
 }));
 
 function signin({ csrfToken, providers, _nextI18Next }: SignInPageServerSideProps) {
+  const route = useRouter();
   const { t } = useTranslation('auth');
   const { classes } = buttonTheme();
-  console.log(providers);
   return (
     <Center style={{ width: '100%', height: '100%' }}>
+      <p>{JSON.stringify(route.query)}</p>
       <Container size="xs" p="xl" fluid>
         <Stack>
           {providers &&
             Object.values(providers).map((provider) => (
               <Button
+                key={provider.id}
                 classNames={{
                   // @ts-ignore
                   root: classes[`${provider.id}_root`],
@@ -163,7 +167,7 @@ function signin({ csrfToken, providers, _nextI18Next }: SignInPageServerSideProp
                   leftIcon: classes[`${provider.id}_leftIcon`],
                 }}
                 onClick={() => {
-                  signIn(provider.id);
+                  signIn(provider.id, { redirect: true, callbackUrl: route.query.callbackUrl });
                 }}
                 leftIcon={<Image src={`/auth/icons/${provider.id}.png`} />}
               >
@@ -175,7 +179,6 @@ function signin({ csrfToken, providers, _nextI18Next }: SignInPageServerSideProp
     </Center>
   );
 }
-
 export async function getServerSideProps({ locale }: { locale: Locale }) {
   const providers = await getProviders();
   const csrfToken = await getCsrfToken();
