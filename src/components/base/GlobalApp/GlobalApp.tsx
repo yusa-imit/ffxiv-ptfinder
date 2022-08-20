@@ -7,6 +7,7 @@ import { setCookies } from 'cookies-next';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { SessionProvider } from 'next-auth/react';
 import Viewport from './Viewport';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
@@ -31,7 +32,9 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
           <NotificationsProvider>
             <ModalsProvider>
               <Viewport>
-                <Component {...pageProps} />
+                <SessionProvider session={pageProps.session}>
+                  <Component {...pageProps} />
+                </SessionProvider>
               </Viewport>
             </ModalsProvider>
           </NotificationsProvider>

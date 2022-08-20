@@ -26,10 +26,11 @@ import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
 import { PhaseStack } from '../PhaseStack';
 
 interface Phase2Props {
+  render: boolean;
   errorMessages: string[];
   errorMessageHandler: UseListStateHandlers<string>;
 }
-export default function Phase4({ errorMessages, errorMessageHandler }: Phase2Props) {
+export default function Phase4({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [desc, setDesc] = useState('');
@@ -42,6 +43,7 @@ export default function Phase4({ errorMessages, errorMessageHandler }: Phase2Pro
   });
   return (
     <BigContainer
+      style={{ height: render ? 'fit-content' : 0 }}
       className={classes.inner}
       //style={{ position: current !== 0 ? 'absolute' : 'relative' }}
     >

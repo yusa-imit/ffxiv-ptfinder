@@ -3,48 +3,59 @@ import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
 /**
  * @interface ArticleData 기사 데이터
- * @param userId DB에 등록된 유저 id
+ * @param articleType article의 타입 -  0 : 구인, 1: 구직
+ * @param status article의 상태 - 0 : 모집 중, 1: 모집완료, 2: 미노출
+ * @param userId article 작성한 유저 id (캐릭터 or 계정?)
  * @param title 제목
  * @param description 상세 (inner html document)
  * @param isTemporary 대타/임시 멤버 모집일 경우 true
  * @param schedule 스케쥴 오브젝트
- * @param game 게임 버전/패치 데이터
- * {
- *  version: number;
- *  patch: number;
- * }
  * @param type 파판 던전 타입
- * @param many 모집 인원
  * @param jobs 모집중인 직업
- * @param minimumWeek 최소 공대 유지 기간
- * @param firstWeekClear 첫 주 공략 목적
- * @param worldFirstRace 세계 1st 레이스 목적
- * @param voiceChat 0 : 보이스챗 필수, 1: 보이스 챗 사용, 듣톡 가능 2: 보이스챗 사용 안함
- * @param region 파판 데이터센터
- * @param language 쓰여진 언어(클라이언트)
- * @param specifyUserLanguage @important (optioanl) 모집할 유저의 언어를 제한함. 유저는 이 언어를 필수로 사용 가능해야 함을 나타냄.
- * @param answerType 0 : 직접 연락 1: 시스템으로부터 연락을 받음 2: 코멘트 3: 사이트 채팅 기능 이용
- * @param answerAddress (optional) answerType이 1(시스템으로 연락을 받음) 일 경우 연락받을 mail address
+ * @param additional - 추가 색인 목적 변수
+ * @param additioanl.minimumWeek 최소 공대 유지 기간
+ * @param additional.firstWeekClear 첫 주 공략 목적
+ * @param additional.worldFirstRace 세계 1st 레이스 목적
+ * @param additional.boxNumber 상자 갯수
+ * @param additional.farm 파밍인지 아닌지
+ * @param voiceChat // 0: 안함, 1: 듣톡 가능, 2: 필수
+ * @param region 파판 데이터센터 'JP', 'NA', 'EU', 'OA', 'CN', 'KR'
+ * @param language[] 쓰여진 언어(클라이언트)  'JP', 'EN', 'KR', 'CN', 'FR', 'DE'
+ * @param specifyUserLanguage @important (optional) 모집할 유저의 언어를 제한함. 유저는 이 언어를 필수로 사용 가능해야 함을 나타냄.
+ * @param answerType 0 : 직접 연락, 1: 코멘트, (?2: 시스템으로 연락을 받음?)
+ * @param answerAddress (optional) answerType이 2(시스템으로 연락을 받음) 일 경우 연락받을 mail address
  */
+
 export interface ArticleData {
+  articleType: number;
+  status: number;
   userId: string;
   title: string;
   description: string;
   isTemporary: boolean;
   schedule?: Schedule;
-  game: Game;
+  content: number;
   type: DungeonType;
-  many: number;
-  jobs: Job[][];
+  jobs: Job[][][]; // [[],[]]
+  // [
+  //   [ [], [], [] ],
+  //   [ [], [], [], [], [] ],
+  //   [ [], [], [] ]
+  // ]
   minimumWeek: number;
-  firstWeekClear: boolean;
-  worldFirstRace: boolean;
-  farm: boolean;
+  additional: {
+    heading: boolean;
+    firstTime: boolean;
+    firstWeekClear: boolean;
+    worldFirstRace: boolean;
+    farm: boolean;
+  };
+  boxNumber: 0 | 1 | 2;
   voiceChat: 0 | 1 | 2;
   region: Region;
   language: Language;
-  specifyUserLanguage?: Language;
-  answerType: 0 | 1 | 2 | 3;
+  specifyUserLanguage?: Language[];
+  answerType: 0 | 1 | 2;
   answerAddress?: string;
 }
 

@@ -1,4 +1,4 @@
-type Verifiable = 'credential' | 'email' | 'google' | 'twitter' | 'facebook';
+type Verifiable = 'credential' | 'email' | 'google' | 'twitter' | 'line' | 'naver' | 'kakao';
 
 export interface User {
   name: string;

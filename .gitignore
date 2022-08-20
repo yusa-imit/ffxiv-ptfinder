@@ -39,3 +39,6 @@ storybook-static
 
 # data transformation
 /DEV_DATA_PROCESSING
+
+# account security
+pages/api/auth/*

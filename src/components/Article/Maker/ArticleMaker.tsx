@@ -44,16 +44,32 @@ export function ArticleMaker() {
         </PhaseViewPort>
 */}
         <Carousel.Slide style={{ width: '100vw' }}>
-          <Phase1 errorMessages={errorMessages} errorMessageHandler={errorMessageHander} />
+          <Phase1
+            render={step === 0}
+            errorMessages={errorMessages}
+            errorMessageHandler={errorMessageHander}
+          />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>
-          <Phase2 errorMessages={errorMessages} errorMessageHandler={errorMessageHander} />
+          <Phase2
+            render={step === 1}
+            errorMessages={errorMessages}
+            errorMessageHandler={errorMessageHander}
+          />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>
-          <Phase1 errorMessages={errorMessages} errorMessageHandler={errorMessageHander} />
+          <Phase1
+            render={step === 0}
+            errorMessages={errorMessages}
+            errorMessageHandler={errorMessageHander}
+          />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>
-          <Phase4 errorMessages={errorMessages} errorMessageHandler={errorMessageHander} />
+          <Phase4
+            render={step === 3}
+            errorMessages={errorMessages}
+            errorMessageHandler={errorMessageHander}
+          />
         </Carousel.Slide>
       </Carousel>
     </ArticleMakerSteppper>

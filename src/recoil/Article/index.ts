@@ -4,6 +4,8 @@ import { ArticleData } from '../../type/data/ArticleData';
 export const Article = atom<ArticleData>({
   key: 'article',
   default: {
+    articleType: 0,
+    status: 0,
     userId: '',
     title: '',
     description: '',

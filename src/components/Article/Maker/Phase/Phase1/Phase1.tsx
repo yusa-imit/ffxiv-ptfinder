@@ -38,9 +38,10 @@ const Major_Patch = [
 
 interface Phase1Props {
   errorMessages: string[];
+  render: boolean;
   errorMessageHandler: UseListStateHandlers<string>;
 }
-export default function Phase1({ errorMessages, errorMessageHandler }: Phase1Props) {
+export default function Phase1({ render, errorMessages, errorMessageHandler }: Phase1Props) {
   const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
@@ -114,6 +115,7 @@ export default function Phase1({ errorMessages, errorMessageHandler }: Phase1Pro
   }, [titleCheck]);
   return (
     <BigContainer
+      style={{ height: render ? 'fit-content' : 0 }}
       className={classes.inner}
       //style={{ position: current !== 0 ? 'absolute' : 'relative' }}
     >
