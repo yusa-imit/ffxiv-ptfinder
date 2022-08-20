@@ -5,7 +5,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 function login(props: GetStaticProps) {
-  console.log(props);
   const { data: session } = useSession();
   if (session) {
     return (
