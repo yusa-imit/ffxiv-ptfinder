@@ -4,13 +4,26 @@ import { GetServerSideProps, GetStaticProps } from 'next';
 import { unstable_getServerSession } from '@auth/next-auth/src';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import superjson from 'superjson';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 function login(props: GetServerSideProps) {
-  const { data } = useSession();
-  const session = superjson.parse(data);
-  //console.log(session);
+  const { data: session } = useSession();
+  /*
+  const [session, setSession] = useState({});
+  useEffect(() => {
+    console.log(data);
+    try {
+      setSession(superjson.parse(data));
+    } catch {
+      /* catch {
+      console.log(data);
+      axios.get('/api/util/user').then((value) => {
+        data.user = value.data;
+        setSession(data);
+      });
+    }
+  }, [data]);
+  //console.log(session);*/
   if (session) {
     return (
       <Center
@@ -64,12 +77,12 @@ export const getServerSideProps = async (context: any) => {
   const { json, meta } = superjson.serialize(
     await unstable_getServerSession(context.req, context.res, authOptions)
   );*/
+  console.log('call get serverside props');
+
   return {
     props: {
       ...(await serverSideTranslations(context.locale as Locale)),
-      session: superjson.stringify(
-        await unstable_getServerSession(context.req, context.res, authOptions)
-      ),
+      session: await unstable_getServerSession(context.req, context.res, authOptions),
     },
   };
 };
