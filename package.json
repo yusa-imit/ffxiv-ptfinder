@@ -80,10 +80,12 @@
     "eslint-plugin-storybook": "^0.5.7",
     "eslint-plugin-testing-library": "^5.2.0",
     "jest": "^27.5.1",
+    "next-superjson-plugin": "^0.3.0",
     "prettier": "^2.6.2",
     "storybook-addon-turbo-build": "^1.1.0",
     "storybook-dark-mode": "^1.0.9",
     "stylis-plugin-rtl": "^2.1.1",
+    "superjson": "^1.9.1",
     "ts-jest": "^27.1.4",
     "typescript": "^4.7.4"
   }

@@ -167,6 +167,7 @@ function signin({ csrfToken, providers, _nextI18Next }: SignInPageServerSideProp
                   leftIcon: classes[`${provider.id}_leftIcon`],
                 }}
                 onClick={() => {
+                  // @ts-ignore
                   signIn(provider.id, { redirect: true, callbackUrl: route.query.callbackUrl });
                 }}
                 leftIcon={<Image src={`/auth/icons/${provider.id}.png`} />}

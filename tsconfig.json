@@ -25,6 +25,7 @@
       "@recoil/*": ["src/recoil/*"],
       "@type/*": ["src/type/*"],
       "@extType/*": ["src/auth/extendedType/*"],
+      "@auth/*": ["src/auth/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

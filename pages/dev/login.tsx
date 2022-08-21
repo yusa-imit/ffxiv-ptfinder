@@ -1,11 +1,16 @@
 import { Button, Center } from '@mantine/core';
 import { Locale } from '@type/Locale';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import { unstable_getServerSession } from '@auth/next-auth/src';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import superjson from 'superjson';
+import { authOptions } from '../api/auth/[...nextauth]';
 
-function login(props: GetStaticProps) {
-  const { data: session } = useSession();
+function login(props: GetServerSideProps) {
+  const { data } = useSession();
+  const session = superjson.parse(data);
+  //console.log(session);
   if (session) {
     return (
       <Center
@@ -17,11 +22,11 @@ function login(props: GetStaticProps) {
           padding: '20%',
         }}
       >
-        <p>
-          {Object.keys(session).map((v) => (
-            <p>{`${v} : ${JSON.stringify(session[v])}`}</p>
+        <div>
+          {Object.keys(session).map((v, i) => (
+            <p key={i}>{`${v} : ${JSON.stringify(session[v])}`}</p>
           ))}
-        </p>
+        </div>
         <Button
           onClick={() => {
             signOut();
@@ -54,10 +59,19 @@ function login(props: GetStaticProps) {
   );
 }
 
-export const getStaticProps = async ({ locale }: { locale: Locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale)),
-  },
-});
+export const getServerSideProps = async (context: any) => {
+  /*
+  const { json, meta } = superjson.serialize(
+    await unstable_getServerSession(context.req, context.res, authOptions)
+  );*/
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale as Locale)),
+      session: superjson.stringify(
+        await unstable_getServerSession(context.req, context.res, authOptions)
+      ),
+    },
+  };
+};
 
 export default login;
