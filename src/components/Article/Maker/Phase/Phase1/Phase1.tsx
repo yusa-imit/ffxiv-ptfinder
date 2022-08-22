@@ -1,5 +1,5 @@
 import BigContainer from '@components/base/BigContainer';
-import { Checkbox, Group, Select, Text, TextInput } from '@mantine/core';
+import { Checkbox, Group, Select, Text, TextInput, Title } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -46,6 +46,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
+  const [contentCheck, setContentCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
   const phase1Error = {
     titleErrorListHandler: () => {
@@ -125,6 +126,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
         <TextInput
           value={article.title}
           className={classes.title}
+          styles={(theme) => ({
+            label: {
+              fontWeight: 'bold',
+            },
+          })}
           placeholder={t('phase1_title_placeholder')}
           label={t('phase1_title_label')}
           required
@@ -141,9 +147,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
                 textAlign: 'center',
               }}
             >
-              <Text size="sm" weight={500}>
-                {t('phase1_isTemporary')}
-              </Text>
+              <Title order={6}>{t('phase1_isTemporary')}</Title>
               <HelpIcon />
             </Group>
 
@@ -207,7 +211,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase1_content')}>
           <Select
             searchable
-            creatable
+            //creatable
             getCreateLabel={(query) => {
               return `${t('phase1_content_create')} ${query}`;
             }}
@@ -219,9 +223,6 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               const newArticle = { ...article };
               newArticle.type = value === null ? 'etc' : (value as DungeonType);
               changeArticle(newArticle);
-            }}
-            onCreate={(query) => {
-              // TODO
             }}
             transition="pop"
             transitionDuration={100}

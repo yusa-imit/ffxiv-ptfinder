@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   TextInput,
+  Title,
 } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 
@@ -118,63 +119,66 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
       //style={{ position: current !== 0 ? 'absolute' : 'relative' }}
     >
       <PhaseStack title={t('phase2_member_title')}>
-        <HorizontalGroupWithText text={t('phase2_add_party')}>
-          <Text size="sm" weight={500}>
-            {`${t('phase2_current_maximum')} : ${article.type === 'alliance' ? 3 : 1}`}
-          </Text>
-          {article.jobs.length !== (article.type === 'alliance' ? 3 : 1) && (
-            <AddDeleteIcon
-              type="add"
-              label={t('phase2_add_party_add_tooltip')}
-              onClick={() => {
-                addDeleteButtonHandlerForParty('add');
-              }}
-            />
-          )}
-          {article.jobs.length !== 1 && (
-            <AddDeleteIcon
-              type="delete"
-              label={t('phase2_add_party_delete_tooltip')}
-              onClick={() => {
-                addDeleteButtonHandlerForParty('delete');
-              }}
-            />
-          )}
-        </HorizontalGroupWithText>
-        <PhaseStack>
-          {article.jobs.map((party, partyNumber) => (
-            <Stack key={partyNumber}>
-              <Text size="sm" weight={500}>
-                {`${t('phase2_job_selection')} : ${t('phase2_job_selection_addition')} ${
-                  partyNumber + 1
-                }`}
-              </Text>
-              <Group>
-                {party.map((jobs, i) => (
-                  <JobSelection jobs={jobs} key={i} index={i} partyNumber={partyNumber} />
-                ))}
-                {party.length < 8 && (
-                  <AddDeleteIcon
-                    type="add"
-                    label={t('phase2_job_add_tooltip')}
-                    onClick={() => {
-                      addDeleteButtonHandlerForJobs('add', partyNumber);
-                    }}
-                  />
-                )}
-                {party.length !== 1 && (
-                  <AddDeleteIcon
-                    type="delete"
-                    label={t('phase2_job_delete_tooltip')}
-                    onClick={() => {
-                      addDeleteButtonHandlerForJobs('delete', partyNumber);
-                    }}
-                  />
-                )}
-              </Group>
-            </Stack>
-          ))}
-        </PhaseStack>
+        {article.type === 'alliance' && (
+          <HorizontalGroupWithText text={t('phase2_add_party')}>
+            <Text size="sm" weight={500}>
+              {`${t('phase2_current_maximum')} : 3`}
+            </Text>
+            {article.jobs.length !== 3 && (
+              <AddDeleteIcon
+                type="add"
+                label={t('phase2_add_party_add_tooltip')}
+                onClick={() => {
+                  addDeleteButtonHandlerForParty('add');
+                }}
+              />
+            )}
+            {article.jobs.length !== 1 && (
+              <AddDeleteIcon
+                type="delete"
+                label={t('phase2_add_party_delete_tooltip')}
+                onClick={() => {
+                  addDeleteButtonHandlerForParty('delete');
+                }}
+              />
+            )}
+          </HorizontalGroupWithText>
+        )}
+
+        {article.jobs.map((party, partyNumber) => (
+          <Stack key={partyNumber}>
+            <Title order={6}>
+              {`${t('phase2_job_selection')}${
+                article.type !== 'alliance'
+                  ? ''
+                  : `: ${t('phase2_job_selection_addition')} ${partyNumber + 1}`
+              }`}
+            </Title>
+            <Group>
+              {party.map((jobs, i) => (
+                <JobSelection jobs={jobs} key={i} index={i} partyNumber={partyNumber} />
+              ))}
+              {party.length < 8 && (
+                <AddDeleteIcon
+                  type="add"
+                  label={t('phase2_job_add_tooltip')}
+                  onClick={() => {
+                    addDeleteButtonHandlerForJobs('add', partyNumber);
+                  }}
+                />
+              )}
+              {party.length !== 1 && (
+                <AddDeleteIcon
+                  type="delete"
+                  label={t('phase2_job_delete_tooltip')}
+                  onClick={() => {
+                    addDeleteButtonHandlerForJobs('delete', partyNumber);
+                  }}
+                />
+              )}
+            </Group>
+          </Stack>
+        ))}
       </PhaseStack>
       <PhaseStack title={t('phase2_static_title')}>
         <HorizontalGroupWithText text={t('phase2_minimum_week_label')}>
@@ -208,7 +212,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         title={t('phase2_additional_title')}
         titleHelp={t('phase2_additional_title_help')}
       >
-        <HorizontalGroupWithText text={t('phase2_isFisrWeekClear_title')}>
+        <HorizontalGroupWithText text={t('phase2_isFirstWeekClear_title')}>
           <Checkbox
             label={t('phase2_isFirstWeekClear_desc')}
             styles={{ label: { fontWeight: 500 } }}
@@ -218,7 +222,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             }}
           />
         </HorizontalGroupWithText>
-        <HorizontalGroupWithText text={t('phase2_worldFisrtRace_title')}>
+        <HorizontalGroupWithText text={t('phase2_worldFirstRace_title')}>
           <Checkbox
             label={t('phase2_worldFirstRace_desc')}
             styles={{ label: { fontWeight: 500 } }}
@@ -228,7 +232,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             }}
           />
         </HorizontalGroupWithText>
-        <HorizontalGroupWithText text={t('phase2_isFisrtTime_title')}>
+        <HorizontalGroupWithText text={t('phase2_isFirstTime_title')}>
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isFirstTime_desc')}

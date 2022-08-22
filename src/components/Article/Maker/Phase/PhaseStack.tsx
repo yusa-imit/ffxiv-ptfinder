@@ -1,4 +1,14 @@
-import { createStyles, Group, GroupProps, Text, ThemeIcon, Title, Tooltip } from '@mantine/core';
+import {
+  Box,
+  createStyles,
+  Group,
+  GroupProps,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+  Tooltip,
+} from '@mantine/core';
 import { Help } from 'tabler-icons-react';
 
 interface StackLeftGroupProps extends GroupProps {
@@ -23,9 +33,9 @@ export function PhaseStack({ title, titleHelp, ...etc }: StackLeftGroupProps) {
   return (
     <Group className={classes.groupAsStack}>
       {title && !titleHelp && (
-        <Text size="md" weight={700}>
-          {title}
-        </Text>
+        <>
+          <Title order={3}>{title}</Title>
+        </>
       )}
       {titleHelp && (
         <Tooltip
@@ -36,7 +46,7 @@ export function PhaseStack({ title, titleHelp, ...etc }: StackLeftGroupProps) {
           events={{ hover: true, focus: true, touch: true }}
         >
           <Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Title order={5}>{title}</Title>
+            <Title order={3}>{title}</Title>
 
             <ThemeIcon radius={9999} size="sm">
               <Help />
@@ -44,7 +54,14 @@ export function PhaseStack({ title, titleHelp, ...etc }: StackLeftGroupProps) {
           </Group>
         </Tooltip>
       )}
-      {etc.children}
+      <Stack
+        sx={(theme) => ({
+          paddingLeft: theme.spacing.md,
+          width: '100%',
+        })}
+      >
+        {etc.children}
+      </Stack>
     </Group>
   );
 }
