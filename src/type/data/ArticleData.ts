@@ -10,6 +10,7 @@ import { Timezone } from './Timezone';
  * @param description 상세 (inner html document)
  * @param isTemporary 대타/임시 멤버 모집일 경우 true
  * @param schedule 스케쥴 오브젝트
+ * @param content 콘텐츠
  * @param type 파판 던전 타입
  * @param jobs 모집중인 직업
  * @param additional - 추가 색인 목적 변수
@@ -43,15 +44,15 @@ export interface ArticleData {
   //   [ [], [], [] ]
   // ]
   minimumWeek: number;
-  additional: {
-    heading: boolean;
-    firstTime: boolean;
-    firstWeekClear: boolean;
-    worldFirstRace: boolean;
-    farm: boolean;
-  };
-  boxNumber: 0 | 1 | 2;
   voiceChat: 0 | 1 | 2;
+  additional: {
+    heading?: boolean;
+    firstTime?: boolean;
+    firstWeekClear?: boolean;
+    worldFirstRace?: boolean;
+    farm?: boolean;
+    boxNumber?: 0 | 1 | 2;
+  };
   region: Region;
   language: Language;
   specifyUserLanguage?: Language[];

@@ -9,8 +9,9 @@ import { Check } from 'tabler-icons-react';
 interface JobIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   job: Job;
   isChecked: boolean;
+  isPlusIcon?: boolean;
 }
-export default function JobIcon({ job, isChecked, ...etc }: JobIconProps) {
+export default function JobIcon({ job, isChecked, isPlusIcon, ...etc }: JobIconProps) {
   return (
     <UnstyledButton
       sx={(_theme) => ({
@@ -23,24 +24,28 @@ export default function JobIcon({ job, isChecked, ...etc }: JobIconProps) {
       })}
       {...etc}
     >
-      {isChecked && (
-        <Box
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 255, 0, 0.25)',
-            color: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontWeight: 700,
-            zIndex: 1,
-            borderRadius: 8,
-          }}
-        >
-          <Check strokeWidth={3} />
-        </Box>
+      {isPlusIcon ? (
+        <div></div>
+      ) : (
+        isChecked && (
+          <Box
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 255, 0, 0.25)',
+              color: 'white',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontWeight: 700,
+              zIndex: 1,
+              borderRadius: 8,
+            }}
+          >
+            <Check strokeWidth={3} />
+          </Box>
+        )
       )}
       <Image
         src={`/job_icons/${JobSort[job].role}/${JobSort[job].d_role}/${job}.png`}

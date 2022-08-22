@@ -1,7 +1,7 @@
-import { Session } from 'next-auth';
+import './ExtendedUser';
 
 declare module 'next-auth' {
   export interface Session {
-    id: string;
+    user: User;
   }
 }

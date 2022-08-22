@@ -19,26 +19,28 @@ import { Article } from '../../../recoil/Article/index';
 interface JobSelectionProps extends MenuProps {
   jobs: Job[];
   index: number;
+  partyNumber: number;
 }
-export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps) {
+export default function JobSelection({ jobs, index, partyNumber, ...etc }: JobSelectionProps) {
   const { t } = useTranslation('job_selection');
   const [article, setArticle] = useRecoilState(Article);
   const [roles, setRoles] = useState({ t: false, d: false, h: false });
   const onJobIconClick = (job: Job) => {
     const newArticle = { ...article };
-    const newArray = [...article.jobs];
-    if (article.jobs[index].includes(job)) {
+    const newPartys = [...article.jobs];
+    const newJobs = [...newPartys[partyNumber]];
+    if (article.jobs[partyNumber][index].includes(job)) {
       const jobArray: Job[] = [];
-      newArray[index].forEach((v) => {
+      newJobs[index].forEach((v) => {
         if (v === job) return;
         jobArray.push(v);
       });
-      newArray[index] = jobArray;
-      newArticle.jobs = newArray;
+      newJobs[index] = jobArray;
     } else {
-      newArray[index] = [...newArray[index], job];
-      newArticle.jobs = newArray;
+      newJobs[index] = [...newJobs[index], job];
     }
+    newPartys[partyNumber] = newJobs;
+    newArticle.jobs = newPartys;
     setArticle(newArticle);
   };
   useEffect(() => {
@@ -75,7 +77,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}
@@ -89,7 +91,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}
@@ -103,7 +105,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}
@@ -117,7 +119,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}
@@ -131,7 +133,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}
@@ -145,7 +147,7 @@ export default function JobSelection({ jobs, index, ...etc }: JobSelectionProps)
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[index].includes(v)}
+              isChecked={article.jobs[partyNumber][index].includes(v)}
               onClick={() => {
                 onJobIconClick(v);
               }}

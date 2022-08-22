@@ -5,8 +5,9 @@ import { unstable_getServerSession } from '@auth/next-auth/src';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { authOptions } from '../api/auth/[...nextauth]';
+import '@extType/ExtendedServerSession';
 
-function login(props: GetServerSideProps) {
+function login() {
   const { data: session } = useSession();
   /*
   const [session, setSession] = useState({});
@@ -82,6 +83,7 @@ export const getServerSideProps = async (context: any) => {
   return {
     props: {
       ...(await serverSideTranslations(context.locale as Locale)),
+      // @ts-expect-error
       session: await unstable_getServerSession(context.req, context.res, authOptions),
     },
   };

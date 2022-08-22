@@ -93,6 +93,8 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
     })),
   };
 
+  const [version, setVersion] = useState(DEV_Game_Version[0].value);
+  const [patch, setPatch] = useState(Major_Patch[0].value);
   useEffect(() => {
     const newArticle = { ...article };
     if (route.locale === 'en' || !route.locale) {
@@ -163,14 +165,9 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
           <HorizontalGroupWithText text={t('phase1_game_version')}>
             <Select
               data={DEV_Game_Version}
-              value={article.game.version}
+              value={version}
               onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.game = {
-                  version: value === null ? '' : value,
-                  patch: newArticle.game.patch,
-                };
-                changeArticle(newArticle);
+                setPatch(value === null ? DEV_Game_Version[0].value : value);
               }}
               transition="pop"
               transitionDuration={100}
@@ -181,14 +178,9 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
           <HorizontalGroupWithText text={t('phase1_game_major_patch')}>
             <Select
               data={Major_Patch}
-              value={article.game.patch}
+              value={patch}
               onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.game = {
-                  patch: value === null ? '' : value,
-                  version: newArticle.game.version,
-                };
-                changeArticle(newArticle);
+                setPatch(value === null ? Major_Patch[0].value : value);
               }}
               transition="pop"
               transitionDuration={100}
@@ -205,6 +197,31 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               const newArticle = { ...article };
               newArticle.type = value === null ? 'etc' : (value as DungeonType);
               changeArticle(newArticle);
+            }}
+            transition="pop"
+            transitionDuration={100}
+            transitionTimingFunction="ease"
+            withinPortal
+          />
+        </HorizontalGroupWithText>
+        <HorizontalGroupWithText text={t('phase1_content')}>
+          <Select
+            searchable
+            creatable
+            getCreateLabel={(query) => {
+              return `${t('phase1_content_create')} ${query}`;
+            }}
+            placeholder={t('phase1_searchable_content')}
+            data={SelectData.DungeonTypeData}
+            // TODO waiting for api
+            value=""
+            onChange={(value) => {
+              const newArticle = { ...article };
+              newArticle.type = value === null ? 'etc' : (value as DungeonType);
+              changeArticle(newArticle);
+            }}
+            onCreate={(query) => {
+              // TODO
             }}
             transition="pop"
             transitionDuration={100}

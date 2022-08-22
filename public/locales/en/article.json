@@ -18,7 +18,7 @@
   "phase1_isTemporary": "Temporary Member",
   "phase1_isTemporary_label": "Recruit member as temporary member.",
   "phase1_isTemporary_tooltip_label": "If you're recruit members as temporary member, not static, then check this box. You need to set definite schedule if you check this section.",
-  "phase1_game_label": "Game Basics",
+  "phase1_game_label": "Game Content",
   "phase1_game_version": "Version",
   "phase1_game_major_patch": "Patch",
   "phase1_dungeon_type": "Dungeon Type",
