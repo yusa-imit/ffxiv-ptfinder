@@ -29,19 +29,19 @@ import { PhaseStack } from '../PhaseStack';
 import TimeSelect from './TimeSelect';
 
 const Time_Select_Defaults = [
-  [['0', '0']],
+  [['-1', '-1']],
   [
-    ['0', '0'],
-    ['0', '0'],
+    ['-1', '-1'],
+    ['-1', '-1'],
   ],
   [
-    ['0', '0'],
-    ['0', '0'],
-    ['0', '0'],
-    ['0', '0'],
-    ['0', '0'],
-    ['0', '0'],
-    ['0', '0'],
+    ['-1', '-1'],
+    ['-1', '-1'],
+    ['-1', '-1'],
+    ['-1', '-1'],
+    ['-1', '-1'],
+    ['-1', '-1'],
+    ['-1', '-1'],
   ],
 ];
 
@@ -61,7 +61,6 @@ interface Phase3Props {
   errorMessageHandler: UseListStateHandlers<string>;
 }
 export default function Phase3({ render, errorMessages, errorMessageHandler }: Phase3Props) {
-  const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [article, changeArticle] = useRecoilState(Article);
@@ -112,9 +111,6 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
     );
   }, [article]);
   useEffect(() => {
-    console.log(article.schedule);
-  }, [article]);
-  useEffect(() => {
     if (article.schedule.timezone !== undefined) return;
     const setArticle = (value: Timezone) => {
       const newArticle = { ...article };
@@ -157,6 +153,11 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
     newDateTime[1] = tempStartDay + tempStartTime;
     handleSchduleChange(['dateTime'], [newDateTime]);
   }, [tempEndDay, tempEndTime]);
+  useEffect(() => {
+    if (!article.isTemporary) {
+      handleSchduleChange(['timeType', 'time'], [0, [...Time_Select_Defaults[0]]]);
+    }
+  }, []);
   return (
     <BigContainer
       style={{ height: render ? 'fit-content' : 0 }}
@@ -260,6 +261,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
                 label={t('phase3_day_in_desc_desc')}
                 styles={{ label: { fontWeight: 500 } }}
                 checked={dayDesc}
+                disabled={article.schedule.writtenInDescription}
                 onChange={(e) => {
                   if (e.currentTarget.checked) {
                     // @ts-expect-error
@@ -274,18 +276,17 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               />
             </HorizontalGroupWithText>
             <Radio
-              disabled={dayDesc}
+              disabled={dayDesc || article.schedule.writtenInDescription}
               value="setByNumber"
               checked={dayRadio}
               label={<Title order={6}>{t('phase3_day_select_by_number')}</Title>}
               onChange={() => {
-                console.log('hello');
                 handleSchduleChange(['dayPerWeek', 'day'], [1, undefined]);
                 setDayRadio(true);
               }}
             />
             <Radio
-              disabled={dayDesc}
+              disabled={dayDesc || article.schedule.writtenInDescription}
               value="setByNumber"
               checked={!dayRadio}
               label={<Title order={6}>{t('phase3_day_select_by_select')}</Title>}
@@ -300,7 +301,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
             ) : dayRadio ? (
               <HorizontalGroupWithText text={t('phase3_activity_day_by_number')}>
                 <NumberInput
-                  disabled={dayDesc}
+                  disabled={dayDesc || article.schedule.writtenInDescription}
                   defaultValue={1}
                   min={1}
                   max={7}
@@ -314,7 +315,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
                 <Group style={{ gap: 1 }}>
                   {article.schedule.day?.map((d, i) => (
                     <UnstyledButton
-                      disabled={dayDesc}
+                      disabled={dayDesc || article.schedule.writtenInDescription}
                       key={i}
                       sx={(theme) => ({
                         display: 'flex',
@@ -373,6 +374,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
           <PhaseStack title={t('phase3_time_select')}>
             <HorizontalGroupWithText text={t('phase3_time_in_desc_title')}>
               <Checkbox
+                disabled={article.schedule.writtenInDescription}
                 label={t('phase3_time_in_desc_desc')}
                 styles={{ label: { fontWeight: 500 } }}
                 checked={timeDesc}
@@ -387,6 +389,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               />
             </HorizontalGroupWithText>
             <Radio
+              disabled={timeDesc || article.schedule.writtenInDescription}
               value="0"
               checked={article.schedule.timeType === 0}
               label={<Title order={6}>{t('phase3_time_select_all')}</Title>}
@@ -395,6 +398,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               }}
             ></Radio>
             <Radio
+              disabled={timeDesc || article.schedule.writtenInDescription}
               value="1"
               checked={article.schedule.timeType === 1}
               label={<Title order={6}>{t('phase3_time_select_holiday')}</Title>}
@@ -403,6 +407,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               }}
             ></Radio>
             <Radio
+              disabled={timeDesc || article.schedule.writtenInDescription}
               value="2"
               checked={article.schedule.timeType === 2}
               label={<Title order={6}>{t('phase3_time_select_full')}</Title>}
@@ -411,7 +416,12 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               }}
             ></Radio>
             <Divider />
-            <TimeSelect article={article} translation="article" handler={handleSchduleChange} />
+            <TimeSelect
+              article={article}
+              translation="article"
+              disable={timeDesc || article.schedule.writtenInDescription}
+              handler={handleSchduleChange}
+            />
           </PhaseStack>
         </>
       )}
