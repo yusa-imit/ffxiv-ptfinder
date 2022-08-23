@@ -34,7 +34,7 @@ export interface ArticleData {
   title: string;
   description: string;
   isTemporary: boolean;
-  schedule?: Schedule;
+  schedule: Schedule;
   content: number;
   type: DungeonType;
   jobs: Job[][][]; // [[],[]]
@@ -76,16 +76,13 @@ export interface ArticleData {
  * 2일 경우 : 월화수목금토일 각각 활동시간을 직접 작성. 자료형 : FixedLengthArray<FixedLengthArray<0 | 1, 24>, 7>
  * @param timezone 작성자의 timezone ex) Korean Standard Time, Japan Standard Time
  */
-interface Schedule {
+export interface Schedule {
   writtenInDescription: boolean;
-  dateTime?: number;
+  dateTime?: FixedLengthArray<number, 2>;
   adjustable?: boolean;
   day?: FixedLengthArray<0 | 1, 7>;
   dayPerWeek?: number;
   timeType?: 0 | 1 | 2;
-  time?:
-    | FixedLengthArray<number, 2>
-    | FixedLengthArray<FixedLengthArray<number, 2>, 2>
-    | FixedLengthArray<FixedLengthArray<number, 2>, 7>;
+  time?: string[][];
   timezone?: Timezone;
 }

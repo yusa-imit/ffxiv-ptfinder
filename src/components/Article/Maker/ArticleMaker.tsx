@@ -7,6 +7,7 @@ import PhaseViewPort from './Phase/PhaseViewPort/PhaseViewPort';
 import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
 import Phase2 from './Phase/Phase2/Phase2';
 import Phase4 from './Phase/Phase4/Phase4';
+import Phase3 from './Phase/Phase3/Phase3';
 
 export function ArticleMaker() {
   const [errorMessages, errorMessageHander] = useListState<string>([]);
@@ -58,8 +59,8 @@ export function ArticleMaker() {
           />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>
-          <Phase1
-            render={step === 0}
+          <Phase3
+            render={step === 2}
             errorMessages={errorMessages}
             errorMessageHandler={errorMessageHander}
           />

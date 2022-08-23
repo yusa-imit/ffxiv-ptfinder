@@ -1,4 +1,4 @@
-const TimezonesValue = [
+export const TimezonesValue = [
   'Australian Central Daylight Time',
   'Australian Central Standard Time',
   'Atlantic Daylight Time',

@@ -16,7 +16,7 @@ export const Article = atom<ArticleData>({
       adjustable: false,
       day: undefined,
       dayPerWeek: undefined,
-      timeType: 0,
+      timeType: undefined,
       time: undefined,
       timezone: undefined,
     },

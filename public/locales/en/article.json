@@ -76,5 +76,12 @@
   "phase2_language_restriction_tooltip": "This section will restrict applicant's language. This section's value means applicant must speak at least one of the selected language. You can use this for narrowing applicants as specific language, or widen applicants for multilingual.",
   "phase2_language_restriction_set": "Language Restriction.",
   "phase2_language_restriction_set_desc": "Applicants must be able to speak one of languages selected below.",
-  "phase2_language_restriction_select": "Select Language"
+  "phase2_language_restriction_select": "Select Language",
+  "phase3_day_0": "MON",
+  "phase3_day_1": "TUE",
+  "phase3_day_2": "WED",
+  "phase3_day_3": "THU",
+  "phase3_day_4": "FRI",
+  "phase3_day_5": "SAT",
+  "phase3_day_6": "SUN"
 }
