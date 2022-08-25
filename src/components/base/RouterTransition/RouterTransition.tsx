@@ -9,7 +9,6 @@ import {
 export function RouterTransition() {
   const router = useRouter();
   useEffect(() => {
-    console.log('router event!!!!!!!!!!!!!!!!!!!');
     const handleStart = (url: string) => url !== router.asPath && startNavigationProgress();
     const handleComplete = () => resetNavigationProgress();
 
@@ -18,12 +17,11 @@ export function RouterTransition() {
     router.events.on('routeChangeError', handleComplete);
 
     return () => {
-      console.log('router off!!!!!!!!!!!!!!!!!!!');
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
       router.events.off('routeChangeError', handleComplete);
     };
   }, [router.asPath]);
 
-  return <NavigationProgress zIndex={9999} size={50} />;
+  return <NavigationProgress zIndex={9999} />;
 }

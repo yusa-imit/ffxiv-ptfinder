@@ -4,9 +4,9 @@ import { GetServerSideProps, GetStaticProps } from 'next';
 import { unstable_getServerSession } from '@auth/next-auth/src';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Link from 'next/link';
 import { authOptions } from '../api/auth/[...nextauth]';
 import '@extType/ExtendedServerSession';
-import Link from 'next/link';
 
 function login() {
   const { data: session } = useSession();
