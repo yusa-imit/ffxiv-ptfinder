@@ -1,40 +1,24 @@
 import BigContainer from '@components/base/BigContainer';
-import { Checkbox, Group, Select, Text, TextInput, Title } from '@mantine/core';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 import HelpIcon from '@components/icons/HelpIcon';
+import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
+import WithAsterisk from '@components/WithAsterisk';
+import { Checkbox, Group, Select, TextInput, Title } from '@mantine/core';
 import { UseListStateHandlers } from '@mantine/hooks';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { ChangeEvent, startTransition, useEffect, useState } from 'react';
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { Article } from '../../../../../recoil/Article/index';
-import { PhaseStyles } from '../Phase.styles';
 import {
   DungeonType,
-  Region,
-  Region_Value,
   Language,
   Language_Value,
+  Region,
+  Region_Value,
 } from '../../../../../type/data/FFXIVInfo';
+import { PhaseStyles } from '../Phase.styles';
 import { PhaseStack } from '../PhaseStack';
-
-const DEV_Game_Version = [
-  { value: '6', label: '6' },
-  { value: '5', label: '5' },
-  { value: '4', label: '4' },
-  { value: '3', label: '3' },
-  { value: '2', label: '2' },
-];
-
-const Major_Patch = [
-  { label: '0', value: '0' },
-  { label: '1', value: '1' },
-  { label: '2', value: '2' },
-  { label: '3', value: '3' },
-  { label: '4', value: '4' },
-  { label: '5', value: '5' },
-];
 
 interface Phase1Props {
   errorMessages: string[];
@@ -42,12 +26,28 @@ interface Phase1Props {
   errorMessageHandler: UseListStateHandlers<string>;
 }
 export default function Phase1({ render, errorMessages, errorMessageHandler }: Phase1Props) {
+  const DEV_Game_Version = [
+    { value: '6', label: '6' },
+    { value: '5', label: '5' },
+    { value: '4', label: '4' },
+    { value: '3', label: '3' },
+    { value: '2', label: '2' },
+  ];
+
+  const Major_Patch = [
+    { label: '0', value: '0' },
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+    { label: '5', value: '5' },
+  ];
   const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
   const [contentCheck, setContentCheck] = useState(false);
-  const [article, changeArticle] = useRecoilState(Article);
+  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
   const phase1Error = {
     titleErrorListHandler: () => {
       if (titleCheck) {
@@ -58,11 +58,26 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
         errorMessageHandler.append(t('phase1_title_necessary'));
       }
     },
+    contentErrorListHandelr: () => {
+      if (contentCheck) {
+        errorMessageHandler.filter((v) => v !== t('phase1_content_necessary'));
+        return;
+      }
+      if (!errorMessages.includes(t('phase1_content_necessary'))) {
+        errorMessageHandler.append(t('phase1_content_necessary'));
+      }
+    },
     getTitleErrorLabelText: () => {
       if (titleCheck) {
         return false;
       }
       return t('phase1_title_necessary');
+    },
+    getContentErrorLabelText: () => {
+      if (contentCheck) {
+        return false;
+      }
+      return t('phase1_content_necessary');
     },
   };
   const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +90,15 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
       setTitleCheck(false);
     }
   };
+  const contentOnChange = (value: string | null) => {
+    if (value !== null || value !== '') {
+      setContentCheck(true);
+    } else {
+      setContentCheck(false);
+    }
+  };
+
+  // Select Component Data Constructor
   const SelectData: {
     DungeonTypeData: { label: string; value: DungeonType }[];
     RegionData: { label: string; value: Region }[];
@@ -94,8 +118,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
     })),
   };
 
+  // Phase Temporary states.
   const [version, setVersion] = useState(DEV_Game_Version[0].value);
   const [patch, setPatch] = useState(Major_Patch[0].value);
+
+  // On Component Renders
   useEffect(() => {
     const newArticle = { ...article };
     if (route.locale === 'en' || !route.locale) {
@@ -113,9 +140,15 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
     }
     changeArticle(newArticle);
   }, []);
+
+  // error handlers
   useEffect(() => {
     phase1Error.titleErrorListHandler();
   }, [titleCheck]);
+
+  useEffect(() => {
+    phase1Error.contentErrorListHandelr();
+  }, [contentCheck]);
   return (
     <BigContainer
       style={{ height: render ? 'fit-content' : 0 }}
@@ -153,7 +186,6 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
 
             <Checkbox
               label={t('phase1_isTemporary_label')}
-              styles={{ label: { fontWeight: 500 } }}
               checked={article.isTemporary}
               onChange={(e) => {
                 const newArticle = { ...article };
@@ -171,7 +203,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               data={DEV_Game_Version}
               value={version}
               onChange={(value) => {
-                setPatch(value === null ? DEV_Game_Version[0].value : value);
+                setVersion(value === null ? DEV_Game_Version[0].value : value);
               }}
               transition="pop"
               transitionDuration={100}
@@ -208,7 +240,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             withinPortal
           />
         </HorizontalGroupWithText>
-        <HorizontalGroupWithText text={t('phase1_content')}>
+        <HorizontalGroupWithText text={<WithAsterisk>{t('phase1_content')}</WithAsterisk>}>
           <Select
             searchable
             //creatable
@@ -217,12 +249,14 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             }}
             placeholder={t('phase1_searchable_content')}
             data={SelectData.DungeonTypeData}
+            error={phase1Error.getContentErrorLabelText()}
             // TODO waiting for api
             value=""
             onChange={(value) => {
               const newArticle = { ...article };
               newArticle.type = value === null ? 'etc' : (value as DungeonType);
               changeArticle(newArticle);
+              contentOnChange(value);
             }}
             transition="pop"
             transitionDuration={100}

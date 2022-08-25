@@ -6,6 +6,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { authOptions } from '../api/auth/[...nextauth]';
 import '@extType/ExtendedServerSession';
+import Link from 'next/link';
 
 function login() {
   const { data: session } = useSession();
@@ -48,6 +49,9 @@ function login() {
         >
           log out
         </Button>
+        <Link href="/article/maker">
+          <Button>button</Button>
+        </Link>
       </Center>
     );
   }
@@ -69,6 +73,9 @@ function login() {
       >
         log in
       </Button>
+      <Link href="/article/maker">
+        <Button>button</Button>
+      </Link>
     </Center>
   );
 }

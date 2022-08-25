@@ -7,23 +7,22 @@ import {
   Select,
   Stack,
   Text,
-  TextInput,
   Title,
 } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 
-import { UseListStateHandlers } from '@mantine/hooks';
 import JobSelection from '@components/Jobs/JobSelection/JobSelection';
+import { UseListStateHandlers } from '@mantine/hooks';
 
 import AddDeleteIcon from '@components/Jobs/Icon/AddDeleteIcon';
 import { Article } from '../../../../../recoil/Article/index';
-import { PhaseStyles } from '../Phase.styles';
 import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
+import { PhaseStyles } from '../Phase.styles';
 import { PhaseStack } from '../PhaseStack';
 
 interface Phase2Props {
@@ -34,7 +33,7 @@ interface Phase2Props {
 export default function Phase2({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [article, changeArticle] = useRecoilState(Article);
+  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
   const [language, setLanguage] = useState(false);
   const [many, setMany] = useState(1);
   const phase2Error = {};
@@ -215,7 +214,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_isFirstWeekClear_title')}>
           <Checkbox
             label={t('phase2_isFirstWeekClear_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.additional.firstWeekClear}
             onChange={(event) => {
               additionalBooleanHander(event, 'firstWeekClear');
@@ -225,7 +223,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_worldFirstRace_title')}>
           <Checkbox
             label={t('phase2_worldFirstRace_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.additional.worldFirstRace}
             onChange={(event) => {
               additionalBooleanHander(event, 'worldFirstRace');
@@ -236,7 +233,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isFirstTime_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.additional.firstTime}
             onChange={(event) => {
               additionalBooleanHander(event, 'firstTime');
@@ -247,7 +243,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isHeading_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.additional.heading}
             onChange={(event) => {
               additionalBooleanHander(event, 'heading');
@@ -258,7 +253,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isFarm_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.additional.farm}
             onChange={(event) => {
               additionalBooleanHander(event, 'farm');
@@ -288,7 +282,6 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_language_restriction_set')}>
           <Checkbox
             label={t('phase2_language_restriction_set_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={language}
             onChange={(event) => {
               setLanguage(event.currentTarget.checked);

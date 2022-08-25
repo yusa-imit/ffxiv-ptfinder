@@ -28,6 +28,7 @@
     "@mantine/modals": "^5.1.5",
     "@mantine/next": "^5.1.5",
     "@mantine/notifications": "^5.1.5",
+    "@mantine/nprogress": "^5.2.3",
     "@mantine/prism": "^5.1.5",
     "@mantine/rte": "^5.1.5",
     "@mantine/spotlight": "^5.1.5",

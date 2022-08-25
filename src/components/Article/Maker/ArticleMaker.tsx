@@ -1,17 +1,17 @@
-import { useListState } from '@mantine/hooks';
-import { ArticleData } from '@type/data/ArticleData';
-import { useEffect, useState } from 'react';
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
+import { useListState } from '@mantine/hooks';
+import { startTransition, useEffect, useState } from 'react';
 import Phase1 from './Phase/Phase1/Phase1';
-import PhaseViewPort from './Phase/PhaseViewPort/PhaseViewPort';
-import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
 import Phase2 from './Phase/Phase2/Phase2';
-import Phase4 from './Phase/Phase4/Phase4';
 import Phase3 from './Phase/Phase3/Phase3';
+import Phase4 from './Phase/Phase4/Phase4';
+import Phase5 from './Phase/Phase5/Phase5';
+import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
 
-export function ArticleMaker() {
+export default function ArticleMaker() {
   const [errorMessages, errorMessageHander] = useListState<string>([]);
   const [step, setStep] = useState(0);
+
   // Get Embla Carousel Instance;
   const [embla, setEmbla] = useState<Embla | null>(null);
   useEffect(() => {
@@ -20,6 +20,7 @@ export function ArticleMaker() {
   useAnimationOffsetEffect(embla as Embla, 150);
   return (
     <ArticleMakerSteppper errorMessages={errorMessages} current={step} setCurrent={setStep}>
+      {/** */}
       <Carousel
         withControls={false}
         draggable={false}
@@ -33,17 +34,6 @@ export function ArticleMaker() {
           flexDirection: 'column',
         }}
       >
-        {/** 
-        <PhaseViewPort>
-          
-          <Phase1
-            current={step}
-            increasing={inc}
-            errorMessages={errorMessages}
-            errorMessageHandler={errorMessageHander}
-          />
-        </PhaseViewPort>
-*/}
         <Carousel.Slide style={{ width: '100vw' }}>
           <Phase1
             render={step === 0}
@@ -68,6 +58,13 @@ export function ArticleMaker() {
         <Carousel.Slide style={{ width: '100vw' }}>
           <Phase4
             render={step === 3}
+            errorMessages={errorMessages}
+            errorMessageHandler={errorMessageHander}
+          />
+        </Carousel.Slide>
+        <Carousel.Slide style={{ width: '100vw' }}>
+          <Phase5
+            render={step === 4}
             errorMessages={errorMessages}
             errorMessageHandler={errorMessageHander}
           />

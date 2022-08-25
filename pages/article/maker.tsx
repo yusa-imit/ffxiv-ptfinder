@@ -1,10 +1,24 @@
-import { ArticleMaker } from '@components/Article/Maker/ArticleMaker';
+import ArticleMaker from '@components/Article/Maker/ArticleMaker';
+import { useDocumentVisibility } from '@mantine/hooks';
 import { Locale } from '@type/Locale';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { ArticleData } from '../../src/type/data/ArticleData';
+import { useEffect } from 'react';
 
 function maker() {
-  return <ArticleMaker />;
+  const documentState = useDocumentVisibility();
+  useEffect(() => {}, [documentState]);
+  return (
+    <>
+      <ArticleMaker />
+    </>
+  );
+  /**return (
+    <>
+      <Suspense fallback={<Loader />}>
+        <SuspensedArticleMaker />
+      </Suspense>
+    </>
+  );*/
 }
 
 export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({

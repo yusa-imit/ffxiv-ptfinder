@@ -6,7 +6,6 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
-import { createGetInitialProps, createStylesServer, ServerStyles } from '@mantine/next';
 
 export default class _Document extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {

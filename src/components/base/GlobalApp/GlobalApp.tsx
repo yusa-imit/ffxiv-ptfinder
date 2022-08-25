@@ -8,7 +8,9 @@ import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { SessionProvider } from 'next-auth/react';
+import { NavigationProgress } from '@mantine/nprogress';
 import Viewport from './Viewport';
+import { RouterTransition } from '../RouterTransition/RouterTransition';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -33,6 +35,8 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
             <ModalsProvider>
               <Viewport>
                 <SessionProvider session={pageProps.session}>
+                  <RouterTransition />
+
                   <Component {...pageProps} />
                 </SessionProvider>
               </Viewport>

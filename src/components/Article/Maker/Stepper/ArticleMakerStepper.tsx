@@ -5,6 +5,7 @@ import { MessageList } from '@components/MessageLists/MessageList';
 import { Button, Group, ScrollArea, Stepper, Text, Title, useMantineTheme } from '@mantine/core';
 import { closeAllModals, openConfirmModal, openModal } from '@mantine/modals';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 import React, { SetStateAction } from 'react';
 import { ArticleMakerStepperStyles } from './ArticleMakerStepper.styles';
 
@@ -95,6 +96,9 @@ export function ArticleMakerSteppper({
         {children}
         <Group position="center" mt="xl" mb="xl" className={classes.bottomButton}>
           <Group>
+            <Link href="/dev/login" passHref>
+              <Button>button</Button>
+            </Link>
             <Button variant="default" onClick={prevStep} disabled={current <= 0}>
               {t('maker_button_prev')}
             </Button>

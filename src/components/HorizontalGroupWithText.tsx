@@ -1,7 +1,7 @@
 import { Group, GroupProps, Text, Title } from '@mantine/core';
 
 interface HorizontalGroupWithTextProps extends GroupProps {
-  text?: string;
+  text?: React.ReactNode;
 }
 export function HorizontalGroupWithText({ text, children, ...etc }: HorizontalGroupWithTextProps) {
   return (
@@ -15,6 +15,7 @@ export function HorizontalGroupWithText({ text, children, ...etc }: HorizontalGr
           gap: 5,
         },
       })}
+      {...etc}
     >
       {text && (
         <>

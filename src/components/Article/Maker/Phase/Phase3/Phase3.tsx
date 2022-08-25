@@ -1,4 +1,6 @@
 import BigContainer from '@components/base/BigContainer';
+import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
+import { timezone } from '@lib/timezone';
 import {
   Box,
   Checkbox,
@@ -7,53 +9,22 @@ import {
   NumberInput,
   Radio,
   Select,
-  Stack,
   Text,
   Title,
   UnstyledButton,
 } from '@mantine/core';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
+import { DatePicker, TimeInput } from '@mantine/dates';
 import { UseListStateHandlers } from '@mantine/hooks';
 import { Schedule } from '@type/data/ArticleData';
-import { DatePicker, TimeInput } from '@mantine/dates';
 import { Timezone, TimezonesValue } from '@type/data/Timezone';
-import { timezone } from '@lib/timezone';
+import { useTranslation } from 'next-i18next';
+import { useEffect, useState } from 'react';
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { Check } from 'tabler-icons-react';
 import { Article } from '../../../../../recoil/Article/index';
 import { PhaseStyles } from '../Phase.styles';
 import { PhaseStack } from '../PhaseStack';
 import TimeSelect from './TimeSelect';
-
-const Time_Select_Defaults = [
-  [['-1', '-1']],
-  [
-    ['-1', '-1'],
-    ['-1', '-1'],
-  ],
-  [
-    ['-1', '-1'],
-    ['-1', '-1'],
-    ['-1', '-1'],
-    ['-1', '-1'],
-    ['-1', '-1'],
-    ['-1', '-1'],
-    ['-1', '-1'],
-  ],
-];
-
-const timeToUnixTimestamp = (v: Date) => {
-  return (v.getHours() * 60 + v.getMinutes()) * 60;
-};
-const dayToUnixTimestamp = (v: Date) => {
-  return Math.floor(v.getTime() / 1000);
-};
-const unixTimestampToDay = (v: number) => {
-  return new Date(v * 1000);
-};
 
 interface Phase3Props {
   errorMessages: string[];
@@ -61,9 +32,34 @@ interface Phase3Props {
   errorMessageHandler: UseListStateHandlers<string>;
 }
 export default function Phase3({ render, errorMessages, errorMessageHandler }: Phase3Props) {
+  const Time_Select_Defaults = [
+    [['-1', '-1']],
+    [
+      ['-1', '-1'],
+      ['-1', '-1'],
+    ],
+    [
+      ['-1', '-1'],
+      ['-1', '-1'],
+      ['-1', '-1'],
+      ['-1', '-1'],
+      ['-1', '-1'],
+      ['-1', '-1'],
+      ['-1', '-1'],
+    ],
+  ];
+  const timeToUnixTimestamp = (v: Date) => {
+    return (v.getHours() * 60 + v.getMinutes()) * 60;
+  };
+  const dayToUnixTimestamp = (v: Date) => {
+    return Math.floor(v.getTime() / 1000);
+  };
+  const unixTimestampToDay = (v: number) => {
+    return new Date(v * 1000);
+  };
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [article, changeArticle] = useRecoilState(Article);
+  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
   const phase3Error = {};
   const SelectData: {
     timezoneData: { label: string; value: Timezone }[];
@@ -76,7 +72,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       };
     }),
   };
-  const handleSchduleChange = (key: (keyof Schedule)[], value: unknown[]) => {
+  const handleSchduleChange = (key: (keyof Schedule)[], value: unknown[], by?: string) => {
     const newArticle = { ...article };
     const newSchedule = { ...newArticle.schedule };
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
@@ -110,9 +106,10 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       )}:${second.substr(-2)}`
     );
   }, [article]);
+
   useEffect(() => {
     if (article.schedule.timezone !== undefined) return;
-    const setArticle = (value: Timezone) => {
+    const setNewArticle = (value: Timezone) => {
       const newArticle = { ...article };
       const newSchedule = { ...newArticle.schedule };
       newSchedule.timezone = value;
@@ -120,16 +117,16 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       changeArticle(newArticle);
     };
     if (article.language === 'EN' || article.language === 'FR' || article.language === 'DE') {
-      setArticle('Pacific Daylight Time');
+      setNewArticle('Pacific Daylight Time');
     }
     if (article.language === 'JP') {
-      setArticle('Japan Standard Time');
+      setNewArticle('Japan Standard Time');
     }
     if (article.language === 'KR') {
-      setArticle('Korea Standard Time');
+      setNewArticle('Korea Standard Time');
     }
     if (article.language === 'CN') {
-      setArticle('China Standard Time');
+      setNewArticle('China Standard Time');
     }
   }, [render]);
   useEffect(() => {
@@ -158,6 +155,20 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       handleSchduleChange(['timeType', 'time'], [0, [...Time_Select_Defaults[0]]]);
     }
   }, []);
+  // TODO
+  // Somthing happening here...
+  // @error
+  // @error_description some state changes after rendering, set time and timeType to undefined.
+  // @temp solving upper problem with unexistable data value into default form value.
+  useEffect(() => {
+    if (!article.isTemporary) {
+      if (!timeDesc) {
+        if (!article.schedule.time && !article.schedule.timeType) {
+          handleSchduleChange(['timeType', 'time'], [0, [...Time_Select_Defaults[0]]]);
+        }
+      }
+    }
+  }, [article.schedule.time, article.schedule.timeType]);
   return (
     <BigContainer
       style={{ height: render ? 'fit-content' : 0 }}
@@ -168,7 +179,6 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase3_writtenInDescription_title')}>
           <Checkbox
             label={t('phase3_writtenInDescription_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.schedule.writtenInDescription}
             onChange={(e) =>
               handleSchduleChange(['writtenInDescription'], [e.currentTarget.checked])
@@ -178,7 +188,6 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase3_adjustable_title')}>
           <Checkbox
             label={t('phase3_adjustable_desc')}
-            styles={{ label: { fontWeight: 500 } }}
             checked={article.schedule.adjustable}
             onChange={(e) => handleSchduleChange(['adjustable'], [e.currentTarget.checked])}
           />
@@ -259,7 +268,6 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
             <HorizontalGroupWithText text={t('phase3_day_in_desc_title')}>
               <Checkbox
                 label={t('phase3_day_in_desc_desc')}
-                styles={{ label: { fontWeight: 500 } }}
                 checked={dayDesc}
                 disabled={article.schedule.writtenInDescription}
                 onChange={(e) => {
@@ -275,11 +283,12 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
                 }}
               />
             </HorizontalGroupWithText>
+            <Title order={6}>{t('phase3_day_select_radio_label')}</Title>
             <Radio
               disabled={dayDesc || article.schedule.writtenInDescription}
               value="setByNumber"
               checked={dayRadio}
-              label={<Title order={6}>{t('phase3_day_select_by_number')}</Title>}
+              label={t('phase3_day_select_by_number')}
               onChange={() => {
                 handleSchduleChange(['dayPerWeek', 'day'], [1, undefined]);
                 setDayRadio(true);
@@ -289,12 +298,13 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               disabled={dayDesc || article.schedule.writtenInDescription}
               value="setByNumber"
               checked={!dayRadio}
-              label={<Title order={6}>{t('phase3_day_select_by_select')}</Title>}
+              label={t('phase3_day_select_by_select')}
               onChange={() => {
                 handleSchduleChange(['dayPerWeek', 'day'], [undefined, new Array(7).fill(0)]);
                 setDayRadio(false);
               }}
             />
+
             <Divider />
             {dayRadio === undefined ? (
               <></>
@@ -376,7 +386,6 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               <Checkbox
                 disabled={article.schedule.writtenInDescription}
                 label={t('phase3_time_in_desc_desc')}
-                styles={{ label: { fontWeight: 500 } }}
                 checked={timeDesc}
                 onChange={(e) => {
                   if (e.currentTarget.checked) {
@@ -388,11 +397,13 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
                 }}
               />
             </HorizontalGroupWithText>
+            <Title order={6}>{t('phase3_time_select_radio_label')}</Title>
+
             <Radio
               disabled={timeDesc || article.schedule.writtenInDescription}
               value="0"
               checked={article.schedule.timeType === 0}
-              label={<Title order={6}>{t('phase3_time_select_all')}</Title>}
+              label={t('phase3_time_select_all')}
               onChange={(event) => {
                 handleSchduleChange(['time', 'timeType'], [[...Time_Select_Defaults[0]], 0]);
               }}
@@ -401,7 +412,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               disabled={timeDesc || article.schedule.writtenInDescription}
               value="1"
               checked={article.schedule.timeType === 1}
-              label={<Title order={6}>{t('phase3_time_select_holiday')}</Title>}
+              label={t('phase3_time_select_holiday')}
               onChange={(event) => {
                 handleSchduleChange(['time', 'timeType'], [[...Time_Select_Defaults[1]], 1]);
               }}
@@ -410,11 +421,12 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               disabled={timeDesc || article.schedule.writtenInDescription}
               value="2"
               checked={article.schedule.timeType === 2}
-              label={<Title order={6}>{t('phase3_time_select_full')}</Title>}
+              label={t('phase3_time_select_full')}
               onChange={(event) => {
                 handleSchduleChange(['time', 'timeType'], [[...Time_Select_Defaults[2]], 2]);
               }}
             ></Radio>
+
             <Divider />
             <TimeSelect
               article={article}
