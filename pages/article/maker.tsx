@@ -23,7 +23,7 @@ function maker() {
 
 export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['article'])),
+    ...(await serverSideTranslations(locale, ['article', 'article_view'])),
   },
 });
 

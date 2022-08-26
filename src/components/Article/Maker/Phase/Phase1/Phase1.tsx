@@ -4,7 +4,7 @@ import HelpIcon from '@components/icons/HelpIcon';
 import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import WithAsterisk from '@components/WithAsterisk';
 import { Checkbox, Group, Select, TextInput, Title } from '@mantine/core';
-import { useDocumentVisibility, UseListStateHandlers } from '@mantine/hooks';
+import { useDocumentVisibility, useIsomorphicEffect, UseListStateHandlers } from '@mantine/hooks';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, startTransition, useEffect, useState } from 'react';
@@ -124,7 +124,6 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   useEffect(() => {
     console.log(article);
   }, [article]);
-  const documentState = useDocumentVisibility();
   // On Component Renders
   // TODO BUG FOUND
   useEffect(() => {
@@ -144,11 +143,8 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
       newArticle.language = 'CN';
       newArticle.region = 'CN';
     }
-    newArticle.title = 'abcde';
     changeArticle(newArticle);
-    console.log(typeof window);
-  }, [typeof window === 'undefined']);
-
+  }, [changeArticle]);
   // error handlers
   useEffect(() => {
     phase1Error.titleErrorListHandler();
