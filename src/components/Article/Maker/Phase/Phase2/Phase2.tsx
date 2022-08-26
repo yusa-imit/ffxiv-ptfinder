@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'next-i18next';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
+import { useRecoilState, useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 
@@ -33,7 +33,7 @@ interface Phase2Props {
 export default function Phase2({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
+  const [article, changeArticle] = useRecoilState(Article);
   const [language, setLanguage] = useState(false);
   const [many, setMany] = useState(1);
   const phase2Error = {};

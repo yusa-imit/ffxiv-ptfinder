@@ -4,11 +4,11 @@ import HelpIcon from '@components/icons/HelpIcon';
 import { WidthLimitedTooltip } from '@components/WidthLimitedTooltip';
 import WithAsterisk from '@components/WithAsterisk';
 import { Checkbox, Group, Select, TextInput, Title } from '@mantine/core';
-import { UseListStateHandlers } from '@mantine/hooks';
+import { useDocumentVisibility, UseListStateHandlers } from '@mantine/hooks';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, startTransition, useEffect, useState } from 'react';
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
+import { useRecoilState, useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { Article } from '../../../../../recoil/Article/index';
 import {
   DungeonType,
@@ -47,7 +47,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   const { t } = useTranslation('article');
   const [titleCheck, setTitleCheck] = useState(false);
   const [contentCheck, setContentCheck] = useState(false);
-  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
+  const [article, changeArticle] = useRecoilState(Article);
   const phase1Error = {
     titleErrorListHandler: () => {
       if (titleCheck) {
@@ -121,11 +121,17 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   // Phase Temporary states.
   const [version, setVersion] = useState(DEV_Game_Version[0].value);
   const [patch, setPatch] = useState(Major_Patch[0].value);
-
+  useEffect(() => {
+    console.log(article);
+  }, [article]);
+  const documentState = useDocumentVisibility();
   // On Component Renders
+  // TODO BUG FOUND
   useEffect(() => {
     const newArticle = { ...article };
+    console.log(route.locale);
     if (route.locale === 'en' || !route.locale) {
+      console.log('hello');
       newArticle.language = 'EN';
       newArticle.region = 'NA';
     } else if (route.locale === 'jp') {
@@ -138,8 +144,10 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
       newArticle.language = 'CN';
       newArticle.region = 'CN';
     }
+    newArticle.title = 'abcde';
     changeArticle(newArticle);
-  }, []);
+    console.log(typeof window);
+  }, [typeof window === 'undefined']);
 
   // error handlers
   useEffect(() => {

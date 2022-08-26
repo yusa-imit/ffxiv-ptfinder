@@ -19,7 +19,7 @@ import { Schedule } from '@type/data/ArticleData';
 import { Timezone, TimezonesValue } from '@type/data/Timezone';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
+import { useRecoilState, useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { Check } from 'tabler-icons-react';
 import { Article } from '../../../../../recoil/Article/index';
 import { PhaseStyles } from '../Phase.styles';
@@ -59,7 +59,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
   };
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
+  const [article, changeArticle] = useRecoilState(Article);
   const phase3Error = {};
   const SelectData: {
     timezoneData: { label: string; value: Timezone }[];

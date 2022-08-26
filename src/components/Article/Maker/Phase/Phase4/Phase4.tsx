@@ -3,7 +3,7 @@ import { Button, Group, Loader, Text, ThemeIcon } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 
 import { useEffect, useState } from 'react';
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
+import { useRecoilState, useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 
 import { UseListStateHandlers } from '@mantine/hooks';
 //import RTEDynamic from '@components/RTEDynamic';
@@ -22,7 +22,7 @@ export default function Phase4({ render, errorMessages, errorMessageHandler }: P
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [desc, setDesc] = useState('');
-  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
+  const [article, changeArticle] = useRecoilState(Article);
   const [edit, setEdit] = useState(false);
   const phase4Error = {};
   const SelectData = {};

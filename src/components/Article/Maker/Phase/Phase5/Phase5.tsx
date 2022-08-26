@@ -40,7 +40,7 @@ interface Phase2Props {
 export default function Phase5({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
+  const [article, changeArticle] = useRecoilState(Article);
   const [edit, setEdit] = useState(false);
   const phase5Error = {};
   const SelectData = {};
