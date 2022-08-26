@@ -10,8 +10,15 @@ interface JobIconProps extends React.HTMLAttributes<HTMLButtonElement> {
   job: Job;
   isChecked: boolean;
   isPlusIcon?: boolean;
+  disableHoverStyle?: boolean;
 }
-export default function JobIcon({ job, isChecked, isPlusIcon, ...etc }: JobIconProps) {
+export default function JobIcon({
+  job,
+  isChecked,
+  isPlusIcon,
+  disableHoverStyle,
+  ...etc
+}: JobIconProps) {
   return (
     <UnstyledButton
       sx={(_theme) => ({
@@ -19,7 +26,7 @@ export default function JobIcon({ job, isChecked, isPlusIcon, ...etc }: JobIconP
         height: 32,
         position: 'relative',
         '&:hover': {
-          filter: 'brightness(0.8)',
+          filter: disableHoverStyle ? '' : 'brightness(0.8)',
         },
       })}
       {...etc}

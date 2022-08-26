@@ -20,8 +20,15 @@ interface JobSelectionProps extends MenuProps {
   jobs: Job[];
   index: number;
   partyNumber: number;
+  disableOpen?: boolean;
 }
-export default function JobSelection({ jobs, index, partyNumber, ...etc }: JobSelectionProps) {
+export default function JobSelection({
+  jobs,
+  index,
+  partyNumber,
+  disableOpen,
+  ...etc
+}: JobSelectionProps) {
   const { t } = useTranslation('job_selection');
   const [article, setArticle] = useRecoilState(Article);
   const [roles, setRoles] = useState({ t: false, d: false, h: false });
@@ -65,6 +72,10 @@ export default function JobSelection({ jobs, index, partyNumber, ...etc }: JobSe
     });
     setRoles(newState);
   }, [jobs.length]);
+
+  if (disableOpen) {
+    return <RoleIcon roles={roles} disableClick />;
+  }
   return (
     <Menu {...etc}>
       <Menu.Target>

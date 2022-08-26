@@ -6,10 +6,11 @@ import { JobSort } from '@constant/JobSort';
 
 export interface RoleIconProps extends React.ComponentPropsWithoutRef<'button'> {
   roles: { t: boolean; h: boolean; d: boolean };
+  disableClick?: boolean;
 }
 
 const RoleIcon = forwardRef<HTMLButtonElement, RoleIconProps>(
-  ({ roles, ...etc }: RoleIconProps, ref) => {
+  ({ roles, disableClick, ...etc }: RoleIconProps, ref) => {
     const [name, setName] = useState('x');
     useEffect(() => {
       const newName = ['', '', ''];
@@ -28,7 +29,7 @@ const RoleIcon = forwardRef<HTMLButtonElement, RoleIconProps>(
           overflow: 'hidden',
           //backgroundColor: theme.primaryColor,
           '&:hover': {
-            filter: 'brightness(0.8)',
+            filter: disableClick ? '' : 'brightness(0.8)',
           },
         })}
         {...etc}

@@ -26,6 +26,7 @@ import RTEDynamic from '@components/RTEDynamic';
 import { closeAllModals, openModal } from '@mantine/modals';
 import { Check } from 'tabler-icons-react';
 import { ArticleData } from '@type/data/ArticleData';
+import ArticleView from '@components/Article/ArticleView/ArticleView';
 import { Article } from '../../../../../recoil/Article/index';
 import { PhaseStyles } from '../Phase.styles';
 import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
@@ -39,21 +40,10 @@ interface Phase2Props {
 export default function Phase5({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
-  const [desc, setDesc] = useState('');
   const [article, changeArticle] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(Article);
   const [edit, setEdit] = useState(false);
-  const phase4Error = {};
+  const phase5Error = {};
   const SelectData = {};
-  const changeDescription = () => {
-    const newState = { ...article };
-    newState.description = desc;
-    changeArticle(newState);
-  };
-
-  useEffect(() => {
-    const quill = document.getElementsByClassName('ql-editor')[0];
-    if (quill) quill.setAttribute('style', 'min-height: 40vh');
-  });
 
   return (
     <BigContainer
@@ -61,38 +51,7 @@ export default function Phase5({ render, errorMessages, errorMessageHandler }: P
       className={classes.inner}
       //style={{ position: current !== 0 ? 'absolute' : 'relative' }}
     >
-      <PhaseStack title={t('phase4_description')}>
-        <RTEDynamic
-          value={article.description === desc ? article.description : desc}
-          onChange={setDesc}
-          controls={[
-            ['bold', 'strike', 'italic', 'underline'],
-            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-            ['clean'],
-            ['unorderedList', 'orderedList'],
-            ['link', 'blockquote', 'code', 'codeBlock'],
-            ['alignLeft', 'alignCenter', 'alignRight'],
-            ['sup', 'sub'],
-          ]}
-          style={{ width: '100%' }}
-        />
-        <Group position="right" style={{ width: '100%', position: 'relative' }}>
-          <Group
-            spacing="sm"
-            style={{
-              position: 'absolute',
-              left: 0,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text>{edit ? <Loader variant="dots" size="sm" /> : <Check />}</Text>
-            <Text>{edit ? t('phase4_description_editing') : t('phase4_description_saved')}</Text>
-          </Group>
-          <Button onClick={changeDescription}>{t('phase4_save_button')}</Button>
-        </Group>
-      </PhaseStack>
+      <ArticleView article={article} />
     </BigContainer>
   );
 }

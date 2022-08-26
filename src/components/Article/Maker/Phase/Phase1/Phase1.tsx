@@ -254,7 +254,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             value=""
             onChange={(value) => {
               const newArticle = { ...article };
-              newArticle.type = value === null ? 'etc' : (value as DungeonType);
+              newArticle.content = 101;
               changeArticle(newArticle);
               contentOnChange(value);
             }}

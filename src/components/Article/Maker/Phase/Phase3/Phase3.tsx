@@ -286,8 +286,8 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
             <Title order={6}>{t('phase3_day_select_radio_label')}</Title>
             <Radio
               disabled={dayDesc || article.schedule.writtenInDescription}
-              value="setByNumber"
-              checked={dayRadio}
+              value="0r"
+              checked={dayDesc ? false : dayRadio}
               label={t('phase3_day_select_by_number')}
               onChange={() => {
                 handleSchduleChange(['dayPerWeek', 'day'], [1, undefined]);
@@ -296,8 +296,8 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
             />
             <Radio
               disabled={dayDesc || article.schedule.writtenInDescription}
-              value="setByNumber"
-              checked={!dayRadio}
+              value="1"
+              checked={dayDesc ? false : !dayRadio}
               label={t('phase3_day_select_by_select')}
               onChange={() => {
                 handleSchduleChange(['dayPerWeek', 'day'], [undefined, new Array(7).fill(0)]);
