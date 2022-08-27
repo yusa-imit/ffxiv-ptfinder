@@ -86,18 +86,15 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
       newArticle.title = event.currentTarget.value;
       return newArticle;
     });
-    if (event.currentTarget.value !== '') {
-      setTitleCheck(true);
-    } else {
-      setTitleCheck(false);
-    }
   };
+  // TODO
+  // set proper value for this
   const contentOnChange = (value: string | null) => {
-    if (value !== null || value !== '') {
-      setContentCheck(true);
-    } else {
-      setContentCheck(false);
-    }
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      newArticle.content = 101;
+      return newArticle;
+    });
   };
 
   // Select Component Data Constructor
@@ -123,17 +120,12 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   // Phase Temporary states.
   const [version, setVersion] = useState(DEV_Game_Version[0].value);
   const [patch, setPatch] = useState(Major_Patch[0].value);
-  useEffect(() => {
-    console.log(article);
-  }, [article]);
+
   // On Component Renders
-  // TODO BUG FOUND
   useEffect(() => {
     changeArticle((prev) => {
       const newArticle = { ...prev };
-      console.log(route.locale);
       if (route.locale === 'en' || !route.locale) {
-        console.log('hello');
         newArticle.language = 'EN';
         newArticle.region = 'NA';
       } else if (route.locale === 'jp') {
@@ -149,6 +141,19 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
       return newArticle;
     });
   }, [changeArticle]);
+
+  // title checker
+  useEffect(() => {
+    if (article.title === '') setTitleCheck(false);
+    else setTitleCheck(true);
+  }, [article.title]);
+  // content checker
+  useEffect(() => {
+    if (article.content === -1 || article.content === null || !article.content)
+      setContentCheck(false);
+    else setContentCheck(true);
+  }, [article.content]);
+
   // error handlers
   useEffect(() => {
     phase1Error.titleErrorListHandler();
@@ -265,12 +270,6 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             // TODO waiting for api
             value=""
             onChange={(value) => {
-              changeArticle((prev) => {
-                const newArticle = { ...prev };
-                newArticle.content = 101;
-                return newArticle;
-              });
-
               contentOnChange(value);
             }}
             transition="pop"
