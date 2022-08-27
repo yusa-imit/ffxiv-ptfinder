@@ -81,9 +81,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
     },
   };
   const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newArticle = { ...article };
-    newArticle.title = event.currentTarget.value;
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      newArticle.title = event.currentTarget.value;
+      return newArticle;
+    });
     if (event.currentTarget.value !== '') {
       setTitleCheck(true);
     } else {
@@ -127,23 +129,25 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   // On Component Renders
   // TODO BUG FOUND
   useEffect(() => {
-    const newArticle = { ...article };
-    console.log(route.locale);
-    if (route.locale === 'en' || !route.locale) {
-      console.log('hello');
-      newArticle.language = 'EN';
-      newArticle.region = 'NA';
-    } else if (route.locale === 'jp') {
-      newArticle.language = 'JP';
-      newArticle.region = 'JP';
-    } else if (route.locale === 'kr') {
-      newArticle.language = 'KR';
-      newArticle.region = 'KR';
-    } else if (route.locale === 'cn') {
-      newArticle.language = 'CN';
-      newArticle.region = 'CN';
-    }
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      console.log(route.locale);
+      if (route.locale === 'en' || !route.locale) {
+        console.log('hello');
+        newArticle.language = 'EN';
+        newArticle.region = 'NA';
+      } else if (route.locale === 'jp') {
+        newArticle.language = 'JP';
+        newArticle.region = 'JP';
+      } else if (route.locale === 'kr') {
+        newArticle.language = 'KR';
+        newArticle.region = 'KR';
+      } else if (route.locale === 'cn') {
+        newArticle.language = 'CN';
+        newArticle.region = 'CN';
+      }
+      return newArticle;
+    });
   }, [changeArticle]);
   // error handlers
   useEffect(() => {
@@ -192,9 +196,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               label={t('phase1_isTemporary_label')}
               checked={article.isTemporary}
               onChange={(e) => {
-                const newArticle = { ...article };
-                newArticle.isTemporary = e.currentTarget.checked;
-                changeArticle(newArticle);
+                changeArticle((prev) => {
+                  const newArticle = { ...prev };
+                  newArticle.isTemporary = e.currentTarget.checked;
+                  return newArticle;
+                });
               }}
             />
           </Group>
@@ -234,9 +240,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             data={SelectData.DungeonTypeData}
             value={article.type}
             onChange={(value) => {
-              const newArticle = { ...article };
-              newArticle.type = value === null ? 'etc' : (value as DungeonType);
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.type = value === null ? 'etc' : (value as DungeonType);
+                return newArticle;
+              });
             }}
             transition="pop"
             transitionDuration={100}
@@ -257,9 +265,12 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             // TODO waiting for api
             value=""
             onChange={(value) => {
-              const newArticle = { ...article };
-              newArticle.content = 101;
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.content = 101;
+                return newArticle;
+              });
+
               contentOnChange(value);
             }}
             transition="pop"
@@ -276,9 +287,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               data={SelectData.RegionData}
               value={article.region}
               onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.region = value === null ? 'JP' : (value as Region);
-                changeArticle(newArticle);
+                changeArticle((prev) => {
+                  const newArticle = { ...prev };
+                  newArticle.region = value === null ? 'JP' : (value as Region);
+                  return newArticle;
+                });
               }}
               transition="pop"
               transitionDuration={100}
@@ -291,9 +304,11 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
               data={SelectData.LanguageData}
               value={article.language}
               onChange={(value) => {
-                const newArticle = { ...article };
-                newArticle.language = value === null ? 'JP' : (value as Language);
-                changeArticle(newArticle);
+                changeArticle((prev) => {
+                  const newArticle = { ...prev };
+                  newArticle.language = value === null ? 'JP' : (value as Language);
+                  return newArticle;
+                });
               }}
               transition="pop"
               transitionDuration={100}

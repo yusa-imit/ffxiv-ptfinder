@@ -55,61 +55,74 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
     event: ChangeEvent<HTMLInputElement>,
     key: 'heading' | 'firstTime' | 'worldFirstRace' | 'farm' | 'firstWeekClear'
   ) => {
-    const newArticle = { ...article };
-    const newAdditional = { ...newArticle.additional };
-    newAdditional[key] = event.currentTarget.checked;
-    newArticle.additional = newAdditional;
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newAdditional = { ...newArticle.additional };
+      newAdditional[key] = event.currentTarget.checked;
+      newArticle.additional = newAdditional;
+      return newArticle;
+    });
   };
   const addDeleteButtonHandlerForJobs = (type: 'add' | 'delete', partyNumber: number) => {
-    const newArticle = { ...article };
-    const newParty = [...newArticle.jobs];
-    const newJobs = [...newParty[partyNumber]];
-    if (type === 'add') newJobs.push([]);
-    else newJobs.pop();
-    newParty[partyNumber] = newJobs;
-    newArticle.jobs = newParty;
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newParty = [...newArticle.jobs];
+      const newJobs = [...newParty[partyNumber]];
+      if (type === 'add') newJobs.push([]);
+      else newJobs.pop();
+      newParty[partyNumber] = newJobs;
+      newArticle.jobs = newParty;
+      return newArticle;
+    });
   };
   const addDeleteButtonHandlerForParty = (type: 'add' | 'delete') => {
-    const newArticle = { ...article };
-    const newJobs = [...newArticle.jobs];
-    if (type === 'add') newJobs.push([[]]);
-    else newJobs.pop();
-    newArticle.jobs = newJobs;
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newJobs = [...newArticle.jobs];
+      if (type === 'add') newJobs.push([[]]);
+      else newJobs.pop();
+      newArticle.jobs = newJobs;
+      return newArticle;
+    });
   };
   // on number of memeber changes.
   useEffect(() => {
-    const newArticle = { ...article };
-    const newJobs = [...article.jobs];
-    let diff = Math.abs(article.jobs.length - many);
-    while (diff > 0) {
-      if (article.jobs.length < many) {
-        newJobs.push([[]]);
-      } else {
-        newJobs.pop();
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newJobs = [...article.jobs];
+      let diff = Math.abs(article.jobs.length - many);
+      while (diff > 0) {
+        if (article.jobs.length < many) {
+          newJobs.push([[]]);
+        } else {
+          newJobs.pop();
+        }
+        newArticle.jobs = newJobs;
+        diff--;
       }
-      newArticle.jobs = newJobs;
-      changeArticle(newArticle);
-      diff--;
-    }
+      return newArticle;
+    });
   }, [many]);
   // On language restriction checkbox change
   useEffect(() => {
-    const newArticle = { ...article };
     // if check resolved, then set data into undefined.
     if (!language) {
-      newArticle.specifyUserLanguage = undefined;
-      changeArticle(newArticle);
+      changeArticle((prev) => {
+        const newArticle = { ...prev };
+        newArticle.specifyUserLanguage = undefined;
+        return newArticle;
+      });
       return;
     }
     // If checked
     // if language restriction is already specified, return
     if (article.specifyUserLanguage !== undefined) return;
     // else change into user language.
-    newArticle.specifyUserLanguage = [newArticle.language];
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      newArticle.specifyUserLanguage = [newArticle.language];
+      return newArticle;
+    });
   }, [language]);
   return (
     <BigContainer
@@ -185,9 +198,11 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             defaultValue={1}
             min={1}
             onChange={(value) => {
-              const newArticle = { ...article };
-              newArticle.minimumWeek = value as number;
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.minimumWeek = value as number;
+                return newArticle;
+              });
             }}
           />
         </HorizontalGroupWithText>
@@ -196,9 +211,11 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             data={SelectData.VoiceChatData}
             value={String(article.voiceChat)}
             onChange={(value) => {
-              const newArticle = { ...article };
-              newArticle.voiceChat = Number(value as '0' | '1' | '2') as 0 | 1 | 2;
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.voiceChat = Number(value as '0' | '1' | '2') as 0 | 1 | 2;
+                return newArticle;
+              });
             }}
             transition="pop"
             transitionDuration={100}
@@ -266,11 +283,13 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             max={2}
             min={0}
             onChange={(value) => {
-              const newArticle = { ...article };
-              const newAdditional = { ...newArticle.additional };
-              newAdditional.boxNumber = value as 0 | 1 | 2;
-              newArticle.additional = newAdditional;
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                const newAdditional = { ...newArticle.additional };
+                newAdditional.boxNumber = value as 0 | 1 | 2;
+                newArticle.additional = newAdditional;
+                return newArticle;
+              });
             }}
           />
         </HorizontalGroupWithText>
@@ -293,9 +312,11 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
             data={SelectData.LanguageData}
             value={article.specifyUserLanguage}
             onChange={(value) => {
-              const newArticle = { ...article };
-              newArticle.specifyUserLanguage = value as Language[];
-              changeArticle(newArticle);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.specifyUserLanguage = value as Language[];
+                return newArticle;
+              });
             }}
             transition="pop"
             transitionDuration={100}

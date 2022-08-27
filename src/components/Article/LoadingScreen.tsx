@@ -1,18 +1,22 @@
-import { Loader } from '@mantine/core';
+import { Center, Group, Loader, Text } from '@mantine/core';
 
 export default function LoadingScreen({ view }: { view?: string }) {
   return (
     <div
       style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'absolute',
+        width: '100%',
+        height: '40vh',
+        position: 'relative',
         display: view === 'visible' ? 'none' : 'block',
-        backgroundColor: 'red',
         zIndex: 9999,
       }}
     >
-      <Loader />
+      <Center>
+        <Group>
+          <Loader variant="dots" size="lg" />
+          <Text>Loading...</Text>
+        </Group>
+      </Center>
     </div>
   );
 }

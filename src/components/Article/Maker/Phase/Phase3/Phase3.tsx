@@ -73,15 +73,17 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
     }),
   };
   const handleSchduleChange = (key: (keyof Schedule)[], value: unknown[], by?: string) => {
-    const newArticle = { ...article };
-    const newSchedule = { ...newArticle.schedule };
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const i in key) {
-      // @ts-expect-error
-      newSchedule[key[i]] = value[i];
-    }
-    newArticle.schedule = newSchedule;
-    changeArticle(newArticle);
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newSchedule = { ...newArticle.schedule };
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const i in key) {
+        // @ts-expect-error
+        newSchedule[key[i]] = value[i];
+      }
+      newArticle.schedule = newSchedule;
+      return newArticle;
+    });
   };
   const [dayRadio, setDayRadio] = useState(true);
   const [dayDesc, setDayDesc] = useState(false);
@@ -110,11 +112,13 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
   useEffect(() => {
     if (article.schedule.timezone !== undefined) return;
     const setNewArticle = (value: Timezone) => {
-      const newArticle = { ...article };
-      const newSchedule = { ...newArticle.schedule };
-      newSchedule.timezone = value;
-      newArticle.schedule = newSchedule;
-      changeArticle(newArticle);
+      changeArticle((prev) => {
+        const newArticle = { ...prev };
+        const newSchedule = { ...newArticle.schedule };
+        newSchedule.timezone = value;
+        newArticle.schedule = newSchedule;
+        return newArticle;
+      });
     };
     if (article.language === 'EN' || article.language === 'FR' || article.language === 'DE') {
       setNewArticle('Pacific Daylight Time');
