@@ -1,4 +1,4 @@
-import { Box, Button, Center, Loader, Space, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Center, Group, Loader, Space, Stack, Text, Title } from '@mantine/core';
 import axios from 'axios';
 import { useTranslation } from 'next-i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -124,9 +124,14 @@ export default function Complete() {
               <Title>{t('complete_congratulation')}</Title>
               <Title order={6}>{t('complete_congratulation_desc')}</Title>
               <Space h="xl" />
-              <Link href="/" passHref>
-                <Button>{t('complete_button')}</Button>
-              </Link>
+              <Group>
+                <Link href="/" passHref>
+                  <Button variant="outline">{t('complete_go_to_main')}</Button>
+                </Link>
+                <Link href="/" passHref>
+                  <Button>{t('complete_go_to_article')}</Button>
+                </Link>
+              </Group>
             </>
           )}
         </Stack>
