@@ -14,12 +14,14 @@ interface ArticleMakerStepperProps {
   setCurrent: React.Dispatch<SetStateAction<number>>;
   children?: React.ReactNode;
   errorMessages: string[];
+  setComplete: () => void;
 }
 export function ArticleMakerSteppper({
   current,
   setCurrent,
   children,
   errorMessages,
+  setComplete,
 }: ArticleMakerStepperProps) {
   const theme = useMantineTheme();
   const { classes } = ArticleMakerStepperStyles();
@@ -96,14 +98,15 @@ export function ArticleMakerSteppper({
         {children}
         <Group position="center" mt="xl" mb="xl" className={classes.bottomButton}>
           <Group>
-            <Link href="/dev/login" passHref>
-              <Button>button</Button>
-            </Link>
             <Button variant="default" onClick={prevStep} disabled={current <= 0}>
               {t('maker_button_prev')}
             </Button>
-            <Button onClick={nextStep} disabled={errorMessages.length !== 0}>
-              {t('maker_button_next')}
+            <Button
+              onClick={current === 4 ? setComplete : nextStep}
+              disabled={errorMessages.length !== 0}
+              color={current === 4 ? 'green' : undefined}
+            >
+              {current === 4 ? t('maker_button_finish') : t('maker_button_next')}
             </Button>
           </Group>
           <MessageList

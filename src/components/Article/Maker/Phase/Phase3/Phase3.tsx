@@ -1,5 +1,6 @@
 import BigContainer from '@components/base/BigContainer';
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
+import WithAsterisk from '@components/WithAsterisk';
 import { timezone } from '@lib/timezone';
 import {
   Box,
@@ -54,13 +55,60 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
   const dayToUnixTimestamp = (v: Date) => {
     return Math.floor(v.getTime() / 1000);
   };
+  const extractDayFromDate = (v: Date) => {
+    return Math.floor(
+      new Date(v.getFullYear(), v.getMonth(), v.getDate(), 0, 0, 0, 0).getTime() / 1000
+    );
+  };
   const unixTimestampToDay = (v: number) => {
     return new Date(v * 1000);
   };
   const { classes } = PhaseStyles();
   const { t } = useTranslation('article');
   const [article, changeArticle] = useRecoilState(Article);
-  const phase3Error = {};
+
+  const [dayRadio, setDayRadio] = useState(true);
+  const [dayDesc, setDayDesc] = useState(false);
+  const [timeDesc, setTimeDesc] = useState(false);
+  const [tempStartDay, setTempStartDay] = useState(extractDayFromDate(new Date()));
+  const [tempStartTime, setTempStartTime] = useState(0);
+  const [tempEndDay, setTempEndDay] = useState(extractDayFromDate(new Date()));
+  const [tempEndTime, setTempEndTime] = useState(0);
+
+  const phase3Error = {
+    startTimeNotSetErrorHandler: () => {
+      if (!render) return;
+      if (tempStartTime === 0) {
+        if (!errorMessages.includes(t('phase3_start_time_not_set_error'))) {
+          errorMessageHandler.append(t('phase3_start_time_not_set_error'));
+        }
+      } else if (errorMessages.includes(t('phase3_start_time_not_set_error'))) {
+        errorMessageHandler.filter((v) => v !== t('phase3_start_time_not_set_error'));
+      }
+    },
+    getStartTimeNotSetLabel: () => {
+      if (tempStartTime === 0) {
+        return t('phase3_start_time_not_set_error');
+      }
+      return false;
+    },
+    endTimeNotSetErrorHandler: () => {
+      if (!render) return;
+      if (tempEndTime === 0) {
+        if (!errorMessages.includes(t('phase3_end_time_not_set_error'))) {
+          errorMessageHandler.append(t('phase3_end_time_not_set_error'));
+        }
+      } else if (errorMessages.includes(t('phase3_end_time_not_set_error'))) {
+        errorMessageHandler.filter((v) => v !== t('phase3_end_time_not_set_error'));
+      }
+    },
+    getEndTimeNotSetLabel: () => {
+      if (tempEndTime === 0) {
+        return t('phase3_end_time_not_set_error');
+      }
+      return false;
+    },
+  };
   const SelectData: {
     timezoneData: { label: string; value: Timezone }[];
   } = {
@@ -85,28 +133,27 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       return newArticle;
     });
   };
-  const [dayRadio, setDayRadio] = useState(true);
-  const [dayDesc, setDayDesc] = useState(false);
-  const [timeDesc, setTimeDesc] = useState(false);
-  const [tempStartDay, setTempStartDay] = useState(0);
-  const [tempStartTime, setTempStartTime] = useState(0);
-  const [tempEndDay, setTempEndDay] = useState(0);
-  const [tempEndTime, setTempEndTime] = useState(0);
 
   useEffect(() => {
     if (!article.schedule.dateTime) return;
-    const date = new Date(article.schedule.dateTime[0] * 1000);
-    const year = date.getFullYear();
-    const month = `0${date.getMonth() + 1}`;
-    const day = `0${date.getDate()}`;
-    const hour = `0${date.getHours()}`;
-    const minute = `0${date.getMinutes()}`;
-    const second = `0${date.getSeconds()}`;
-    console.log(
-      `${year}-${month.substr(-2)}-${day.substr(-2)} ${hour.substr(-2)}:${minute.substr(
-        -2
-      )}:${second.substr(-2)}`
-    );
+    const getString = (datetime: number) => {
+      const date = new Date(datetime * 1000);
+      const year = date.getFullYear();
+      const month = `0${date.getMonth() + 1}`;
+      const day = `0${date.getDate()}`;
+      const hour = `0${date.getHours()}`;
+      const minute = `0${date.getMinutes()}`;
+      const second = `0${date.getSeconds()}`;
+      console.log(
+        `${year}-${month.substr(-2)}-${day.substr(-2)} ${hour.substr(-2)}:${minute.substr(
+          -2
+        )}:${second.substr(-2)}`
+      );
+    };
+    //getString(tempStartDay + tempStartTime);
+    //getString(tempEndDay + tempEndTime);
+    //getString(article.schedule.dateTime[0]);
+    //getString(article.schedule.dateTime[1]);
   }, [article]);
 
   useEffect(() => {
@@ -133,6 +180,7 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       setNewArticle('China Standard Time');
     }
   }, [render]);
+
   useEffect(() => {
     if (!article.isTemporary) return;
     if (tempStartDay === 0 && tempEndDay !== 0) {
@@ -142,23 +190,59 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
       setTempEndDay(tempStartDay);
     }
   }, [tempStartDay, tempEndDay]);
+
   useEffect(() => {
+    phase3Error.startTimeNotSetErrorHandler();
     if (!article.isTemporary) return;
     const newDateTime = article.schedule.dateTime ? [...article.schedule.dateTime] : new Array(2);
     newDateTime[0] = tempStartDay + tempStartTime;
     handleSchduleChange(['dateTime'], [newDateTime]);
   }, [tempStartDay, tempStartTime]);
   useEffect(() => {
+    phase3Error.endTimeNotSetErrorHandler();
     if (!article.isTemporary) return;
     const newDateTime = article.schedule.dateTime ? [...article.schedule.dateTime] : new Array(2);
-    newDateTime[1] = tempStartDay + tempStartTime;
+    newDateTime[1] = tempEndDay + tempEndTime;
     handleSchduleChange(['dateTime'], [newDateTime]);
   }, [tempEndDay, tempEndTime]);
   useEffect(() => {
-    if (!article.isTemporary) {
-      handleSchduleChange(['timeType', 'time'], [0, [...Time_Select_Defaults[0]]]);
+    if (article.isTemporary) {
+      handleSchduleChange(
+        ['dateTime', 'timeType', 'time'],
+        [[extractDayFromDate(new Date()), extractDayFromDate(new Date())], undefined, undefined]
+      );
     }
-  }, []);
+    if (!article.isTemporary) {
+      handleSchduleChange(
+        ['timeType', 'time', 'dateTime'],
+        [0, [...Time_Select_Defaults[0]], undefined]
+      );
+      setTempEndDay(extractDayFromDate(new Date()));
+      setTempEndTime(0);
+      setTempStartDay(extractDayFromDate(new Date()));
+      setTempStartTime(0);
+    }
+  }, [article.isTemporary]);
+  useEffect(() => {
+    if (article.schedule.time?.flat(3).filter((v) => v !== '-1').length === 0) {
+      handleSchduleChange(['average'], [undefined]);
+    }
+    let dayCount = 0;
+    let time = 0;
+    article.schedule.time?.forEach((timeArray) => {
+      if (timeArray[0] === '-1' || timeArray[1] === '-1') return;
+      const [startHour, startMinute] = Array.from(timeArray[0].split(':'), (v) => Number(v));
+      const [endHour, endMinute] = Array.from(timeArray[1].split(':'), (v) => Number(v));
+      const diff =
+        startHour < endHour || (startHour === endHour && startMinute < endMinute)
+          ? Number((endHour + endMinute / 60 - startHour - startMinute / 60).toFixed(1))
+          : Number((24 + endHour + endMinute / 60 - startHour - startMinute / 60).toFixed(1));
+      dayCount += 1;
+      time += diff;
+    });
+    if (dayCount === 0) return;
+    handleSchduleChange(['average'], [(time / dayCount).toFixed(1)]);
+  }, [article.schedule.time]);
   // TODO
   // Somthing happening here...
   // @error
@@ -236,8 +320,11 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               />
             </Group>
             <Group>
-              <Title order={6}>{t('phase3_temporary_start_time')}</Title>
+              <Title order={6}>
+                <WithAsterisk>{t('phase3_temporary_start_time')}</WithAsterisk>
+              </Title>
               <TimeInput
+                error={phase3Error.getStartTimeNotSetLabel()}
                 onChange={(v) => {
                   setTempStartTime(timeToUnixTimestamp(v));
                 }}
@@ -257,8 +344,11 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
               />
             </Group>
             <Group>
-              <Title order={6}>{t('phase3_temporary_end_time')}</Title>
+              <Title order={6}>
+                <WithAsterisk>{t('phase3_temporary_end_time')}</WithAsterisk>
+              </Title>
               <TimeInput
+                error={phase3Error.getEndTimeNotSetLabel()}
                 onChange={(v) => {
                   setTempEndTime(timeToUnixTimestamp(v));
                 }}

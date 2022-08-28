@@ -11,18 +11,28 @@ import { PreRender } from './Phase/PreRender';
 import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
 import { RTELoadingContext } from '../RTELoadingContext';
 import LoadingScreen from '../LoadingScreen';
+import Complete from './Phase/Complete/Complete';
 
 export default function ArticleMaker() {
   const [errorMessages, errorMessageHander] = useListState<string>([]);
   const [step, setStep] = useState(0);
   // Get Embla Carousel Instance;
   const [embla, setEmbla] = useState<Embla | null>(null);
+  const [complete, setComplete] = useState(false);
   useEffect(() => {
     embla?.scrollTo(step);
   }, [step]);
   useAnimationOffsetEffect(embla as Embla, 150);
+  if (complete) return <Complete />;
   return (
-    <ArticleMakerSteppper errorMessages={errorMessages} current={step} setCurrent={setStep}>
+    <ArticleMakerSteppper
+      errorMessages={errorMessages}
+      current={step}
+      setCurrent={setStep}
+      setComplete={() => {
+        setComplete(true);
+      }}
+    >
       <Carousel
         withControls={false}
         draggable={false}

@@ -80,9 +80,10 @@ export interface Schedule {
   writtenInDescription: boolean;
   dateTime?: FixedLengthArray<number, 2>;
   adjustable?: boolean;
-  day?: FixedLengthArray<0 | 1, 7>;
+  day?: Array<0 | 1>;
   dayPerWeek?: number;
   timeType?: 0 | 1 | 2;
   time?: string[][];
   timezone?: Timezone;
+  average?: number;
 }

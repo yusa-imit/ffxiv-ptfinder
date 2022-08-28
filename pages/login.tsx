@@ -5,7 +5,7 @@ import { unstable_getServerSession } from '@auth/next-auth/src';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from './api/auth/[...nextauth]';
 import '@extType/ExtendedServerSession';
 
 function login() {

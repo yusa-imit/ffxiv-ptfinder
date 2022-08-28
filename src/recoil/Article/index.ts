@@ -19,6 +19,7 @@ export const Article = atom<ArticleData>({
       timeType: undefined,
       time: undefined,
       timezone: undefined,
+      average: undefined,
     },
     content: -1,
     type: 'raid',

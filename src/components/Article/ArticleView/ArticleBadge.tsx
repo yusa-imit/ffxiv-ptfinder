@@ -1,20 +1,25 @@
-import { Badge, BadgeProps } from '@mantine/core';
+import { Badge, BadgeProps, Tooltip } from '@mantine/core';
 
-export default function ArticleBadge(props: BadgeProps) {
+interface ArticleBadgeProps extends BadgeProps {
+  tooltip?: string;
+}
+export default function ArticleBadge({ children, tooltip, ...etc }: ArticleBadgeProps) {
   return (
-    <Badge
-      variant="filled"
-      size="xl"
-      style={{
-        wordBreak: 'break-word',
-        lineBreak: 'auto',
-        maxWidth: '100%',
-        whiteSpace: 'normal',
-        textOverflow: 'clip',
-      }}
-      {...props}
-    >
-      {props.children}
-    </Badge>
+    <Tooltip label={tooltip} disabled={tooltip === undefined}>
+      <Badge
+        variant="filled"
+        size="xl"
+        style={{
+          wordBreak: 'break-word',
+          lineBreak: 'auto',
+          maxWidth: '100%',
+          whiteSpace: 'normal',
+          textOverflow: 'clip',
+        }}
+        {...etc}
+      >
+        {children}
+      </Badge>
+    </Tooltip>
   );
 }

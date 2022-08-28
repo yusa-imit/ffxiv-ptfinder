@@ -112,9 +112,16 @@ export default function AppHeader({
         <Group spacing="xs" noWrap>
           <PrimaryColorPicker className={classes.primary} />
           <SimpleToggleColorSheme className={classes.theme} />
-          <Button className={classes.button} size={isSmall ? 'xs' : 'sm'}>
-            {buttonText}
-          </Button>
+          <Link href="/article/maker">
+            <Button className={classes.button} size={isSmall ? 'xs' : 'sm'}>
+              {
+                // TODO
+                //buttonText
+                //
+                'TEMP_Article Making'
+              }
+            </Button>
+          </Link>
         </Group>
       </BigContainer>
     </Header>
