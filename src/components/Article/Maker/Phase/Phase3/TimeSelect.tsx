@@ -68,7 +68,11 @@ export default function TimeSelect({ article, translation, disable, handler }: T
               return (
                 <HorizontalGroupWithText
                   key={`${arrIndex}_${i}`}
-                  text={t(`phase3_time_type_${article.schedule.timeType}_${arrIndex}_start`)}
+                  text={t(
+                    `phase3_time_type_${article.schedule.timeType}_${arrIndex}_${
+                      i === 0 ? 'start' : 'end'
+                    }`
+                  )}
                 >
                   <Group spacing={1}>
                     <TimeInput

@@ -30,7 +30,7 @@ interface ArticleViewProps {
 }
 
 export default function ArticleView({ article }: ArticleViewProps) {
-  const { t } = useTranslation('article_view');
+  const { t } = useTranslation(['article_view', 'data']);
   const BadgeColor: { [key: string]: MantineColor } = {};
   return (
     <BigContainer
@@ -62,10 +62,15 @@ export default function ArticleView({ article }: ArticleViewProps) {
               <ArticleBadge>DEV_Unending Coil of Bahamut (Extreme)</ArticleBadge>
             </Group>
             <Group>
-              <ArticleBadge>{`${t('section_default_region')} : ${article.region}`}</ArticleBadge>
-              <ArticleBadge>{`${t('section_default_language')} : ${
-                article.language
-              }`}</ArticleBadge>
+              <ArticleBadge>{`${t('section_default_region')} : ${t(`region_${article.region}`, {
+                ns: 'data',
+              })}`}</ArticleBadge>
+              <ArticleBadge>{`${t('section_default_language')} : ${`${t(
+                `lang_${article.language}`,
+                {
+                  ns: 'data',
+                }
+              )}`}`}</ArticleBadge>
             </Group>
           </Section>
           <Section title={t('section_jobs_title')}>
@@ -90,7 +95,7 @@ export default function ArticleView({ article }: ArticleViewProps) {
                       label={
                         position.length === 0
                           ? t('section_jobs_job_not_specified')
-                          : position.map((v) => t(`jobs_${v}`)).join(', ')
+                          : position.map((v) => t(`jobs_${v}`, { ns: 'data' })).join(', ')
                       }
                       key={positionIndex}
                     >
@@ -122,25 +127,23 @@ export default function ArticleView({ article }: ArticleViewProps) {
                 !article.additional.firstWeekClear &&
                 !article.additional.heading &&
                 !article.additional.worldFirstRace && (
-                  <Text>{t('section_details_essentials_no_detail_provided')}</Text>
+                  <Text>{t('section_details_no_detail_provided')}</Text>
                 )}
               {article.additional.firstWeekClear && (
-                <ArticleBadge>{t('section_details_essentials_first_week_clear')}</ArticleBadge>
+                <ArticleBadge>{t('section_details_first_week_clear')}</ArticleBadge>
               )}
               {article.additional.worldFirstRace && (
-                <ArticleBadge>{t('section_details_essentials_world_first_race')}</ArticleBadge>
+                <ArticleBadge>{t('section_details_world_first_race')}</ArticleBadge>
               )}
-              {article.additional.farm && (
-                <ArticleBadge>{t('section_details_essentials_farm')}</ArticleBadge>
-              )}
+              {article.additional.farm && <ArticleBadge>{t('section_details_farm')}</ArticleBadge>}
               {article.additional.firstTime && (
-                <ArticleBadge>{t('section_details_essentials_first_time')}</ArticleBadge>
+                <ArticleBadge>{t('section_details_first_time')}</ArticleBadge>
               )}
               {article.additional.heading && (
-                <ArticleBadge>{t('section_details_essentials_heading')}</ArticleBadge>
+                <ArticleBadge>{t('section_details_heading')}</ArticleBadge>
               )}
               {article.additional.boxNumber && (
-                <ArticleBadge>{`${t('section_details_essentials_boxNumber')}: ${
+                <ArticleBadge>{`${t('section_details_boxNumber')}: ${
                   article.additional.boxNumber
                 }`}</ArticleBadge>
               )}
@@ -150,7 +153,7 @@ export default function ArticleView({ article }: ArticleViewProps) {
             <Group>
               {article.specifyUserLanguage && article.specifyUserLanguage.length !== 0 ? (
                 article.specifyUserLanguage.map((language) => (
-                  <ArticleBadge>{t(`lang_${language}`)}</ArticleBadge>
+                  <ArticleBadge>{t(`lang_${language}`, { ns: 'data' })}</ArticleBadge>
                 ))
               ) : (
                 <Text>{t('section_details_no_language_restrictions_provided')}</Text>

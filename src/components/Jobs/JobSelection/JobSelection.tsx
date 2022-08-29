@@ -29,7 +29,7 @@ export default function JobSelection({
   disableOpen,
   ...etc
 }: JobSelectionProps) {
-  const { t } = useTranslation('job_selection');
+  const { t } = useTranslation('data');
   const [article, setArticle] = useRecoilState(Article);
   const [roles, setRoles] = useState({ t: false, d: false, h: false });
   const onJobIconClick = (job: Job) => {
@@ -82,7 +82,7 @@ export default function JobSelection({
         <RoleIcon roles={roles} />
       </Menu.Target>
       <Menu.Dropdown style={{ position: 'absolute' }}>
-        <Menu.Label>{t('job_tank_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_TANK')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Tank_Value.map((v, i) => (
             <JobIcon
@@ -96,7 +96,7 @@ export default function JobSelection({
           ))}
         </Group>
         <Menu.Divider />
-        <Menu.Label>{t('job_healer_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_HEALER')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Healer_Value.map((v, i) => (
             <JobIcon
@@ -110,7 +110,7 @@ export default function JobSelection({
           ))}
         </Group>
         <Menu.Divider />
-        <Menu.Label>{t('job_melee_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_MELEE')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Melee_Value.map((v, i) => (
             <JobIcon
@@ -124,7 +124,7 @@ export default function JobSelection({
           ))}
         </Group>
         <Menu.Divider />
-        <Menu.Label>{t('job_range_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_RANGE')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Range_Value.map((v, i) => (
             <JobIcon
@@ -138,7 +138,7 @@ export default function JobSelection({
           ))}
         </Group>
         <Menu.Divider />
-        <Menu.Label>{t('job_caster_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_CASTER')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Caster_Value.map((v, i) => (
             <JobIcon
@@ -152,7 +152,7 @@ export default function JobSelection({
           ))}
         </Group>
         <Menu.Divider />
-        <Menu.Label>{t('job_limited_label')}</Menu.Label>
+        <Menu.Label>{t('job_sort_LIMITED')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
           {Limited_Value.map((v, i) => (
             <JobIcon

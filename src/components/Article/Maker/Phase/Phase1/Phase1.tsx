@@ -44,7 +44,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   ];
   const route = useRouter();
   const { classes } = PhaseStyles();
-  const { t } = useTranslation('article');
+  const { t } = useTranslation(['article', 'data']);
   const [titleCheck, setTitleCheck] = useState(false);
   const [contentCheck, setContentCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
@@ -104,15 +104,18 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
     LanguageData: { label: string; value: Language }[];
   } = {
     DungeonTypeData: [
-      { label: t('phase1_dungeon_type_raid'), value: 'raid' },
-      { label: t('phase1_dungeon_type_extreme'), value: 'extreme' },
-      { label: t('phase1_dungeon_type_ultimate'), value: 'ultimate' },
-      { label: t('phase1_dungeon_type_alliance'), value: 'alliance' },
-      { label: t('phase1_dungeon_type_etc'), value: 'etc' },
+      { label: t('dungeon_type_raid', { ns: 'data' }), value: 'raid' },
+      { label: t('dungeon_type_extreme', { ns: 'data' }), value: 'extreme' },
+      { label: t('dungeon_type_ultimate', { ns: 'data' }), value: 'ultimate' },
+      { label: t('dungeon_type_alliance', { ns: 'data' }), value: 'alliance' },
+      { label: t('dungeon_type_etc', { ns: 'data' }), value: 'etc' },
     ],
-    RegionData: Array.from(Region_Value, (v) => ({ label: t(`phase1_region_${v}`), value: v })),
+    RegionData: Array.from(Region_Value, (v) => ({
+      label: t(`region_${v}`, { ns: 'data' }),
+      value: v,
+    })),
     LanguageData: Array.from(Language_Value, (v) => ({
-      label: t(`phase1_language_${v}`),
+      label: t(`lang_${v}`, { ns: 'data' }),
       value: v,
     })),
   };

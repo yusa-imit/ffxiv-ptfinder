@@ -32,7 +32,7 @@ interface Phase2Props {
 }
 export default function Phase2({ render, errorMessages, errorMessageHandler }: Phase2Props) {
   const { classes } = PhaseStyles();
-  const { t } = useTranslation('article');
+  const { t } = useTranslation(['article', 'data']);
   const [article, changeArticle] = useRecoilState(Article);
   const [language, setLanguage] = useState(false);
   const [many, setMany] = useState(1);
@@ -42,7 +42,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
     VoiceChatData: { label: string; value: '0' | '1' | '2' }[];
   } = {
     LanguageData: Array.from(Language_Value, (v) => ({
-      label: t(`phase1_language_${v}`),
+      label: t(`lang_${v}`, { ns: 'data' }),
       value: v,
     })),
     VoiceChatData: [
