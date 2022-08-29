@@ -1,3 +1,7 @@
+/**
+ * Collection of time functions
+ */
+
 export default abstract class TimeFunctions {
   public static timeToUnixTimestamp = (v: Date) => {
     return (v.getHours() * 60 + v.getMinutes()) * 60;
