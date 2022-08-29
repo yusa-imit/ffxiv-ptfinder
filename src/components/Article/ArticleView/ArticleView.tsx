@@ -20,6 +20,7 @@ import { ArticleData } from '@type/data/ArticleData';
 import { useTranslation } from 'next-i18next';
 import { timezone } from '@lib/timezone';
 import { useEffect } from 'react';
+import TimeFunctions from '@lib/TimeFunctions';
 import ArticleBadge from './ArticleBadge';
 import Section from './Section';
 import SubTitle from './SubTitle';
@@ -78,7 +79,7 @@ export default function ArticleView({ article }: ArticleViewProps) {
             {article.jobs.flat(3).length === 0 ? (
               <Text>{t('section_jobs_job_not_specified')} </Text>
             ) : (
-              <Group>
+              <Group spacing="xs">
                 {Array.from(new Set(article.jobs.flat(3)), (v) => v)
                   .sort((a, b) => JobSort[a].sort - JobSort[b].sort)
                   .map((v) => (
@@ -176,7 +177,15 @@ export default function ArticleView({ article }: ArticleViewProps) {
             ) : (
               <Stack>
                 {article.isTemporary ? (
-                  <Group></Group>
+                  <Group>
+                    <Text>{`${TimeFunctions.fromDateToString(
+                      // @ts-ignore client forces this properties not as undefined if isTemporary property is true
+                      TimeFunctions.unixTimestampToDay(article.schedule.dateTime[0])
+                    )} ~ ${TimeFunctions.fromDateToString(
+                      // @ts-ignore
+                      TimeFunctions.unixTimestampToDay(article.schedule.dateTime[1])
+                    )}`}</Text>
+                  </Group>
                 ) : (
                   <Group>
                     {article.schedule.dayPerWeek && (
