@@ -65,6 +65,7 @@ export function ArticleMakerSteppper({
         <Stepper
           className={classes.stepper}
           active={current}
+          onKeyDown={() => {}}
           onStepClick={(stepIndex) => {
             if (errorMessages.length !== 0) {
               openErrorModal();

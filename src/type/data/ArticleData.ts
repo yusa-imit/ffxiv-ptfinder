@@ -28,6 +28,10 @@ import { Timezone } from './Timezone';
  */
 
 export interface ArticleData {
+  author: {
+    name: string;
+    image?: string;
+  };
   articleType: number;
   status: number;
   userId: string;

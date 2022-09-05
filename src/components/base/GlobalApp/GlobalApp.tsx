@@ -36,7 +36,6 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
               <Viewport>
                 <SessionProvider session={pageProps.session}>
                   <RouterTransition />
-
                   <Component {...pageProps} />
                 </SessionProvider>
               </Viewport>

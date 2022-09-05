@@ -8,9 +8,11 @@ import {
   Center,
   Divider,
   Stack,
+  Tabs,
+  Box,
 } from '@mantine/core';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { HEADER_HEIGHT } from '@constant/StyelValues';
 
@@ -19,6 +21,12 @@ import { DEV_HEADER_DATA } from '@constant/DEV/DEV_HEADER_DATA';
 import { allyButtonizer } from '@lib/allyButtonizer';
 import { Nav } from '@recoil/Nav';
 import { HeaderLinks } from '@type/HeaderLinks';
+import { signIn, useSession } from 'next-auth/react';
+import { useTranslation } from 'next-i18next';
+import LanguageSelector from '@components/LanguageSelector';
+import UserButton from '@components/UserButton';
+import { User } from 'tabler-icons-react';
+import NavLanguageSelector from '@components/LanguageSelector/NavLanguageSelector';
 import { SimpleToggleColorSheme } from './ToggleColorScheme/SimpleToggleColorSheme';
 import AppHeaderStyles from './AppHeader.styles';
 import { HeaderDrawer } from './HeaderDrawer/HeaderDrawer';
@@ -50,6 +58,8 @@ export default function AppHeader({
   const breakPoint = useBreakPoints();
   const isSmall = breakPoint === 'xs' || breakPoint === 'sm';
   const [current, setCurrent] = useState(links[0].label);
+  const { t } = useTranslation('common');
+  const { data: session } = useSession();
   const linkItems = links.map((link) => {
     if (!link.link) {
       throw new Error('Nested link must have link property.');
@@ -67,8 +77,17 @@ export default function AppHeader({
       </Link>
     );
   });
+  const tabs = ['Home', 'Article', 'Support', 'Account', 'Settings'];
+  const tabsItems = tabs.map((v) => (
+    <Tabs.Tab value={v} key={v}>
+      {t(`nav_tab_${v}`)}
+    </Tabs.Tab>
+  ));
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
   return (
-    <Header height={height || HEADER_HEIGHT} mb={120}>
+    <Header height={isSmall ? 60 : 100} mb={120}>
       <BigContainer className={classes.inner}>
         <Group noWrap spacing="xs">
           <HeaderDrawer
@@ -95,34 +114,87 @@ export default function AppHeader({
             }
           >
             <>
+              <Divider my="md" />
+              <Center>
+                {session ? (
+                  <Box
+                    sx={(_theme) => ({
+                      width: '100%',
+                      paddingRight: _theme.spacing.lg,
+                      paddingLeft: _theme.spacing.lg,
+                    })}
+                  >
+                    <UserButton
+                      image={session.user.image as string}
+                      name={session.user.name as string}
+                    />
+                  </Box>
+                ) : (
+                  <Button
+                    className={classes.button}
+                    size={isSmall ? 'xs' : 'sm'}
+                    onClick={() => {
+                      signIn();
+                    }}
+                  >
+                    {
+                      // TODO
+                      //buttonText
+                      //
+                      t('nav_login_button')
+                    }
+                  </Button>
+                )}
+              </Center>
+              <Divider my="md" />
               <Navigator links={DEV_HEADER_DATA} />
               <Divider my="md" />
               <Stack spacing={0}>
                 <NavToggleColorScheme />
                 <NavPrimaryColorPicker />
+                <NavLanguageSelector title={t('nav_lang')} />
               </Stack>
             </>
           </HeaderDrawer>
-          {!isSmall && Logo}
-          <Title order={isSmall ? 4 : 1}>{title}</Title>
+          {Logo}
+          <Title order={1}>{title}</Title>
         </Group>
-        <Group className={classes.links} spacing={5} noWrap>
-          {linkItems}
-        </Group>
-        <Group spacing="xs" noWrap>
+        <Group
+          spacing="xs"
+          noWrap
+          sx={(_theme) => ({
+            [_theme.fn.smallerThan('sm')]: {
+              display: 'none',
+            },
+          })}
+        >
           <PrimaryColorPicker className={classes.primary} />
           <SimpleToggleColorSheme className={classes.theme} />
-          <Link href="/article/maker">
-            <Button className={classes.button} size={isSmall ? 'xs' : 'sm'}>
+          <LanguageSelector title={t('nav_lang')} />
+          {session ? (
+            <UserButton image={session.user.image as string} name={session.user.name as string} />
+          ) : (
+            <Button
+              className={classes.button}
+              size={isSmall ? 'xs' : 'sm'}
+              onClick={() => {
+                signIn();
+              }}
+            >
               {
                 // TODO
                 //buttonText
                 //
-                'TEMP_Article Making'
+                t('nav_login_button')
               }
             </Button>
-          </Link>
+          )}
         </Group>
+      </BigContainer>
+      <BigContainer className={classes.down}>
+        <Tabs classNames={{ root: classes.tabs, tabsList: classes.tabsList, tab: classes.tab }}>
+          <Tabs.List>{tabsItems}</Tabs.List>
+        </Tabs>
       </BigContainer>
     </Header>
   );

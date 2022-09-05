@@ -16,6 +16,18 @@ const PaletteIconForwarded = forwardRef<HTMLButtonElement, PalleteIconProps>(
             theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
           color:
             theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors[app_primary][6],
+          '&:hover': {
+            backgroundColor:
+              theme.colorScheme === 'dark'
+                ? theme.fn.lighten(theme.colors.dark[6], 0.05)
+                : theme.fn.darken(theme.colors.gray[0], 0.05),
+          },
+          '&:active': {
+            backgroundColor:
+              theme.colorScheme === 'dark'
+                ? theme.fn.lighten(theme.colors.dark[6], 0.1)
+                : theme.fn.darken(theme.colors.gray[0], 0.1),
+          },
         })}
         size="lg"
         {...others}

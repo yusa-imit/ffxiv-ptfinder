@@ -3,12 +3,33 @@ import { HEADER_HEIGHT } from '../../../constant/StyelValues';
 
 const AppHeaderStyles = createStyles((theme) => ({
   inner: {
-    height: HEADER_HEIGHT,
+    height: 60,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 5,
   },
-
+  down: {
+    height: 35,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    [theme.fn.smallerThan('sm')]: {
+      display: 'none',
+    },
+  },
+  tabs: {
+    [theme.fn.smallerThan('sm')]: {
+      display: 'none',
+    },
+  },
+  tabsList: {
+    borderBottom: '0 !important',
+  },
+  tab: {
+    fontWeight: 500,
+    height: 35,
+  },
   links: {
     [theme.fn.smallerThan('xs')]: {
       display: 'none',
@@ -16,22 +37,22 @@ const AppHeaderStyles = createStyles((theme) => ({
   },
 
   burger: {
-    [theme.fn.largerThan('xs')]: {
+    [theme.fn.largerThan('sm')]: {
       display: 'none',
     },
   },
   primary: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },
   theme: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },
   button: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan('sm')]: {
       display: 'none',
     },
   },

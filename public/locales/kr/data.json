@@ -41,5 +41,12 @@
   "dungeon_type_extreme": "극/환 토벌전",
   "dungeon_type_ultimate": "절 토벌전",
   "dungeon_type_alliance": "24인 레이드",
-  "dungeon_type_etc": "기타"
+  "dungeon_type_etc": "기타",
+  "day_0": "MON",
+  "day_1": "TUE",
+  "day_2": "WED",
+  "day_3": "THU",
+  "day_4": "FRI",
+  "day_5": "SAT",
+  "day_6": "SUN"
 }

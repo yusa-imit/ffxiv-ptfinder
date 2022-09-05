@@ -4,6 +4,10 @@ import { ArticleData } from '../../type/data/ArticleData';
 export const Article = atom<ArticleData>({
   key: 'article',
   default: {
+    author: {
+      name: '',
+      image: undefined,
+    },
     articleType: 0,
     status: 0,
     userId: '',

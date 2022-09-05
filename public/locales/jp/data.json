@@ -41,5 +41,12 @@
   "dungeon_type_extreme": "極・幻",
   "dungeon_type_ultimate": "絶",
   "dungeon_type_alliance": "アライアンス",
-  "dungeon_type_etc": "他"
+  "dungeon_type_etc": "他",
+  "day_0": "MON",
+  "day_1": "TUE",
+  "day_2": "WED",
+  "day_3": "THU",
+  "day_4": "FRI",
+  "day_5": "SAT",
+  "day_6": "SUN"
 }
