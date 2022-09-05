@@ -8,13 +8,15 @@ export default function ArticleBadge({ children, tooltip, ...etc }: ArticleBadge
     <Tooltip label={tooltip} disabled={tooltip === undefined}>
       <Badge
         variant="filled"
-        size="xl"
+        size="lg"
+        radius="sm"
         style={{
           wordBreak: 'break-word',
           lineBreak: 'auto',
           maxWidth: '100%',
           whiteSpace: 'normal',
           textOverflow: 'clip',
+          textTransform: 'none',
         }}
         {...etc}
       >

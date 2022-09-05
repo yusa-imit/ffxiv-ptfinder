@@ -41,5 +41,12 @@
   "dungeon_type_extreme": "Extreme",
   "dungeon_type_ultimate": "Ultimate",
   "dungeon_type_alliance": "Alliance",
-  "dungeon_type_etc": "ETC"
+  "dungeon_type_etc": "ETC",
+  "day_0": "MON",
+  "day_1": "TUE",
+  "day_2": "WED",
+  "day_3": "THU",
+  "day_4": "FRI",
+  "day_5": "SAT",
+  "day_6": "SUN"
 }

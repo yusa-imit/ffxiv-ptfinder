@@ -35,6 +35,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
   const { t } = useTranslation(['article', 'data']);
   const [article, changeArticle] = useRecoilState(Article);
   const [language, setLanguage] = useState(false);
+  const [useBoxNumber, setUseBoxNumber] = useState(false);
   const [many, setMany] = useState(1);
   const phase2Error = {};
   const SelectData: {
@@ -124,6 +125,21 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
       return newArticle;
     });
   }, [language]);
+  useEffect(() => {
+    if (article.isTemporary === false) {
+      changeArticle((prev) => {
+        const newArticle = { ...prev };
+        const newAdditional = { ...newArticle.additional };
+        newAdditional.boxNumber = undefined;
+        newAdditional.farm = undefined;
+        newAdditional.firstTime = undefined;
+        newAdditional.heading = undefined;
+        newArticle.additional = newAdditional;
+        return newArticle;
+      });
+      setUseBoxNumber(false);
+    }
+  }, [article.isTemporary]);
   return (
     <BigContainer
       style={{ height: render ? 'fit-content' : 0 }}
@@ -250,7 +266,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isFirstTime_desc')}
-            checked={article.additional.firstTime}
+            checked={article.additional.firstTime || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'firstTime');
             }}
@@ -260,7 +276,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isHeading_desc')}
-            checked={article.additional.heading}
+            checked={article.additional.heading || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'heading');
             }}
@@ -270,29 +286,45 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
           <Checkbox
             disabled={!article.isTemporary}
             label={t('phase2_isFarm_desc')}
-            checked={article.additional.farm}
+            checked={article.additional.farm || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'farm');
             }}
           />
         </HorizontalGroupWithText>
-        <HorizontalGroupWithText text={t('phase2_box_number_label')}>
-          <NumberInput
+        <Group>
+          <Checkbox
             disabled={!article.isTemporary}
-            defaultValue={2}
-            max={2}
-            min={0}
-            onChange={(value) => {
+            checked={useBoxNumber}
+            onChange={() => {
+              setUseBoxNumber((prev) => !prev);
               changeArticle((prev) => {
                 const newArticle = { ...prev };
                 const newAdditional = { ...newArticle.additional };
-                newAdditional.boxNumber = value as 0 | 1 | 2;
+                newAdditional.boxNumber = !useBoxNumber ? 2 : undefined;
                 newArticle.additional = newAdditional;
                 return newArticle;
               });
             }}
-          />
-        </HorizontalGroupWithText>
+          ></Checkbox>
+          <HorizontalGroupWithText text={t('phase2_box_number_label')}>
+            <NumberInput
+              disabled={!article.isTemporary || !useBoxNumber}
+              defaultValue={2}
+              max={2}
+              min={0}
+              onChange={(value) => {
+                changeArticle((prev) => {
+                  const newArticle = { ...prev };
+                  const newAdditional = { ...newArticle.additional };
+                  newAdditional.boxNumber = value as 0 | 1 | 2;
+                  newArticle.additional = newAdditional;
+                  return newArticle;
+                });
+              }}
+            />
+          </HorizontalGroupWithText>
+        </Group>
       </PhaseStack>
       <PhaseStack
         title={t('phase2_language_restriction_title')}
