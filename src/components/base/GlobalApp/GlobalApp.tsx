@@ -33,12 +33,12 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
         >
           <NotificationsProvider>
             <ModalsProvider>
-              <Viewport>
-                <SessionProvider session={pageProps.session}>
+              <SessionProvider session={pageProps.session}>
+                <Viewport>
                   <RouterTransition />
                   <Component {...pageProps} />
-                </SessionProvider>
-              </Viewport>
+                </Viewport>
+              </SessionProvider>
             </ModalsProvider>
           </NotificationsProvider>
         </MantineProvider>

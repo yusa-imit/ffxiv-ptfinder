@@ -24,7 +24,7 @@ function dev(props: GetStaticProps) {
 
 export const getServerSideProps = async (context: any) => ({
   props: {
-    ...(await serverSideTranslations(context.locale, ['common', 'data'])),
+    ...(await serverSideTranslations(context.locale, ['common', 'data', 'nav'])),
     session: await unstable_getServerSession(context.req, context.res, authOptions),
   },
 });
