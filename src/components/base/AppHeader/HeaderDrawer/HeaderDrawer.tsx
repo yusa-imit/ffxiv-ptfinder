@@ -1,4 +1,12 @@
-import { Burger, BurgerProps, Drawer, DrawerProps, Stack, useMantineTheme } from '@mantine/core';
+import {
+  Burger,
+  BurgerProps,
+  Drawer,
+  DrawerProps,
+  ScrollArea,
+  Stack,
+  useMantineTheme,
+} from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import { SetStateAction, useEffect } from 'react';
 import { SetterOrUpdater } from 'recoil';
@@ -45,10 +53,12 @@ export function HeaderDrawer({
             backgroundColor: theme.colors[theme.primaryColor][6],
           }}
         />
-        <Stack>
-          {title}
-          {children}
-        </Stack>
+        <ScrollArea style={{ height: '100%', width: '100%' }}>
+          <Stack>
+            {title}
+            {children}
+          </Stack>
+        </ScrollArea>
       </Drawer>
       <Burger
         opened={open}

@@ -27,6 +27,7 @@ import LanguageSelector from '@components/LanguageSelector';
 import UserButton from '@components/UserButton';
 import { User } from 'tabler-icons-react';
 import NavLanguageSelector from '@components/LanguageSelector/NavLanguageSelector';
+import { useRouter } from 'next/router';
 import { SimpleToggleColorSheme } from './ToggleColorScheme/SimpleToggleColorSheme';
 import AppHeaderStyles from './AppHeader.styles';
 import { HeaderDrawer } from './HeaderDrawer/HeaderDrawer';
@@ -35,6 +36,7 @@ import Navigator from './HeaderDrawer/Navigator';
 import NavToggleColorScheme from './ToggleColorScheme/NavToggleColorScheme';
 import NavPrimaryColorPicker from './PrimaryColorPicker/NavPrimaryColorPicker';
 import BigContainer from '../BigContainer';
+import UserIconWithMenu from './UserIconWithMenu';
 
 interface AppHeaderProps {
   Logo: React.ReactNode;
@@ -60,6 +62,7 @@ export default function AppHeader({
   const [current, setCurrent] = useState(links[0].label);
   const { t } = useTranslation('common');
   const { data: session } = useSession();
+  const router = useRouter();
   const linkItems = links.map((link) => {
     if (!link.link) {
       throw new Error('Nested link must have link property.');
@@ -77,7 +80,7 @@ export default function AppHeader({
       </Link>
     );
   });
-  const tabs = ['Home', 'Article', 'Support', 'Account', 'Settings'];
+  const tabs = ['home', 'article', 'support', 'account', 'settings'];
   const tabsItems = tabs.map((v) => (
     <Tabs.Tab value={v} key={v}>
       {t(`nav_tab_${v}`)}
@@ -86,6 +89,7 @@ export default function AppHeader({
   useEffect(() => {
     console.log(session);
   }, [session]);
+  console.log(router.pathname);
   return (
     <Header height={isSmall ? 60 : 100} mb={120}>
       <BigContainer className={classes.inner}>
@@ -124,7 +128,7 @@ export default function AppHeader({
                       paddingLeft: _theme.spacing.lg,
                     })}
                   >
-                    <UserButton
+                    <UserIconWithMenu
                       image={session.user.image as string}
                       name={session.user.name as string}
                     />
@@ -172,7 +176,10 @@ export default function AppHeader({
           <SimpleToggleColorSheme className={classes.theme} />
           <LanguageSelector title={t('nav_lang')} />
           {session ? (
-            <UserButton image={session.user.image as string} name={session.user.name as string} />
+            <UserIconWithMenu
+              image={session.user.image as string}
+              name={session.user.name as string}
+            />
           ) : (
             <Button
               className={classes.button}
@@ -192,7 +199,10 @@ export default function AppHeader({
         </Group>
       </BigContainer>
       <BigContainer className={classes.down}>
-        <Tabs classNames={{ root: classes.tabs, tabsList: classes.tabsList, tab: classes.tab }}>
+        <Tabs
+          classNames={{ root: classes.tabs, tabsList: classes.tabsList, tab: classes.tab }}
+          value={router.pathname.split('/')[0] === '' ? 'home' : router.pathname.split('/')[0]}
+        >
           <Tabs.List>{tabsItems}</Tabs.List>
         </Tabs>
       </BigContainer>

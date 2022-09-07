@@ -7,16 +7,19 @@ import {
   createStyles,
 } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons';
+import { ForwardedRef, HTMLAttributes } from 'react';
 
-interface UserButtonProps extends UnstyledButtonProps {
+export interface UserButtonProps extends UnstyledButtonProps {
   image: string;
   name: string;
   icon?: React.ReactNode;
+  ref?: ForwardedRef<HTMLButtonElement>;
 }
 
-export default function UserButton({ image, name, icon, ...others }: UserButtonProps) {
+export default function UserButton({ image, name, icon, ref, ...others }: UserButtonProps) {
   return (
     <UnstyledButton
+      ref={ref}
       {...others}
       sx={(theme) => ({
         width: '100%',
