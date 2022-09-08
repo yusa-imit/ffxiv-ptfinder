@@ -136,5 +136,17 @@
   "complete_congratulation": "おめでとうございます！ 🎉",
   "complete_congratulation_desc": "募集分が成功的に掲示されました!",
   "complete_go_to_main": "メインに戻る",
-  "complete_go_to_article": "募集分を見に行く"
+  "complete_go_to_article": "募集分を見に行く",
+  "phase1_region_NA": "North America",
+  "phase1_region_EU": "Europe",
+  "phase1_region_JP": "Japan",
+  "phase1_region_OA": "Oceania",
+  "phase1_region_KR": "Korea",
+  "phase1_region_CN": "China",
+  "phase1_language_EN": "English",
+  "phase1_language_JP": "Japanese",
+  "phase1_language_FR": "French",
+  "phase1_language_DE": "Deutsch",
+  "phase1_language_KR": "Korean",
+  "phase1_language_CN": "Chinese"
 }

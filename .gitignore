@@ -37,9 +37,6 @@ yarn-error.log*
 # storybook
 storybook-static
 
-# data transformation
-/DEV_DATA_PROCESSING
-
 # temporary account security
 /pages/api/auth/*
 #/src/auth/**/*

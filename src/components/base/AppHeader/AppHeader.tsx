@@ -201,7 +201,7 @@ export default function AppHeader({
       <BigContainer className={classes.down}>
         <Tabs
           classNames={{ root: classes.tabs, tabsList: classes.tabsList, tab: classes.tab }}
-          value={router.pathname.split('/')[0] === '' ? 'home' : router.pathname.split('/')[0]}
+          value={router.pathname.split('/')[1] === '' ? 'home' : router.pathname.split('/')[1]}
         >
           <Tabs.List>{tabsItems}</Tabs.List>
         </Tabs>

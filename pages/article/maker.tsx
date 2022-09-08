@@ -12,13 +12,6 @@ function maker() {
       <ArticleMaker />
     </>
   );
-  /**return (
-    <>
-      <Suspense fallback={<Loader />}>
-        <SuspensedArticleMaker />
-      </Suspense>
-    </>
-  );*/
 }
 
 export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
