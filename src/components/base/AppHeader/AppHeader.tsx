@@ -45,6 +45,7 @@ interface AppHeaderProps {
   height?: number;
   buttonText?: string;
   links?: HeaderLinks;
+  display?: 'none' | 'block';
 }
 export default function AppHeader({
   Logo,
@@ -52,6 +53,7 @@ export default function AppHeader({
   links = DEV_HEADER_DATA,
   title,
   height,
+  display,
   buttonText,
 }: AppHeaderProps): JSX.Element {
   const theme = useMantineTheme();
@@ -91,7 +93,7 @@ export default function AppHeader({
   }, [session]);
   console.log(router.pathname);
   return (
-    <Header height={isSmall ? 60 : 100} mb={120}>
+    <Header height={isSmall ? 60 : 100} mb={40} style={{ display }}>
       <BigContainer className={classes.inner}>
         <Group noWrap spacing="xs">
           <HeaderDrawer

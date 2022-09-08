@@ -8,9 +8,10 @@ interface FooterSimpleProps {
   Logo: React.ReactNode;
   title: string;
   links: FooterLinks;
+  display?: 'none' | 'block';
 }
 
-export default function AppFooter({ Logo, title, links }: FooterSimpleProps) {
+export default function AppFooter({ Logo, title, links, display }: FooterSimpleProps) {
   const { classes } = AppFooterStyles();
   const items = links.map((link) => (
     <Anchor<'a'>
@@ -25,7 +26,7 @@ export default function AppFooter({ Logo, title, links }: FooterSimpleProps) {
   ));
 
   return (
-    <footer className={classes.footer}>
+    <footer className={classes.footer} style={{ display }}>
       <BigContainer className={classes.inner}>
         <Group align="center" position="center">
           {Logo}

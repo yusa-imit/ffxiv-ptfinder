@@ -9,8 +9,13 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { SessionProvider } from 'next-auth/react';
 import { NavigationProgress } from '@mantine/nprogress';
+import DEV_TOP_ICON from '@components/icons/DEV_TOP_ICON';
+import { DEV_FOOTER_DATA } from '@constant/DEV/DEV_FOOTER_DATA';
+import { useRouter } from 'next/router';
 import Viewport from './Viewport';
 import { RouterTransition } from '../RouterTransition/RouterTransition';
+import AppHeader from '../AppHeader/AppHeader';
+import AppFooter from '../AppFooter/AppFooter';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -21,6 +26,7 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
     setColorScheme(nextColorScheme);
     setCookies('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
   };
+  const router = useRouter();
   const setSSRCompleted = useSSRCompletedState();
   useEffect(setSSRCompleted, [setSSRCompleted]);
   return (
@@ -36,7 +42,20 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
               <SessionProvider session={pageProps.session}>
                 <Viewport>
                   <RouterTransition />
+                  <AppHeader
+                    Logo={<DEV_TOP_ICON />}
+                    LogoForNav={<DEV_TOP_ICON size="xl" />}
+                    title="DEV_APP_TITLE"
+                    buttonText="DEV_BUTTON_TEXT"
+                    display={router.pathname.split('/')[1] === 'maker' ? 'none' : 'block'}
+                  />
                   <Component {...pageProps} />
+                  <AppFooter
+                    Logo={<DEV_TOP_ICON />}
+                    title="DEV_APP_TITLE"
+                    links={DEV_FOOTER_DATA}
+                    display={router.pathname.split('/')[1] === 'maker' ? 'none' : 'block'}
+                  />
                 </Viewport>
               </SessionProvider>
             </ModalsProvider>

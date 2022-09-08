@@ -2,7 +2,7 @@ import { createStyles } from '@mantine/core';
 
 const AppFooterStyles = createStyles((theme) => ({
   footer: {
-    marginTop: 120,
+    marginTop: 40,
     borderTop: `1px solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
     }`,
