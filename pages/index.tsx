@@ -8,32 +8,19 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { authOptions } from './api/auth/[...nextauth]';
 
-function dev(props: GetStaticProps) {
+function dev(props: unknown) {
   const { t } = useTranslation('common');
   return (
     <>
       <BigContainer size="lg">
         <Stack spacing="xl">
-          <ContentWrapper
-            style={{
-              height: '200px',
-              overflow: 'hidden',
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-              backgroundImage: `url('/banner.jpg')`,
-              backgroundPosition: 'top 30% left',
-              backgroundSize: 'cover',
-            }}
-            withoutBorder
-          >
+          <ContentWrapper>
             <Group>
               <Button>{t('main_button_make_recruit')}</Button>
               <Button>{t('main_button_make_enlist')}</Button>
             </Group>
           </ContentWrapper>
-          <MainSection title={t('main_section_recent_announcement')} />
+          <MainSection title={t('main_section_recent_announcement')} seeMore href="/" />
           <MainSection title={t('main_section_pinned_article')} />
           <MainSection title={t('main_section_recent_article')} />
         </Stack>

@@ -9,20 +9,20 @@ import { useRecoilValue } from 'recoil';
 import { Language } from 'tabler-icons-react';
 
 interface LanguageIconProps extends React.ComponentPropsWithoutRef<'button'> {
-  title: string;
+  title?: string;
 }
 const LanguageIconForwarded = forwardRef<HTMLButtonElement, LanguageIconProps>(
   ({ title, ...others }: LanguageIconProps, ref) => {
     return (
       <UnstyledButton ref={ref} style={{ display: 'block', width: '100%' }} {...others}>
-        <DrawerLinkGroup icon={Language} label={title} />
+        <DrawerLinkGroup icon={Language} label={title || ''} />
       </UnstyledButton>
     );
   }
 );
 
 interface NavLanguageSelectorProps extends MenuProps {
-  title: string;
+  title?: string;
 }
 export default function NavLanguageSelector({ title, ...etc }: NavLanguageSelectorProps) {
   const { t } = useTranslation('data');

@@ -14,8 +14,7 @@ const PaletteIconForwarded = forwardRef<HTMLButtonElement, PalleteIconProps>(
         sx={(theme) => ({
           backgroundColor:
             theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-          color:
-            theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors[app_primary][6],
+          color: theme.colorScheme === 'dark' ? theme.white : theme.colors[app_primary][6],
           '&:hover': {
             backgroundColor:
               theme.colorScheme === 'dark'

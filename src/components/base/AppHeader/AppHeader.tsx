@@ -91,7 +91,6 @@ export default function AppHeader({
   useEffect(() => {
     console.log(session);
   }, [session]);
-  console.log(router.pathname);
   return (
     <Header height={isSmall ? 60 : 100} mb={40} style={{ display }}>
       <BigContainer className={classes.inner}>
@@ -158,7 +157,7 @@ export default function AppHeader({
               <Stack spacing={0}>
                 <NavToggleColorScheme />
                 <NavPrimaryColorPicker />
-                <NavLanguageSelector title={t('nav_lang')} />
+                <NavLanguageSelector />
               </Stack>
             </>
           </HeaderDrawer>
@@ -176,7 +175,7 @@ export default function AppHeader({
         >
           <PrimaryColorPicker className={classes.primary} />
           <SimpleToggleColorSheme className={classes.theme} />
-          <LanguageSelector title={t('nav_lang')} />
+          <LanguageSelector />
           {session ? (
             <UserIconWithMenu
               image={session.user.image as string}

@@ -16,6 +16,7 @@ import Viewport from './Viewport';
 import { RouterTransition } from '../RouterTransition/RouterTransition';
 import AppHeader from '../AppHeader/AppHeader';
 import AppFooter from '../AppFooter/AppFooter';
+import { renderHeader } from '../../../lib/renderHeader';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -47,14 +48,14 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
                     LogoForNav={<DEV_TOP_ICON size="xl" />}
                     title="DEV_APP_TITLE"
                     buttonText="DEV_BUTTON_TEXT"
-                    display={router.pathname.split('/')[1] === 'maker' ? 'none' : 'block'}
+                    display={renderHeader(router)}
                   />
                   <Component {...pageProps} />
                   <AppFooter
                     Logo={<DEV_TOP_ICON />}
                     title="DEV_APP_TITLE"
                     links={DEV_FOOTER_DATA}
-                    display={router.pathname.split('/')[1] === 'maker' ? 'none' : 'block'}
+                    display={renderHeader(router)}
                   />
                 </Viewport>
               </SessionProvider>

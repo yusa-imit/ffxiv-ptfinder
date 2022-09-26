@@ -5,8 +5,14 @@ export const MainSectionStyle = createStyles((theme) => ({
     width: '100%',
     height: 'fit-content',
   },
+  titleGroup: {
+    width: '100%',
+  },
   title: {
     cursor: 'default',
+  },
+  seeMore: {
+    marginLeft: 'auto',
   },
   main: {
     width: '100%',
