@@ -15,7 +15,7 @@ function dev(props: unknown) {
       <BigContainer size="lg">
         <Stack spacing="xl">
           <ContentWrapper>
-            <Group>
+            <Group position="center">
               <Button>{t('main_button_make_recruit')}</Button>
               <Button>{t('main_button_make_enlist')}</Button>
             </Group>
