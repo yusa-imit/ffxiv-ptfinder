@@ -3,6 +3,7 @@ import { Menu, MenuProps } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { forwardRef } from 'react';
 import { Alarm, Article, Logout, Pin, User } from 'tabler-icons-react';
+import { signOut } from 'next-auth/react';
 
 interface ForwardedButtonProps extends React.ComponentPropsWithoutRef<'div'> {
   image: string;
@@ -33,7 +34,13 @@ export default function UserIconWithMenu({ image, name, icon, ...etc }: UserIcon
         <Menu.Item icon={<Pin size={14} />}>{t('user_pinned_articles')}</Menu.Item>
         <Menu.Item icon={<Alarm size={14} />}>{t('user_alarms')}</Menu.Item>
         <Menu.Divider />
-        <Menu.Item color="red" icon={<Logout size={14} />}>
+        <Menu.Item
+          color="red"
+          icon={<Logout size={14} />}
+          onClick={() => {
+            signOut();
+          }}
+        >
           {t('user_logout')}
         </Menu.Item>
       </Menu.Dropdown>
