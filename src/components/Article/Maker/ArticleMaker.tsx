@@ -1,17 +1,13 @@
 import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
 import { useListState } from '@mantine/hooks';
-import { createContext, startTransition, useEffect, useState } from 'react';
-import RTEDynamic from '@components/RTEDynamic';
+import { useEffect, useState } from 'react';
+import Complete from './Phase/Complete/Complete';
 import Phase1 from './Phase/Phase1/Phase1';
 import Phase2 from './Phase/Phase2/Phase2';
 import Phase3 from './Phase/Phase3/Phase3';
 import Phase4 from './Phase/Phase4/Phase4';
 import Phase5 from './Phase/Phase5/Phase5';
-import { PreRender } from './Phase/PreRender';
 import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
-import { RTELoadingContext } from '../RTELoadingContext';
-import LoadingScreen from '../LoadingScreen';
-import Complete from './Phase/Complete/Complete';
 
 export default function ArticleMaker() {
   const [errorMessages, errorMessageHander] = useListState<string>([]);
