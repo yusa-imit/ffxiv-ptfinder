@@ -36,12 +36,12 @@ def findAndCopy(fileName, log=True):
       jp[key] = value
       if(log): print(key+" is added to jp")
 
-  for key in kr:
+  for key in list(kr.keys()):
     if key not in default:
       if log: print('cleaning ' + key + ' from kr')
       del kr[key]
   
-  for key in jp:
+  for key in list(jp.keys()):
     if key not in default:
       if log: print('cleaning ' + key + ' from jp')
       del jp[key]
