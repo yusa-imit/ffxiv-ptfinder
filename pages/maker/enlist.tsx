@@ -7,11 +7,7 @@ import { useEffect } from 'react';
 function enlist() {
   const documentState = useDocumentVisibility();
   useEffect(() => {}, [documentState]);
-  return (
-    <>
-      <ArticleMaker type="enlist" />
-    </>
-  );
+  return <ArticleMaker type="enlist" />;
 }
 
 export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({

@@ -7,11 +7,7 @@ import { useEffect } from 'react';
 function maker() {
   const documentState = useDocumentVisibility();
   useEffect(() => {}, [documentState]);
-  return (
-    <>
-      <ArticleMaker type="recruit" />
-    </>
-  );
+  return <ArticleMaker type="recruit" />;
 }
 
 export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
