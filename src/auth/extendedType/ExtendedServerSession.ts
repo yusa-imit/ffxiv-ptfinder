@@ -1,7 +1,7 @@
+import { Session } from '@auth/next-auth/src';
 import './ExtendedUser';
+import { ExtendedUser } from './ExtendedUser';
 
-declare module 'next-auth' {
-  export interface Session {
-    user: User;
-  }
+export interface ServerSession extends Session {
+  user: ExtendedUser;
 }

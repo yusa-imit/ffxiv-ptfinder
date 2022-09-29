@@ -6,13 +6,17 @@ import ReactCanvasConfetti from 'react-canvas-confetti';
 import { CreateTypes } from 'canvas-confetti';
 import { useViewportSize } from '@mantine/hooks';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
+import { Article } from '@recoil/Article';
 import BigContainer from '../../../../base/BigContainer';
+import { baseUrl } from '../../../../../constant/baseUrl';
 
 export default function Complete() {
   const { t } = useTranslation('article');
   const [loading, setLoading] = useState(false);
   const ref = useRef<CreateTypes | null>(null);
   const { height, width } = useViewportSize();
+  const article = useRecoilValue(Article);
   const getInstance = useCallback(
     (instance: CreateTypes | null) => {
       ref.current = instance;
@@ -60,11 +64,29 @@ export default function Complete() {
     });
   }, [makeShot]);
   useEffect(() => {
+    const fetchArticle = async () => {
+      return fetch(`${baseUrl}/api/dev/pushArticle`, {
+        method: 'POST',
+        body: JSON.stringify({ data: article }),
+      });
+    };
     setLoading(true);
     // TODO
     // Post alg. here
     //axios.post('/');
-    setTimeout(() => setLoading(false), 2500);
+    try {
+      setLoading(true);
+      fetchArticle()
+        .then((res) => {})
+        .catch((res) => {})
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
   }, []);
   useEffect(() => {
     if (loading === false) {

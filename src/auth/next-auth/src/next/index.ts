@@ -111,7 +111,7 @@ export async function unstable_getServerSession(
     options,
     req: {
       host: detectHost(req.headers["x-forwarded-host"]),
-      action: "session",
+      action: "server_session",
       method: "GET",
       cookies: req.cookies,
       headers: req.headers,

@@ -1,9 +1,9 @@
 import { ClientSafeProvider } from 'next-auth/react/types';
+import { User } from 'next-auth';
 
-declare module 'next-auth' {
-  export interface User {
-    provider: string;
-    characters: string[];
-    role: 'user' | 'admin';
-  }
+export interface ExtendedUser extends User {
+  provider: string;
+  characters: string[];
+  role: 'user' | 'admin';
+  [key: string]: any;
 }

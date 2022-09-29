@@ -149,6 +149,11 @@ export async function NextAuthHandler<
         if (session.cookies) cookies.push(...session.cookies)
         return { ...session, cookies } as any
       }
+      case "server_session": {
+        const session = await routes.server_session({options, sessionStore})
+        if(session.cookies) cookies.push(...session.cookies)
+        return {...session, cookies} as any
+      }
       case "csrf":
         return {
           headers: [{ key: "Content-Type", value: "application/json" }],

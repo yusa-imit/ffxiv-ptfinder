@@ -513,6 +513,7 @@ export type NextAuthAction =
   | "verify-request"
   | "error"
   | "_log"
+  | "server_session"
 
 /** @internal */
 export interface InternalOptions<T extends ProviderType = any> {
