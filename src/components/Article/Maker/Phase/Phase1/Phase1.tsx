@@ -19,13 +19,20 @@ import {
 } from '../../../../../type/data/FFXIVInfo';
 import { PhaseStyles } from '../Phase.styles';
 import { PhaseStack } from '../PhaseStack';
+import { defaultArticle } from '../../../../../constant/defaultArticle';
 
 interface Phase1Props {
   errorMessages: string[];
   render: boolean;
   errorMessageHandler: UseListStateHandlers<string>;
+  articleType: 'recruit' | 'enlist';
 }
-export default function Phase1({ render, errorMessages, errorMessageHandler }: Phase1Props) {
+export default function Phase1({
+  render,
+  errorMessages,
+  errorMessageHandler,
+  articleType,
+}: Phase1Props) {
   const DEV_Game_Version = [
     { value: '6', label: '6' },
     { value: '5', label: '5' },
@@ -124,6 +131,20 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
   const [version, setVersion] = useState(DEV_Game_Version[0].value);
   const [patch, setPatch] = useState(Major_Patch[0].value);
 
+  useEffect(() => {
+    const typeCheck = {
+      recruit: 0,
+      enlist: 1,
+    };
+    if (article.articleType !== typeCheck[articleType]) {
+      changeArticle((prev) => {
+        const newArticle = { ...defaultArticle };
+        newArticle.articleType = typeCheck[articleType];
+        return newArticle;
+      });
+    }
+  }, []);
+
   // On Component Renders
   useEffect(() => {
     changeArticle((prev) => {
@@ -186,7 +207,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
           onChange={titleOnChange}
           error={phase1Error.getTitleErrorLabelText()}
         />
-        <WidthLimitedTooltip label={t('phase1_isTemporary_tooltip_label')}>
+        <WidthLimitedTooltip label={t(`phase1_${articleType}_isTemporary_tooltip_label`)}>
           <Group className={classes.responsiveGroup}>
             <Group
               style={{
@@ -201,7 +222,7 @@ export default function Phase1({ render, errorMessages, errorMessageHandler }: P
             </Group>
 
             <Checkbox
-              label={t('phase1_isTemporary_label')}
+              label={t(`phase1_${articleType}_isTemporary_label`)}
               checked={article.isTemporary}
               onChange={(e) => {
                 changeArticle((prev) => {

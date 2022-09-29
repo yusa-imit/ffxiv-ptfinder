@@ -4,12 +4,12 @@ import { Locale } from '@type/Locale';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
 
-function maker() {
+function enlist() {
   const documentState = useDocumentVisibility();
   useEffect(() => {}, [documentState]);
   return (
     <>
-      <ArticleMaker type="recruit" />
+      <ArticleMaker type="enlist" />
     </>
   );
 }
@@ -20,4 +20,4 @@ export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
   },
 });
 
-export default maker;
+export default enlist;

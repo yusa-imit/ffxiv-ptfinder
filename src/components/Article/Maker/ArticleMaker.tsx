@@ -9,7 +9,7 @@ import Phase4 from './Phase/Phase4/Phase4';
 import Phase5 from './Phase/Phase5/Phase5';
 import { ArticleMakerSteppper } from './Stepper/ArticleMakerStepper';
 
-export default function ArticleMaker() {
+export default function ArticleMaker({ type }: { type: 'recruit' | 'enlist' }) {
   const [errorMessages, errorMessageHander] = useListState<string>([]);
   const [step, setStep] = useState(0);
   // Get Embla Carousel Instance;
@@ -47,6 +47,7 @@ export default function ArticleMaker() {
             render={step === 0}
             errorMessages={errorMessages}
             errorMessageHandler={errorMessageHander}
+            articleType={type}
           />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>
@@ -54,6 +55,7 @@ export default function ArticleMaker() {
             render={step === 1}
             errorMessages={errorMessages}
             errorMessageHandler={errorMessageHander}
+            articleType={type}
           />
         </Carousel.Slide>
         <Carousel.Slide style={{ width: '100vw' }}>

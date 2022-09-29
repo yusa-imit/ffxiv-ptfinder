@@ -29,8 +29,14 @@ interface Phase2Props {
   render: boolean;
   errorMessages: string[];
   errorMessageHandler: UseListStateHandlers<string>;
+  articleType: 'recruit' | 'enlist';
 }
-export default function Phase2({ render, errorMessages, errorMessageHandler }: Phase2Props) {
+export default function Phase2({
+  render,
+  errorMessages,
+  errorMessageHandler,
+  articleType,
+}: Phase2Props) {
   const { classes } = PhaseStyles();
   const { t } = useTranslation(['article', 'data']);
   const [article, changeArticle] = useRecoilState(Article);
@@ -147,66 +153,79 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
       //style={{ position: current !== 0 ? 'absolute' : 'relative' }}
     >
       <PhaseStack title={t('phase2_member_title')}>
-        {article.type === 'alliance' && (
-          <HorizontalGroupWithText text={t('phase2_add_party')}>
-            <Text size="sm" weight={500}>
-              {`${t('phase2_current_maximum')} : 3`}
-            </Text>
-            {article.jobs.length !== 3 && (
-              <AddDeleteIcon
-                type="add"
-                label={t('phase2_add_party_add_tooltip')}
-                onClick={() => {
-                  addDeleteButtonHandlerForParty('add');
-                }}
-              />
+        {article.articleType === 0 ? (
+          <>
+            {article.type === 'alliance' && (
+              <HorizontalGroupWithText text={t('phase2_add_party')}>
+                <Text size="sm" weight={500}>
+                  {`${t('phase2_current_maximum')} : 3`}
+                </Text>
+                {article.jobs.length !== 3 && (
+                  <AddDeleteIcon
+                    type="add"
+                    label={t('phase2_add_party_add_tooltip')}
+                    onClick={() => {
+                      addDeleteButtonHandlerForParty('add');
+                    }}
+                  />
+                )}
+                {article.jobs.length !== 1 && (
+                  <AddDeleteIcon
+                    type="delete"
+                    label={t('phase2_add_party_delete_tooltip')}
+                    onClick={() => {
+                      addDeleteButtonHandlerForParty('delete');
+                    }}
+                  />
+                )}
+              </HorizontalGroupWithText>
             )}
-            {article.jobs.length !== 1 && (
-              <AddDeleteIcon
-                type="delete"
-                label={t('phase2_add_party_delete_tooltip')}
-                onClick={() => {
-                  addDeleteButtonHandlerForParty('delete');
-                }}
-              />
-            )}
-          </HorizontalGroupWithText>
-        )}
 
-        {article.jobs.map((party, partyNumber) => (
-          <Stack key={partyNumber}>
-            <Title order={6}>
-              {`${t('phase2_job_selection')}${
-                article.type !== 'alliance'
-                  ? ''
-                  : `: ${t('phase2_job_selection_addition')} ${partyNumber + 1}`
-              }`}
-            </Title>
-            <Group>
-              {party.map((jobs, i) => (
-                <JobSelection jobs={jobs} key={i} index={i} partyNumber={partyNumber} />
-              ))}
-              {party.length < 8 && (
-                <AddDeleteIcon
-                  type="add"
-                  label={t('phase2_job_add_tooltip')}
-                  onClick={() => {
-                    addDeleteButtonHandlerForJobs('add', partyNumber);
-                  }}
-                />
-              )}
-              {party.length !== 1 && (
-                <AddDeleteIcon
-                  type="delete"
-                  label={t('phase2_job_delete_tooltip')}
-                  onClick={() => {
-                    addDeleteButtonHandlerForJobs('delete', partyNumber);
-                  }}
-                />
-              )}
-            </Group>
-          </Stack>
-        ))}
+            {article.jobs.map((party, partyNumber) => (
+              <Stack key={partyNumber}>
+                <Title order={6}>
+                  {`${t('phase2_job_selection')}${
+                    article.type !== 'alliance'
+                      ? ''
+                      : `: ${t('phase2_job_selection_addition')} ${partyNumber + 1}`
+                  }`}
+                </Title>
+                <Group>
+                  {party.map((jobs, i) => (
+                    <JobSelection jobs={jobs} key={i} index={i} partyNumber={partyNumber} />
+                  ))}
+                  {party.length < 8 && (
+                    <AddDeleteIcon
+                      type="add"
+                      label={t('phase2_job_add_tooltip')}
+                      onClick={() => {
+                        addDeleteButtonHandlerForJobs('add', partyNumber);
+                      }}
+                    />
+                  )}
+                  {party.length !== 1 && (
+                    <AddDeleteIcon
+                      type="delete"
+                      label={t('phase2_job_delete_tooltip')}
+                      onClick={() => {
+                        addDeleteButtonHandlerForJobs('delete', partyNumber);
+                      }}
+                    />
+                  )}
+                </Group>
+              </Stack>
+            ))}
+          </>
+        ) : (
+          <>
+            <Stack>
+              <Title order={6}>{t('phase2_my_job_selection')}</Title>
+              <Group>
+                <JobSelection jobs={article.jobs[0][0]} index={0} partyNumber={0} />
+              </Group>
+            </Stack>
+          </>
+        )}
       </PhaseStack>
       <PhaseStack title={t('phase2_static_title')}>
         <HorizontalGroupWithText text={t('phase2_minimum_week_label')}>
@@ -246,7 +265,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
       >
         <HorizontalGroupWithText text={t('phase2_isFirstWeekClear_title')}>
           <Checkbox
-            label={t('phase2_isFirstWeekClear_desc')}
+            label={t(`phase2_${articleType}_isFirstWeekClear_desc`)}
             checked={article.additional.firstWeekClear}
             onChange={(event) => {
               additionalBooleanHander(event, 'firstWeekClear');
@@ -255,7 +274,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         </HorizontalGroupWithText>
         <HorizontalGroupWithText text={t('phase2_worldFirstRace_title')}>
           <Checkbox
-            label={t('phase2_worldFirstRace_desc')}
+            label={t(`phase2_${articleType}_worldFirstRace_desc`)}
             checked={article.additional.worldFirstRace}
             onChange={(event) => {
               additionalBooleanHander(event, 'worldFirstRace');
@@ -265,7 +284,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_isFirstTime_title')}>
           <Checkbox
             disabled={!article.isTemporary}
-            label={t('phase2_isFirstTime_desc')}
+            label={t(`phase2_${articleType}_isFirstTime_desc`)}
             checked={article.additional.firstTime || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'firstTime');
@@ -275,7 +294,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_isHeading_title')}>
           <Checkbox
             disabled={!article.isTemporary}
-            label={t('phase2_isHeading_desc')}
+            label={t(`phase2_${articleType}_isHeading_desc`)}
             checked={article.additional.heading || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'heading');
@@ -285,7 +304,7 @@ export default function Phase2({ render, errorMessages, errorMessageHandler }: P
         <HorizontalGroupWithText text={t('phase2_isFarm_title')}>
           <Checkbox
             disabled={!article.isTemporary}
-            label={t('phase2_isFarm_desc')}
+            label={t(`phase2_${articleType}isFarm_desc`)}
             checked={article.additional.farm || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'farm');
