@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
+import { World } from 'tabler-icons-react';
 import { ArticleData } from '../../../type/data/ArticleData';
 import ArticleBadge from './ArticleBadge';
 import SubTitle from './SubTitle';
@@ -73,22 +74,35 @@ export default function ArticleNodeGenerator(
           <ArticleBadge>DEV_Unending Coil of Bahamut (Extreme)</ArticleBadge>
         </Group>
       ),
-      props: (
-        <Group>
-          <ArticleBadge color={BadgeColor.region}>{`${t('section_default_region')} : ${t(
-            `region_${article.region}`,
-            {
+      props:
+        type === 'full' ? (
+          <Group>
+            <ArticleBadge color={BadgeColor.region}>{`${t('section_default_region')} : ${t(
+              `region_${article.region}`,
+              {
+                ns: 'data',
+              }
+            )}`}</ArticleBadge>
+            <ArticleBadge color={BadgeColor.language}>{`${t('section_default_language')} : ${`${t(
+              `lang_${article.language}`,
+              {
+                ns: 'data',
+              }
+            )}`}`}</ArticleBadge>
+          </Group>
+        ) : (
+          <Group>
+            <ArticleBadge color={BadgeColor.region}>
+              <World />
+              {`${t(`region_${article.region}_alias`, {
+                ns: 'data',
+              })}`}
+            </ArticleBadge>
+            <ArticleBadge color={BadgeColor.language}>{`${`${t(`lang_${article.language}`, {
               ns: 'data',
-            }
-          )}`}</ArticleBadge>
-          <ArticleBadge color={BadgeColor.language}>{`${t('section_default_language')} : ${`${t(
-            `lang_${article.language}`,
-            {
-              ns: 'data',
-            }
-          )}`}`}</ArticleBadge>
-        </Group>
-      ),
+            })}`}`}</ArticleBadge>
+          </Group>
+        ),
     },
     jobs: {
       availables:

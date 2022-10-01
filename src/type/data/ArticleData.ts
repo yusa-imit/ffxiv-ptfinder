@@ -31,6 +31,7 @@ export interface ArticleData {
   author: {
     name: string;
     image?: string;
+    verified: boolean;
   };
   articleType: number;
   status: number;

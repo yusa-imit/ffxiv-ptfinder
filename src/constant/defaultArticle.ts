@@ -4,6 +4,7 @@ export const defaultArticle: ArticleData = {
   author: {
     name: '',
     image: undefined,
+    verified: false,
   },
   articleType: 0,
   status: 0,
