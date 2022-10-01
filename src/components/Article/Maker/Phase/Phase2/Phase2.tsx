@@ -20,6 +20,7 @@ import JobSelection from '@components/Jobs/JobSelection/JobSelection';
 import { UseListStateHandlers } from '@mantine/hooks';
 
 import AddDeleteIcon from '@components/Jobs/Icon/AddDeleteIcon';
+import { JobSort } from '@constant/JobSort';
 import { Article } from '../../../../../recoil/Article/index';
 import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
 import { PhaseStyles } from '../Phase.styles';
@@ -92,6 +93,16 @@ export default function Phase2({
       return newArticle;
     });
   };
+  useEffect(() => {
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newAvail = Array.from(new Set(article.jobs.flat(3)), (v) => v).sort(
+        (a, b) => JobSort[a].sort - JobSort[b].sort
+      );
+      newArticle.availableJobs = newAvail;
+      return newArticle;
+    });
+  }, [article.jobs.flat(3).length]);
   // on number of memeber changes.
   useEffect(() => {
     changeArticle((prev) => {
@@ -304,7 +315,7 @@ export default function Phase2({
         <HorizontalGroupWithText text={t('phase2_isFarm_title')}>
           <Checkbox
             disabled={!article.isTemporary}
-            label={t(`phase2_${articleType}isFarm_desc`)}
+            label={t(`phase2_${articleType}_isFarm_desc`)}
             checked={article.additional.farm || false}
             onChange={(event) => {
               additionalBooleanHander(event, 'farm');

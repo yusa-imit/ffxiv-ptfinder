@@ -25,6 +25,7 @@ export const defaultArticle: ArticleData = {
   content: -1,
   type: 'raid',
   jobs: [[[]]],
+  availableJobs: [],
   minimumWeek: 1,
   additional: {
     heading: false,

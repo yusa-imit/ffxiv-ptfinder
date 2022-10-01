@@ -47,6 +47,7 @@ export interface ArticleData {
   //   [ [], [], [], [], [] ],
   //   [ [], [], [] ]
   // ]
+  availableJobs: Job[];
   minimumWeek: number;
   voiceChat: 0 | 1 | 2;
   additional: {
