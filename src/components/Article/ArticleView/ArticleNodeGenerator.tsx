@@ -43,6 +43,12 @@ interface ArticleViewNode {
   };
   description: ReactNode;
 }
+/**
+ * ArticleView Component's Node generator. Generates detailed components of component 'ArticleView'
+ * @param article ArticleData
+ * @param type 'full' for full-sized view, 'compact' for compact mode
+ * @returns Record<Section_Name_Of_Article_View, ReactNode>
+ */
 export default function ArticleNodeGenerator(
   article: ArticleData,
   type: 'full' | 'compact' = 'full'
