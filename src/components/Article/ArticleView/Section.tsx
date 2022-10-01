@@ -19,7 +19,7 @@ export default function Section({ title, children, ...etc }: SectionProps) {
   const { classes } = style();
   return (
     <Paper shadow="md" className={classes.main} {...etc} withBorder>
-      <Stack>
+      <Stack spacing="md">
         <Text className={classes.title}>{title}</Text>
         {children}
       </Stack>
