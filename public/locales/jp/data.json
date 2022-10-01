@@ -48,5 +48,11 @@
   "day_3": "THU",
   "day_4": "FRI",
   "day_5": "SAT",
-  "day_6": "SUN"
+  "day_6": "SUN",
+  "region_NA_alias": "NA",
+  "region_JP_alias": "JP",
+  "region_KR_alias": "KR",
+  "region_EU_alias": "EU",
+  "region_OA_alias": "OA",
+  "region_CN_alias": "CN"
 }
