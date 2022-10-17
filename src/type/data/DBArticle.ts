@@ -26,14 +26,16 @@ import { Timezone } from './Timezone';
  * @param answerType 0 : 직접 연락, 1: 코멘트, (?2: 시스템으로 연락을 받음?)
  * @param answerAddress (optional) answerType이 2(시스템으로 연락을 받음) 일 경우 연락받을 mail address
  */
-export type ArticleDataWithMeta = {
+
+export type DBArticle = {
   meta: {
     date: number;
     userId: string;
   };
-  article: ArticleData;
+  article: DBArticleData;
 };
-export interface ArticleData {
+
+export interface DBArticleData {
   author: {
     name: string;
     image?: string;
@@ -48,7 +50,7 @@ export interface ArticleData {
   schedule: Schedule;
   content: number;
   type: DungeonType;
-  jobs: Job[][][]; // [[],[]]
+  jobs: string; // [[],[]]
   // [
   //   [ [], [], [] ],
   //   [ [], [], [], [], [] ],
@@ -88,14 +90,14 @@ export interface ArticleData {
  * 2일 경우 : 월화수목금토일 각각 활동시간을 직접 작성. 자료형 : FixedLengthArray<FixedLengthArray<0 | 1, 24>, 7>
  * @param timezone 작성자의 timezone ex) Korean Standard Time, Japan Standard Time
  */
-export interface Schedule {
+interface Schedule {
   writtenInDescription: boolean;
   dateTime?: FixedLengthArray<number, 2>;
   adjustable?: boolean;
   day?: Array<0 | 1>;
   dayPerWeek?: number;
   timeType?: 0 | 1 | 2;
-  time?: string[][];
+  time?: string;
   timezone?: Timezone;
   average?: number;
 }

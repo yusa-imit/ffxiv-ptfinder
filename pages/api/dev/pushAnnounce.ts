@@ -1,10 +1,5 @@
 import { unstable_getServerSession } from '@auth/next-auth/src';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-auth';
-import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
-import '@extType/ExtendedServerSession';
-import { authOptions } from '../auth/[...nextauth]';
-import '@extType/ExtendedAdapterUser';
 
 export default async function pushArticle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(403).json({ message: 'wrong methods' });
