@@ -21,11 +21,11 @@ import { getConverter } from '@lib/firebaseConverter';
 import { AdapterUser } from 'next-auth/adapters';
 import { articleConverToDb } from '@lib/transform/articleConvertToDb';
 import { DBArticle } from '@type/data/DBArticle';
+import { getDB } from '@lib/db/getDB';
 import { ArticleData } from '../../type/data/ArticleData';
 
 export async function pushArticleToFirebase(data: ArticleData, userId: string) {
-  const firebaseApp = initializeApp(firebaseConfig);
-  const db = getFirestore(firebaseApp);
+  const db = getDB();
   const Users = collection(db, 'users').withConverter(getConverter<AdapterUser>());
   const userSnapshot = await getDoc(doc(Users, userId));
   if (!userSnapshot.exists()) throw new Error('User not exists');

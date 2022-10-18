@@ -21,6 +21,7 @@ import {
 import { firebaseConfig } from '@pages/api/auth/api_config';
 import { getConverter } from '@lib/firebaseConverter';
 import { AdapterUser } from 'next-auth/adapters';
+import { getDB } from '@lib/db/getDB';
 import { ArticleData } from '../../type/data/ArticleData';
 import { articleConverToData } from '../transform/articleConvertToData';
 import { DBArticle } from '../../type/data/DBArticle';
@@ -50,14 +51,13 @@ export async function getBulkArticleFromFirebase({
   page?: number;
 }) {
   try {
-    const firebaseApp = initializeApp(firebaseConfig);
-    const db = getFirestore(firebaseApp);
+    const db = getDB();
     const Articles = collection(db, 'articles').withConverter(getConverter<DBArticle>());
     const ArticleLength: number = (await getDoc(doc(Articles, 'counterRefs'))).data()
       .totalCount as number;
     let q = query(Articles, orderBy('meta.date'), limit(number));
     let articlesSnapshot = await getDocs(q);
-    while (page !== 0 && number * page < ArticleLength) {
+    while (page !== 0 || articlesSnapshot.size >= number) {
       q = query(
         Articles,
         orderBy('meta.date'),
