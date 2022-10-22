@@ -58,7 +58,7 @@ export async function getBulkAnnouncementFromFirebase({
     );
     const AnnouncementLength: number = (await getDoc(doc(Announcements, 'counterRefs'))).data()
       .totalCount as number;
-    let q = query(Announcements, orderBy('meta.date'), limit(number));
+    let q = query(Announcements, orderBy('date'), limit(number));
     let AnnouncementsSnapshot = await getDocs(q);
     while (page !== 0) {
       q = query(

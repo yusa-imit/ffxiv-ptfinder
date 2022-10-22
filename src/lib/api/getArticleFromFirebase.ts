@@ -71,7 +71,7 @@ export async function getBulkArticleFromFirebase({
     }
     const returner = [];
     for (let i = 0; i < articlesSnapshot.size; i++) {
-      returner.push(articlesSnapshot.docs[i].data());
+      returner.push(articleConverToData(articlesSnapshot.docs[i].data()));
     }
     return returner;
   } catch (e) {
