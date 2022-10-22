@@ -81,6 +81,7 @@
     "eslint-plugin-storybook": "^0.5.7",
     "eslint-plugin-testing-library": "^5.2.0",
     "jest": "^27.5.1",
+    "memory-cache": "^0.2.0",
     "next-superjson-plugin": "^0.3.0",
     "prettier": "^2.6.2",
     "storybook-addon-turbo-build": "^1.1.0",
