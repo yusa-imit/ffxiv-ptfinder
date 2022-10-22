@@ -2,6 +2,7 @@ import BigContainer from '@components/base/BigContainer';
 import Viewport from '@components/base/GlobalApp/Viewport';
 import ErrorIcon from '@components/icons/ErrorIcon';
 import { MessageList } from '@components/MessageLists/MessageList';
+import { ErrorModalBody, ErrorModalTitle } from '@components/Modal/ErrorModal';
 import { Button, Group, ScrollArea, Stepper, Text, Title, useMantineTheme } from '@mantine/core';
 import { closeAllModals, openConfirmModal, openModal } from '@mantine/modals';
 import { useTranslation } from 'next-i18next';
@@ -36,26 +37,13 @@ export function ArticleMakerSteppper({
     });
   const openErrorModal = () => {
     openModal({
-      title: <Title order={3}>{t('maker_cannot_clickable_modal_title')}</Title>,
+      title: <ErrorModalTitle titleText={t('maker_cannot_clickable_modal_title')} />,
       children: (
-        <>
-          <Text size="sm">{t('maker_cannot_clickable_modal_desc')}</Text>
-          {errorMessages.map((v) => (
-            <Text color="red" size="sm">
-              {v}
-            </Text>
-          ))}
-          <Group position="right" mt={theme.spacing.lg}>
-            <Button
-              color="red"
-              onClick={() => {
-                closeAllModals();
-              }}
-            >
-              {t('maker_cannot_clickable_modal_confirm')}
-            </Button>
-          </Group>
-        </>
+        <ErrorModalBody
+          description={t('maker_cannot_clickable_modal_desc')}
+          errorMessages={errorMessages}
+          confirmText={t('maker_cannot_clickable_modal_confirm')}
+        />
       ),
     });
   };

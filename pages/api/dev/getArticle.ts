@@ -29,7 +29,7 @@ export default async function getArticle(req: NextApiRequest, res: NextApiRespon
     }
   } else if (data.bulk) {
     try {
-      const articles = await getBulkArticleFromFirebase(data.bulk);
+      const articles = await getBulkArticleFromFirebase({ ...data.bulk, type: data.type });
       return res.status(200).json({ message: 'success', data: articles });
     } catch (e) {
       return res.status(401).json({ message: 'API-DB transaction failed.', error: e });

@@ -8,10 +8,13 @@ import { useViewportSize } from '@mantine/hooks';
 import Link from 'next/link';
 import { useRecoilValue } from 'recoil';
 import { Article } from '@recoil/Article';
+import { closeAllModals, openModal } from '@mantine/modals';
+import { ErrorModalBody, ErrorModalTitle } from '@components/Modal/ErrorModal';
 import BigContainer from '../../../../base/BigContainer';
 import { baseUrl } from '../../../../../constant/baseUrl';
 
 export default function Complete() {
+  const [retry, setRetry] = useState(0);
   const { t } = useTranslation('article');
   const [loading, setLoading] = useState(false);
   const ref = useRef<CreateTypes | null>(null);
@@ -74,20 +77,45 @@ export default function Complete() {
     // TODO
     // Post alg. here
     //axios.post('/');
-    try {
-      setLoading(true);
-      fetchArticle()
-        .then((res) => {})
-        .catch((res) => {})
-        .finally(() => {
-          setLoading(false);
+
+    setLoading(true);
+    fetchArticle()
+      .then((res) => {})
+      .catch((res) => {
+        openModal({
+          title: <ErrorModalTitle titleText={t('maker_api_error_modal_title')} />,
+          children: (
+            <ErrorModalBody
+              description={t('maker_api_error_modal_desc')}
+              errorMessages={[res] as string[]}
+            >
+              <Link href="/">
+                <Button
+                  color="red"
+                  onClick={() => {
+                    closeAllModals();
+                  }}
+                >
+                  {t('maker_api_error_modal_button_cancel_go_main')}
+                </Button>
+              </Link>
+              <Button
+                color="green"
+                onClick={() => {
+                  closeAllModals();
+                  setRetry((prev) => prev + 1);
+                }}
+              >
+                {t('maker_api_error_modal_button_retry')}
+              </Button>
+            </ErrorModalBody>
+          ),
         });
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [retry]);
   useEffect(() => {
     if (loading === false) {
       setTimeout(fire, 500);

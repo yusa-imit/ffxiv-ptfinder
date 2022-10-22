@@ -44,17 +44,22 @@ export async function getArticleFromFirebase(articleId: string) {
  * @returns ArticleDataArray
  */
 export async function getBulkArticleFromFirebase({
+  type = 0,
   number = 15,
   page = 0,
 }: {
+  type: 0 | 1;
   number?: number;
   page?: number;
 }) {
   try {
     const db = getDB();
-    const Articles = collection(db, 'articles').withConverter(getConverter<DBArticle>());
+    const ArticleType = type === 0 ? 'recruits' : 'enlists';
+    const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
+    /**
     const ArticleLength: number = (await getDoc(doc(Articles, 'counterRefs'))).data()
       .totalCount as number;
+    */
     let q = query(Articles, orderBy('meta.date'), limit(number));
     let articlesSnapshot = await getDocs(q);
     while (page !== 0 || articlesSnapshot.size >= number) {

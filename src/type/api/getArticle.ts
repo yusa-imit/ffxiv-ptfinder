@@ -1,5 +1,6 @@
 export interface GetArticleBodyType {
   data: {
+    type: 0 | 1;
     id?: string;
     bulk?: {
       number?: number;
