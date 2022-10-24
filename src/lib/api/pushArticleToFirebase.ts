@@ -23,14 +23,12 @@ import { articleConverToDb } from '@lib/transform/articleConvertToDb';
 import { DBArticle } from '@type/data/DBArticle';
 import { getDB } from '@lib/db/getDB';
 import { ArticleData } from '../../type/data/ArticleData';
+import { getUserFromFirebase } from './getUserFromFirebase';
 
 export async function pushArticleToFirebase(data: ArticleData, userId: string) {
   const db = getDB();
-  const Users = collection(db, 'users').withConverter(getConverter<AdapterUser>());
-  const userSnapshot = await getDoc(doc(Users, userId));
   const ArticleType = data.articleType === 0 ? 'recruits' : 'enlists';
-  if (!userSnapshot.exists()) throw new Error('User not exists');
-  const UserData = userSnapshot.data();
+  const UserData = await getUserFromFirebase(userId);
   // TS-Error ignored for user data insertion
   /* eslint-disable no-param-reassign */
   data.author.name = UserData.name;

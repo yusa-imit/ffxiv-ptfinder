@@ -25,9 +25,10 @@ function dev(props: unknown) {
               </Link>
             </Group>
           </ContentWrapper>
-          <MainSection title={t('main_section_recent_announcement')} seeMore href="/" />
-          <MainSection title={t('main_section_pinned_article')} />
-          <MainSection title={t('main_section_recent_article')} />
+          <MainSection title={t('main_section_recent_announcement')} seeMore href="/announce" />
+          <MainSection title={t('main_section_pinned_article')} seeMore href="/article/pinned" />
+          <MainSection title={t('main_section_recent_recruits')} seeMore href="/article/recruits" />
+          <MainSection title={t('main_section_recent_enlists')} seeMore href="/article/enlists" />
         </Stack>
       </BigContainer>
     </>

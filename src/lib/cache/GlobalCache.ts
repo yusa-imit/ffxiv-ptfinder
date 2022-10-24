@@ -13,14 +13,13 @@ export abstract class GlobalCache {
     enlist: 'enlist:',
     announce: 'announce:',
   };
-  static getCache() {
-    if (!this.noCache()) {
-      return this.Cache;
+  static getCache(): CacheClass<string, unknown> {
+    if (this.noCache()) {
+      this.Cache = Cache;
+      this.clearMemSchedule();
+      this.startMemSchedule();
     }
-    this.Cache = Cache;
-    this.clearMemSchedule();
-    this.startMemSchedule();
-    return this.Cache;
+    return this.Cache as CacheClass<string, unknown>;
   }
   static getKey(key: string, prefix?: keyof typeof this.CachePrefixes) {
     return getCacheKey(key, prefix ? this.CachePrefixes[prefix] : undefined);
@@ -44,9 +43,6 @@ export abstract class GlobalCache {
   }
   private static checkMem() {
     if (this.noCache()) return false;
-    if ((this.Cache as typeof Cache).size() > this.CACHE_MEM_LIMIT) {
-      return true;
-    }
-    return false;
+    return (this.Cache as typeof Cache).size() > this.CACHE_MEM_LIMIT;
   }
 }
