@@ -1,6 +1,16 @@
 import { FixedLengthArray } from '../structure/FixedLengthArray';
 import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
+
+export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
+
+export type ArticleDataWithMeta = {
+  meta: {
+    date: number;
+    userId: string;
+  };
+  article: ArticleData;
+};
 /**
  * @interface ArticleData 기사 데이터
  * @param articleType article의 타입 -  0 : 구인, 1: 구직
@@ -26,13 +36,6 @@ import { Timezone } from './Timezone';
  * @param answerType 0 : 직접 연락, 1: 코멘트, (?2: 시스템으로 연락을 받음?)
  * @param answerAddress (optional) answerType이 2(시스템으로 연락을 받음) 일 경우 연락받을 mail address
  */
-export type ArticleDataWithMeta = {
-  meta: {
-    date: number;
-    userId: string;
-  };
-  article: ArticleData;
-};
 export interface ArticleData {
   author: {
     name: string;
