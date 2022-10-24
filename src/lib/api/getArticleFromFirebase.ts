@@ -22,20 +22,44 @@ import { firebaseConfig } from '@pages/api/auth/api_config';
 import { getConverter } from '@lib/firebaseConverter';
 import { AdapterUser } from 'next-auth/adapters';
 import { getDB } from '@lib/db/getDB';
-import { ArticleData } from '../../type/data/ArticleData';
+import { summarizeArticle } from '@lib/transform/summarizeArticle';
+import {
+  ArticleData,
+  ArticleDataSummaryWithMeta,
+  ArticleDataWithMeta,
+} from '../../type/data/ArticleData';
 import { articleConverToData } from '../transform/articleConvertToData';
 import { DBArticle } from '../../type/data/DBArticle';
+import { GlobalCache } from '../cache/GlobalCache';
 
-export async function getArticleFromFirebase(articleId: string) {
-  const firebaseApp = initializeApp(firebaseConfig);
-  const db = getFirestore(firebaseApp);
-  const Articles = collection(db, 'articles').withConverter(getConverter<DBArticle>());
+export async function getArticleFromFirebase(type: 0 | 1, articleId: string) {
+  const cachedValue = GlobalCache.getCache().get(
+    GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist')
+  ) as ArticleDataWithMeta;
+  if (cachedValue !== null) return cachedValue;
+  const db = getDB();
+  const ArticleType = type === 0 ? 'recruits' : 'enlists';
+  const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
   const articleRef = doc(Articles, articleId);
   const articleSnapshot = await getDoc(articleRef);
   if (articleSnapshot.exists() && Articles.converter) {
-    return articleConverToData(Articles.converter.fromFirestore(articleSnapshot));
+    const data = articleConverToData(Articles.converter.fromFirestore(articleSnapshot));
+    data.meta.articleId = articleSnapshot.id;
+    GlobalCache.getCache().put(
+      GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist'),
+      data
+    );
+    return data;
   }
   throw new Error('failed to get article from db');
+}
+
+export async function getArticleSummaryFromFirebase(
+  type: 0 | 1,
+  articleId: string
+): Promise<ArticleDataSummaryWithMeta> {
+  const data = await getArticleFromFirebase(type, articleId);
+  return { meta: data.meta, article: summarizeArticle(data.article) };
 }
 
 /**
@@ -43,7 +67,7 @@ export async function getArticleFromFirebase(articleId: string) {
  * @param options options for retrieving articles
  * @returns ArticleDataArray
  */
-export async function getBulkArticleFromFirebase({
+export async function getBulkArticleSummaryFromFirebase({
   type = 0,
   number = 15,
   page = 0,
@@ -80,7 +104,6 @@ export async function getBulkArticleFromFirebase({
     }
     return returner;
   } catch (e) {
-    console.log(e);
     throw new Error('failed to get article from db');
   }
 }

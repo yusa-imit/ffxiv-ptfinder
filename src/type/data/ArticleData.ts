@@ -3,11 +3,15 @@ import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
 
 export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
-
+export type ArticleDataSummaryWithMeta = {
+  meta: { date: number; userId: string; articleId: string };
+  article: ArticleSummary;
+};
 export type ArticleDataWithMeta = {
   meta: {
     date: number;
     userId: string;
+    articleId: string;
   };
   article: ArticleData;
 };

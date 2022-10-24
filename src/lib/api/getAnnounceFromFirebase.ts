@@ -17,6 +17,7 @@ import {
   serverTimestamp,
   orderBy,
   startAfter,
+  updateDoc,
 } from 'firebase/firestore';
 import { firebaseConfig } from '@pages/api/auth/api_config';
 import { getConverter } from '@lib/firebaseConverter';
