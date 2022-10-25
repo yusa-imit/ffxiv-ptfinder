@@ -28,12 +28,6 @@ import { getUserFromFirebase } from './getUserFromFirebase';
 export async function pushArticleToFirebase(data: ArticleData, userId: string) {
   const db = getDB();
   const ArticleType = data.articleType === 0 ? 'recruits' : 'enlists';
-  const UserData = await getUserFromFirebase(userId);
-  // TS-Error ignored for user data insertion
-  /* eslint-disable no-param-reassign */
-  data.author.name = UserData.name;
-  data.author.verified = UserData.characters.length > 0;
-  data.author.image = UserData.image || undefined;
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
   const articleRef = await addDoc(Articles, {
     meta: {

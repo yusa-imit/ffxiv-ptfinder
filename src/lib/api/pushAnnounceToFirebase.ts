@@ -24,17 +24,15 @@ import { DBArticle } from '@type/data/DBArticle';
 import { getDB } from '@lib/db/getDB';
 import { AnnounceData } from '@type/data/AnnounceData';
 import { ArticleData } from '../../type/data/ArticleData';
+import { getUserFromFirebase } from './getUserFromFirebase';
 
 export async function pushAnnounceToFirebase(data: AnnounceData, userId: string) {
   const db = getDB();
-  const Users = collection(db, 'users').withConverter(getConverter<AdapterUser>());
-  const userSnapshot = await getDoc(doc(Users, userId));
-  if (!userSnapshot.exists()) throw new Error('User not exists');
-  const UserData = userSnapshot.data();
+  const UserData = await getUserFromFirebase(userId);
   if (UserData.role !== 'admin') {
     throw new Error('Not Admin');
   }
-  const Announcement = collection(db, 'articles').withConverter(getConverter<AnnounceData>());
+  const Announcement = collection(db, 'announces').withConverter(getConverter<AnnounceData>());
   const articleRef = await addDoc(Announcement, {
     date: serverTimestamp(),
     type: data.type,

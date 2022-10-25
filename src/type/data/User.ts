@@ -3,6 +3,7 @@ type Verifiable = 'credential' | 'email' | 'google' | 'twitter' | 'line' | 'nave
 export type User = {
   name: string;
   id: string;
+  role: 'user' | 'admin';
   image?: string;
   verify: Verifiable;
   characters: Array<number>;

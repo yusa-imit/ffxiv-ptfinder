@@ -26,11 +26,11 @@ import { getDB } from '@lib/db/getDB';
 import { ArticleData } from '../../type/data/ArticleData';
 import { articleConverToData } from '../transform/articleConvertToData';
 import { DBArticle } from '../../type/data/DBArticle';
-import { AnnounceData } from '../../type/data/AnnounceData';
+import { AnnounceData, AnnounceSummary } from '../../type/data/AnnounceData';
+import { summarizeAnnounce } from '../transform/summarizeAnnounce';
 
 export async function getAnnouncementFromFirebase(AnnouncementId: string) {
-  const firebaseApp = initializeApp(firebaseConfig);
-  const db = getFirestore(firebaseApp);
+  const db = getDB();
   const Announcements = collection(db, 'Announcements').withConverter(getConverter<AnnounceData>());
   const AnnouncementRef = doc(Announcements, AnnouncementId);
   const AnnouncementSnapshot = await getDoc(AnnouncementRef);
@@ -40,45 +40,44 @@ export async function getAnnouncementFromFirebase(AnnouncementId: string) {
   throw new Error('failed to get Announcement from db');
 }
 
+export async function getAnnouncementSummaryFromFirebase(AnnouncementId: string) {
+  const data = await getAnnouncementFromFirebase(AnnouncementId);
+  return summarizeAnnounce(data);
+}
+
 /**
  *
  * @param options options for retrieving Announcements
  * @returns AnnouncementDataArray
  */
-export async function getBulkAnnouncementFromFirebase({
-  number = 15,
+export async function getBulkAnnouncementSummaryFromFirebase({
   page = 0,
+  number = 15,
 }: {
   number?: number;
   page?: number;
 }) {
-  try {
-    const db = getDB();
-    const Announcements = collection(db, 'Announcements').withConverter(
-      getConverter<AnnounceData>()
+  const db = getDB();
+  const Announcements = collection(db, 'Announcements').withConverter(getConverter<AnnounceData>());
+  let q = query(Announcements, orderBy('date'), limit(number));
+  let AnnouncementsSnapshot = await getDocs(q);
+  while (page !== 0) {
+    q = query(
+      Announcements,
+      orderBy('date'),
+      startAfter(AnnouncementsSnapshot.docs[AnnouncementsSnapshot.size - 1]),
+      limit(number)
     );
-    const AnnouncementLength: number = (await getDoc(doc(Announcements, 'counterRefs'))).data()
-      .totalCount as number;
-    let q = query(Announcements, orderBy('date'), limit(number));
-    let AnnouncementsSnapshot = await getDocs(q);
-    while (page !== 0) {
-      q = query(
-        Announcements,
-        orderBy('date'),
-        startAfter(AnnouncementsSnapshot.docs[AnnouncementsSnapshot.size - 1]),
-        limit(number)
-      );
-      // eslint-disable-next-line no-await-in-loop
-      AnnouncementsSnapshot = await getDocs(q);
-      // eslint-disable-next-line no-param-reassign
-      page--;
-    }
-    const returner = [];
-    for (let i = 0; i < AnnouncementsSnapshot.size; i++) {
-      returner.push(AnnouncementsSnapshot.docs[i].data());
-    }
-    return returner;
-  } catch (e) {
-    throw new Error('failed to get Announcement from db');
+    // eslint-disable-next-line no-await-in-loop
+    AnnouncementsSnapshot = await getDocs(q);
+    // eslint-disable-next-line no-param-reassign
+    page--;
   }
+  const returner: Record<string, AnnounceSummary> = {};
+  const promises = AnnouncementsSnapshot.docs.map((v) => getAnnouncementSummaryFromFirebase(v.id));
+  const values = await Promise.all(promises);
+  for (let i = 0; i < promises.length; i++) {
+    returner[AnnouncementsSnapshot.docs[i].id] = values[i];
+  }
+  return returner;
 }
