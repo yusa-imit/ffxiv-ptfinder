@@ -28,14 +28,23 @@ import { articleConverToData } from '../transform/articleConvertToData';
 import { DBArticle } from '../../type/data/DBArticle';
 import { AnnounceData, AnnounceSummary } from '../../type/data/AnnounceData';
 import { summarizeAnnounce } from '../transform/summarizeAnnounce';
+import { GlobalCache } from '../cache/GlobalCache';
 
 export async function getAnnouncementFromFirebase(AnnouncementId: string) {
+  const cachedValue = GlobalCache.getCache().get(
+    GlobalCache.getKey(AnnouncementId, 'announce')
+  ) as null | AnnounceData;
+  if (cachedValue !== null) {
+    return cachedValue;
+  }
   const db = getDB();
-  const Announcements = collection(db, 'Announcements').withConverter(getConverter<AnnounceData>());
+  const Announcements = collection(db, 'announces').withConverter(getConverter<AnnounceData>());
   const AnnouncementRef = doc(Announcements, AnnouncementId);
   const AnnouncementSnapshot = await getDoc(AnnouncementRef);
   if (AnnouncementSnapshot.exists() && Announcements.converter) {
-    return Announcements.converter.fromFirestore(AnnouncementSnapshot);
+    const data = Announcements.converter.fromFirestore(AnnouncementSnapshot);
+    GlobalCache.getCache().put(GlobalCache.getKey(AnnouncementId, 'announce'), data);
+    return data;
   }
   throw new Error('failed to get Announcement from db');
 }
@@ -58,7 +67,7 @@ export async function getBulkAnnouncementSummaryFromFirebase({
   page?: number;
 }) {
   const db = getDB();
-  const Announcements = collection(db, 'Announcements').withConverter(getConverter<AnnounceData>());
+  const Announcements = collection(db, 'announces');
   let q = query(Announcements, orderBy('date'), limit(number));
   let AnnouncementsSnapshot = await getDocs(q);
   while (page !== 0) {
