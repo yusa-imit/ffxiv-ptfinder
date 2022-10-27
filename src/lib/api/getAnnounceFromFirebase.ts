@@ -43,7 +43,11 @@ export async function getAnnouncementFromFirebase(AnnouncementId: string) {
   const AnnouncementSnapshot = await getDoc(AnnouncementRef);
   if (AnnouncementSnapshot.exists() && Announcements.converter) {
     const data = Announcements.converter.fromFirestore(AnnouncementSnapshot);
-    GlobalCache.getCache().put(GlobalCache.getKey(AnnouncementId, 'announce'), data);
+    GlobalCache.getCache().put(
+      GlobalCache.getKey(AnnouncementId, 'announce'),
+      data,
+      GlobalCache.CACHE_TIMEOUT_MS
+    );
     return data;
   }
   throw new Error('failed to get Announcement from db');

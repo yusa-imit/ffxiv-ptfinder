@@ -53,7 +53,8 @@ export async function getArticleFromFirebase(
     data.meta.articleId = articleSnapshot.id;
     GlobalCache.getCache().put(
       GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist'),
-      data
+      data,
+      GlobalCache.CACHE_TIMEOUT_MS
     );
     const userData = await getUserFromFirebase(data.article.userId);
     return [data, userData];

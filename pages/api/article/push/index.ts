@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
 import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
 import '@extType/ExtendedServerSession';
-import { authOptions } from '../auth/[...nextauth]';
+import { authOptions } from '../../auth/[...nextauth]';
 import '@extType/ExtendedAdapterUser';
 
 export default async function pushArticle(req: NextApiRequest, res: NextApiResponse) {
