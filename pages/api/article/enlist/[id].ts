@@ -23,7 +23,7 @@ export default async function getFullArticle(req: NextApiRequest, res: NextApiRe
     try {
       const article = await getArticleFromFirebase(1, id);
       res.setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate');
-      return res.status(200).json({ message: 'success', data: JSON.stringify(article) });
+      return res.status(200).json({ message: 'success', data: article });
     } catch (e) {
       return res.status(401).json({ message: 'API-DB transaction failed', error: e });
     }

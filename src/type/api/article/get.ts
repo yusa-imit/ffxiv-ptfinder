@@ -1,3 +1,6 @@
+import { ArticleDataSummaryWithMeta, ArticleDataWithMeta } from '../../data/ArticleData';
+import { User } from '../../data/User';
+
 export interface GetArticleQueryType {
   id?: string;
   page?: string;
@@ -5,8 +8,14 @@ export interface GetArticleQueryType {
   s?: string;
 }
 
-export interface GetArticleReturnType<T> {
+export interface GetArticleReturnType {
   message: string;
   error?: Error;
-  data?: T;
+  data: [ArticleDataWithMeta, User];
+}
+
+export interface GetArticleBulkReturnType {
+  message: string;
+  error?: Error;
+  data: [Record<string, ArticleDataSummaryWithMeta>, Record<string, User>];
 }

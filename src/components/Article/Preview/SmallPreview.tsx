@@ -1,5 +1,11 @@
 import { Card } from '@mantine/core';
+import { ArticleDataSummaryWithMeta } from '../../../type/data/ArticleData';
+import { User } from '../../../type/data/User';
 
-export default function SmallPreview() {
-  return <Card>a</Card>;
+interface SmallPreviewProps {
+  articleWithMeta: ArticleDataSummaryWithMeta;
+  userData: User;
+}
+export default function SmallPreview({ articleWithMeta, userData }: SmallPreviewProps) {
+  return <Card>{JSON.stringify(articleWithMeta)}</Card>;
 }
