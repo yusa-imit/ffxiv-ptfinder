@@ -43,7 +43,6 @@ export type ArticleDataWithMeta = {
 export interface ArticleData {
   articleType: number;
   status: number;
-  userId: string;
   title: string;
   description: string;
   isTemporary: boolean;

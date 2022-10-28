@@ -41,8 +41,9 @@ export async function getArticleFromFirebase(
   const cachedValue = GlobalCache.getCache().get(
     GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist')
   ) as ArticleDataWithMeta;
-  if (cachedValue !== null)
-    return [cachedValue, await getUserFromFirebase(cachedValue.article.userId)];
+  if (cachedValue !== null) {
+    return [cachedValue, await getUserFromFirebase(cachedValue.meta.userId)];
+  }
   const db = getDB();
   const ArticleType = type === 0 ? 'recruits' : 'enlists';
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
@@ -56,7 +57,8 @@ export async function getArticleFromFirebase(
       data,
       GlobalCache.CACHE_TIMEOUT_MS
     );
-    const userData = await getUserFromFirebase(data.article.userId);
+    const userData = await getUserFromFirebase(data.meta.userId);
+    console.log(userData);
     return [data, userData];
   }
   throw new Error('failed to get article from db');
@@ -70,25 +72,17 @@ export async function getArticleSummaryFromFirebase(
   return [{ meta: data[0].meta, article: summarizeArticle(data[0].article) }, data[1]];
 }
 
-export async function getBulkArticleSummaryFromFirebase({
-  type = 0,
-  page = 0,
-  number = 15,
-}: {
-  type: 0 | 1;
-  number?: number;
-  page?: number;
-}): Promise<[Record<string, ArticleDataSummaryWithMeta>, Record<string, User>]> {
+export async function getBulkArticleSummaryFromFirebase(
+  type: 0 | 1 = 0,
+  page: number = 0,
+  number: number = 15
+): Promise<[Record<string, ArticleDataSummaryWithMeta>, Record<string, User>]> {
   const db = getDB();
   const ArticleType = type === 0 ? 'recruits' : 'enlists';
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
-  /**
-    const ArticleLength: number = (await getDoc(doc(Articles, 'counterRefs'))).data()
-      .totalCount as number;
-    */
   let q = query(Articles, orderBy('meta.date'), limit(number));
   let articlesSnapshot = await getDocs(q);
-  while (page !== 0 || articlesSnapshot.size >= number) {
+  while (page < 0 || articlesSnapshot.size >= number) {
     q = query(
       Articles,
       orderBy('meta.date'),
@@ -105,7 +99,7 @@ export async function getBulkArticleSummaryFromFirebase({
   const promises = articlesSnapshot.docs.map((v) => getArticleSummaryFromFirebase(type, v.id));
   const values = await Promise.all(promises);
   for (let i = 0; i < promises.length; i++) {
-    [articleValue[articlesSnapshot.docs[i].id], userValue[values[i][0].article.userId]] = [
+    [articleValue[articlesSnapshot.docs[i].id], userValue[values[i][0].meta.userId]] = [
       ...values[i],
     ];
   }

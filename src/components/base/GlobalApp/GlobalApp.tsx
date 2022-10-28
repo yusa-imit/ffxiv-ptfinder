@@ -12,6 +12,8 @@ import { NavigationProgress } from '@mantine/nprogress';
 import DEV_TOP_ICON from '@components/icons/DEV_TOP_ICON';
 import { DEV_FOOTER_DATA } from '@constant/DEV/DEV_FOOTER_DATA';
 import { useRouter } from 'next/router';
+import { SWRConfig } from 'swr';
+import { swrFetcher } from '@lib/swrFetcher';
 import Viewport from './Viewport';
 import { RouterTransition } from '../RouterTransition/RouterTransition';
 import AppHeader from '../AppHeader/AppHeader';
@@ -32,37 +34,39 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   useEffect(setSSRCompleted, [setSSRCompleted]);
   return (
     <div dir="ltr">
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider
-          theme={{ primaryColor: app_primary, colorScheme }}
-          withGlobalStyles
-          withNormalizeCSS
-        >
-          <NotificationsProvider>
-            <ModalsProvider>
-              <SessionProvider session={pageProps.session}>
-                <Viewport>
-                  <RouterTransition />
-                  <AppHeader
-                    Logo={<DEV_TOP_ICON />}
-                    LogoForNav={<DEV_TOP_ICON size="xl" />}
-                    title="DEV_APP_TITLE"
-                    buttonText="DEV_BUTTON_TEXT"
-                    display={renderHeader(router)}
-                  />
-                  <Component {...pageProps} />
-                  <AppFooter
-                    Logo={<DEV_TOP_ICON />}
-                    title="DEV_APP_TITLE"
-                    links={DEV_FOOTER_DATA}
-                    display={renderHeader(router)}
-                  />
-                </Viewport>
-              </SessionProvider>
-            </ModalsProvider>
-          </NotificationsProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <SWRConfig value={{ fetcher: swrFetcher }}>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+          <MantineProvider
+            theme={{ primaryColor: app_primary, colorScheme }}
+            withGlobalStyles
+            withNormalizeCSS
+          >
+            <NotificationsProvider>
+              <ModalsProvider>
+                <SessionProvider session={pageProps.session}>
+                  <Viewport>
+                    <RouterTransition />
+                    <AppHeader
+                      Logo={<DEV_TOP_ICON />}
+                      LogoForNav={<DEV_TOP_ICON size="xl" />}
+                      title="DEV_APP_TITLE"
+                      buttonText="DEV_BUTTON_TEXT"
+                      display={renderHeader(router)}
+                    />
+                    <Component {...pageProps} />
+                    <AppFooter
+                      Logo={<DEV_TOP_ICON />}
+                      title="DEV_APP_TITLE"
+                      links={DEV_FOOTER_DATA}
+                      display={renderHeader(router)}
+                    />
+                  </Viewport>
+                </SessionProvider>
+              </ModalsProvider>
+            </NotificationsProvider>
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </SWRConfig>
     </div>
   );
 }

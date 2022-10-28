@@ -19,6 +19,7 @@ import {
 import { User } from '@type/data/User';
 import { GlobalCache } from '../cache/GlobalCache';
 import { getDB } from '../db/getDB';
+import '@extType/ExtendedUser';
 
 export async function getUserFromFirebase(userId: string) {
   const cachedValue = GlobalCache.getCache().get(GlobalCache.getKey(userId, 'user')) as User | null;
