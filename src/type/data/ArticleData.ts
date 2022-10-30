@@ -4,8 +4,8 @@ import { Timezone } from './Timezone';
 
 export type ArticleMeta = {
   date: {
-    second: number;
-    millisecond: number;
+    seconds: number;
+    nanoseconds: number;
   };
   userId: string;
   articleId: string;

@@ -58,7 +58,7 @@ export default function ArticleNodeGenerator(
   const { t } = useTranslation(['article_view', 'data']);
   return {
     title: (
-      <Title order={type === 'full' ? 1 : 4} style={{ wordBreak: 'break-word', lineBreak: 'auto' }}>
+      <Title order={type === 'full' ? 1 : 3} style={{ wordBreak: 'break-word', lineBreak: 'auto' }}>
         {article.title}
       </Title>
     ),
@@ -103,7 +103,7 @@ export default function ArticleNodeGenerator(
             )}`}`}</ArticleBadge>
           </Group>
         ) : (
-          <Group>
+          <Group spacing={2}>
             <ArticleBadge color={BadgeColor.region} tooltip={t('section_default_region')}>
               <Group
                 sx={(theme) => ({
@@ -164,7 +164,7 @@ export default function ArticleNodeGenerator(
     },
     details: {
       essentials: (
-        <Group>
+        <Group spacing={2}>
           <ArticleBadge color={BadgeColor.minimumWeek}>{`${t(
             'section_details_essentials_minimum_week'
           )} : ${article.minimumWeek}`}</ArticleBadge>
@@ -174,7 +174,7 @@ export default function ArticleNodeGenerator(
         </Group>
       ),
       additionals: (
-        <Group>
+        <Group spacing={2}>
           {!article.additional.boxNumber &&
             !article.additional.farm &&
             !article.additional.firstTime &&
@@ -212,7 +212,7 @@ export default function ArticleNodeGenerator(
         </Group>
       ),
       languageRestrictions: (
-        <Group>
+        <Group spacing={2}>
           {article.specifyUserLanguage && article.specifyUserLanguage.length !== 0 ? (
             article.specifyUserLanguage.map((language) => (
               <ArticleBadge color={BadgeColor.langRestriction}>
