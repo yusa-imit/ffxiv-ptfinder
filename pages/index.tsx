@@ -42,7 +42,7 @@ function dev(props: unknown) {
 
 export const getServerSideProps = async (context: any) => ({
   props: {
-    ...(await serverSideTranslations(context.locale, ['common', 'data', 'nav'])),
+    ...(await serverSideTranslations(context.locale, ['common', 'data', 'nav', 'article_view'])),
     session: await unstable_getServerSession(context.req, context.res, authOptions),
   },
 });

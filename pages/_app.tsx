@@ -1,12 +1,14 @@
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
 import { ColorScheme, MantineThemeColors } from '@mantine/core';
 import { AppProps } from 'next/app';
 import { getCookie } from 'cookies-next';
 import Head from 'next/head';
 import { RecoilRoot } from 'recoil';
 import { appWithTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GlobalApp } from '../src/components/base/GlobalApp/GlobalApp';
 import nextI18NextConfig from '../next-i18next.config';
+import { getServerSideProps } from './index';
 
 function App(props: AppProps & { colorScheme: ColorScheme }) {
   return (
@@ -23,7 +25,7 @@ function App(props: AppProps & { colorScheme: ColorScheme }) {
   );
 }
 
-App.getInitialProps = ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
+App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
   colorScheme: getCookie('mantine-color-scheme', ctx) || 'light',
 });
 

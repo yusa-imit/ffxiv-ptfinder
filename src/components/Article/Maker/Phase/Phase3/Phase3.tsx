@@ -157,13 +157,11 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
   }, [article]);
 
   useEffect(() => {
-    if (article.schedule.timezone !== undefined) return;
+    if (article.timezone !== undefined) return;
     const setNewArticle = (value: Timezone) => {
       changeArticle((prev) => {
         const newArticle = { ...prev };
-        const newSchedule = { ...newArticle.schedule };
-        newSchedule.timezone = value;
-        newArticle.schedule = newSchedule;
+        newArticle.timezone = value;
         return newArticle;
       });
     };
@@ -284,9 +282,14 @@ export default function Phase3({ render, errorMessages, errorMessageHandler }: P
           <Select
             data={SelectData.timezoneData}
             searchable
-            value={article.schedule.timezone}
+            value={article.timezone}
             onChange={(value) => {
-              handleSchduleChange(['timezone'], [value]);
+              changeArticle((prev) => {
+                const newArticle = { ...prev };
+                newArticle.timezone = value as Timezone;
+                return newArticle;
+              });
+              //handleSchduleChange(['timezone'], [value]);
             }}
             sx={(theme) => ({
               width: '100%',

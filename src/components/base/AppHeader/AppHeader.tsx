@@ -85,7 +85,7 @@ export default function AppHeader({
   const tabs = ['home', 'article', 'support', 'account', 'settings'];
   const tabsItems = tabs.map((v) => (
     <Tabs.Tab value={v} key={v}>
-      {t(`nav_tab_${v}`)}
+      {t(`nav_tab_${v}`, { ns: 'nav' })}
     </Tabs.Tab>
   ));
   useEffect(() => {

@@ -64,11 +64,11 @@ export default function ArticleView({ article }: ArticleViewProps) {
           <Section title={t('section_schedules_title')}>
             <SubGroup>
               <SubTitle>{t('section_schedules_article_timezone')}</SubTitle>
-              {ArticleNode.schedule.timezone}
+              {ArticleNode.schedule!.timezone}
             </SubGroup>
             <SubGroup>
               <SubTitle>{t('section_schedules_summary')}</SubTitle>
-              {ArticleNode.schedule.summary}
+              {ArticleNode.schedule!.summary}
             </SubGroup>
           </Section>
           <Section title={t('section_description_title')}>{ArticleNode.description}</Section>

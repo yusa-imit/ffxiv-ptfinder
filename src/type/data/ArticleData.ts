@@ -2,17 +2,21 @@ import { FixedLengthArray } from '../structure/FixedLengthArray';
 import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
 
+export type ArticleMeta = {
+  date: {
+    second: number;
+    millisecond: number;
+  };
+  userId: string;
+  articleId: string;
+};
 export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
 export type ArticleDataSummaryWithMeta = {
-  meta: { date: number; userId: string; articleId: string };
+  meta: ArticleMeta;
   article: ArticleSummary;
 };
 export type ArticleDataWithMeta = {
-  meta: {
-    date: number;
-    userId: string;
-    articleId: string;
-  };
+  meta: ArticleMeta;
   article: ArticleData;
 };
 /**
@@ -71,6 +75,7 @@ export interface ArticleData {
   specifyUserLanguage?: Language[];
   answerType: 0 | 1 | 2;
   answerAddress?: string;
+  timezone: Timezone;
 }
 
 /**
@@ -97,6 +102,5 @@ export interface Schedule {
   dayPerWeek?: number;
   timeType?: 0 | 1 | 2;
   time?: string[][];
-  timezone?: Timezone;
   average?: number;
 }

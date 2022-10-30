@@ -18,12 +18,13 @@ import {
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 import { World } from 'tabler-icons-react';
-import { ArticleData } from '../../../type/data/ArticleData';
+import { ArticleData, ArticleSummary } from '../../../type/data/ArticleData';
 import ArticleBadge from './ArticleBadge';
 import SubTitle from './SubTitle';
 
 interface ArticleViewNode {
   title: ReactNode;
+  status: ReactNode;
   default: {
     isTemporary: ReactNode;
     dungeon: ReactNode;
@@ -38,11 +39,11 @@ interface ArticleViewNode {
     additionals: ReactNode;
     languageRestrictions: ReactNode;
   };
-  schedule: {
+  schedule?: {
     timezone: ReactNode;
     summary: ReactNode;
   };
-  description: ReactNode;
+  description?: ReactNode;
 }
 /**
  * ArticleView Component's Node generator. Generates detailed components of component 'ArticleView'
@@ -51,7 +52,7 @@ interface ArticleViewNode {
  * @returns Record<Section_Name_Of_Article_View, ReactNode>
  */
 export default function ArticleNodeGenerator(
-  article: ArticleData,
+  article: ArticleData | ArticleSummary,
   type: 'full' | 'compact' = 'full'
 ): ArticleViewNode {
   const { t } = useTranslation(['article_view', 'data']);
@@ -60,6 +61,17 @@ export default function ArticleNodeGenerator(
       <Title order={type === 'full' ? 1 : 4} style={{ wordBreak: 'break-word', lineBreak: 'auto' }}>
         {article.title}
       </Title>
+    ),
+    status: (
+      <Group>
+        {article.status === 0 ? (
+          <ArticleBadge color="green">{t('section_status_green')}</ArticleBadge>
+        ) : article.status === 1 ? (
+          <ArticleBadge>{t('section_status_red')}</ArticleBadge>
+        ) : (
+          <ArticleBadge color="yellow">{t('section_status_yellow')}</ArticleBadge>
+        )}
+      </Group>
     ),
     default: {
       isTemporary: article.isTemporary && (
@@ -92,13 +104,25 @@ export default function ArticleNodeGenerator(
           </Group>
         ) : (
           <Group>
-            <ArticleBadge color={BadgeColor.region}>
-              <World />
-              {`${t(`region_${article.region}_alias`, {
-                ns: 'data',
-              })}`}
+            <ArticleBadge color={BadgeColor.region} tooltip={t('section_default_region')}>
+              <Group
+                sx={(theme) => ({
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                })}
+                spacing={2}
+              >
+                <World size={16} />
+                {`${t(`region_${article.region}_alias`, {
+                  ns: 'data',
+                })}`}
+              </Group>
             </ArticleBadge>
-            <ArticleBadge color={BadgeColor.language}>{`${`${t(`lang_${article.language}`, {
+            <ArticleBadge
+              color={BadgeColor.language}
+              tooltip={t('section_default_language')}
+            >{`${`${t(`lang_${article.language}`, {
               ns: 'data',
             })}`}`}</ArticleBadge>
           </Group>
@@ -201,162 +225,179 @@ export default function ArticleNodeGenerator(
         </Group>
       ),
     },
-    schedule: {
-      timezone: article.schedule.timezone && (
-        <Group>
-          <ArticleBadge
-            color={BadgeColor.timezone}
-            tooltip={timezone(article.schedule.timezone).displayName}
-          >
-            {timezone(article.schedule.timezone).Abbreviation}
-          </ArticleBadge>
-        </Group>
-      ),
-      summary: article.schedule.writtenInDescription ? (
-        <Text>{t('section_schedules_writtenInDescription')}</Text>
-      ) : (
-        <Stack>
-          {article.isTemporary && article.schedule.dateTime ? (
+    schedule: !Object.hasOwn(article, 'schedule')
+      ? undefined
+      : {
+          timezone: article.timezone && (
             <Group>
-              <Text>{`${TimeFunctions.fromDateToString(
-                // @ts-ignore client forces this properties not as undefined if isTemporary property is true
-                TimeFunctions.unixTimestampToDay(article.schedule.dateTime[0])
-              )} ~ ${TimeFunctions.fromDateToString(
-                // @ts-ignore
-                TimeFunctions.unixTimestampToDay(article.schedule.dateTime[1])
-              )}`}</Text>
+              <ArticleBadge
+                color={BadgeColor.timezone}
+                tooltip={timezone(article.timezone).displayName}
+              >
+                {timezone(article.timezone).Abbreviation}
+              </ArticleBadge>
             </Group>
+          ),
+          summary: (article as ArticleData).schedule.writtenInDescription ? (
+            <Text>{t('section_schedules_writtenInDescription')}</Text>
           ) : (
-            <Group>
-              {article.schedule.dayPerWeek && (
-                <ArticleBadge color={BadgeColor.dayPerWeek}>{`${t(
-                  'section_schedules_dayPerWeek'
-                )}: ${article.schedule.dayPerWeek}`}</ArticleBadge>
-              )}
-              {article.schedule.day && article.schedule.day.length !== 0 && (
-                <ArticleBadge color={BadgeColor.day}>{`${t(
-                  'section_schedules_day'
-                )}: ${article.schedule.day
-                  .map((v, i) => {
-                    if (v === 0) return '';
-                    return t(`day_${i}`, { ns: 'data' });
-                  })
-                  .filter((v) => v !== '')
-                  .join(', ')}`}</ArticleBadge>
-              )}
-              {article.schedule.average && article.schedule.average !== 0 && (
-                <ArticleBadge color={BadgeColor.average}>{`${t('section_schedules_average')}: ${
-                  article.schedule.average
-                }`}</ArticleBadge>
-              )}
-              {article.schedule.adjustable && (
+            <Stack>
+              {article.isTemporary && (article as ArticleData).schedule.dateTime ? (
                 <Group>
-                  {article.schedule.adjustable && (
-                    <ArticleBadge color={BadgeColor.adjustable}>
-                      {t('section_schedules_adjustable')}
-                    </ArticleBadge>
+                  <Text>{`${TimeFunctions.fromDateToString(
+                    // @ts-ignore client forces this properties not as undefined if isTemporary property is true
+                    TimeFunctions.unixTimestampToDay(article.schedule.dateTime[0])
+                  )} ~ ${TimeFunctions.fromDateToString(
+                    // @ts-ignore
+                    TimeFunctions.unixTimestampToDay(article.schedule.dateTime[1])
+                  )}`}</Text>
+                </Group>
+              ) : (
+                <Group>
+                  {(article as ArticleData).schedule.dayPerWeek && (
+                    <ArticleBadge color={BadgeColor.dayPerWeek}>{`${t(
+                      'section_schedules_dayPerWeek'
+                    )}: ${(article as ArticleData).schedule.dayPerWeek}`}</ArticleBadge>
+                  )}
+                  {(article as ArticleData).schedule.day &&
+                    (article as ArticleData).schedule.day!.length !== 0 && (
+                      <ArticleBadge color={BadgeColor.day}>{`${t('section_schedules_day')}: ${(
+                        article as ArticleData
+                      ).schedule
+                        .day!.map((v, i) => {
+                          if (v === 0) return '';
+                          return t(`day_${i}`, { ns: 'data' });
+                        })
+                        .filter((v) => v !== '')
+                        .join(', ')}`}</ArticleBadge>
+                    )}
+                  {(article as ArticleData).schedule.average &&
+                    (article as ArticleData).schedule.average !== 0 && (
+                      <ArticleBadge color={BadgeColor.average}>{`${t(
+                        'section_schedules_average'
+                      )}: ${(article as ArticleData).schedule.average}`}</ArticleBadge>
+                    )}
+                  {(article as ArticleData).schedule.adjustable && (
+                    <Group>
+                      {(article as ArticleData).schedule.adjustable && (
+                        <ArticleBadge color={BadgeColor.adjustable}>
+                          {t('section_schedules_adjustable')}
+                        </ArticleBadge>
+                      )}
+                    </Group>
                   )}
                 </Group>
               )}
-            </Group>
-          )}
-          {article.schedule.time &&
-          article.schedule.time.flat(3).filter((v) => v !== '-1').length !== 0 ? (
-            <Stack>
-              <SubTitle>{t('section_schedules_detail')}</SubTitle>
-              <Table
-                sx={(theme) => ({
-                  maxWidth: '100%',
-                })}
-              >
-                <thead>
-                  <tr>
-                    <th>{t('section_schedules_time_table_label_day')}</th>
-                    <th>{t('section_schedules_time_table_label_start_time')}</th>
-                    <th>{t('section_schedules_time_table_label_end_time')}</th>
-                    <th>{t('section_schedules_time_table_label_activity_time')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {article.schedule.time.map((day, i) => {
-                    if (day[0] === '-1' && day[1] === '-1') return;
-                    const [startHour, startMinute] = Array.from(day[0].split(':'), (v) =>
-                      Number(v)
-                    );
-                    const [endHour, endMinute] = Array.from(day[1].split(':'), (v) => Number(v));
-                    const diff =
-                      startHour === -1 ||
-                      endHour === -1 ||
-                      startMinute === undefined ||
-                      endMinute === undefined
-                        ? t('section_schedules_time_table_diff_unavailable')
-                        : `${
-                            startHour < endHour ||
-                            (startHour === endHour && startMinute < endMinute)
-                              ? Number(
-                                  (endHour + endMinute / 60 - startHour - startMinute / 60).toFixed(
-                                    1
-                                  )
-                                )
-                              : Number(
-                                  (
-                                    24 +
-                                    endHour +
-                                    endMinute / 60 -
-                                    startHour -
-                                    startMinute / 60
-                                  ).toFixed(1)
-                                )
-                          } ${t('section_schedules_time_table_diff_hours')}`;
-                    // eslint-disable-next-line consistent-return
-                    return (
-                      <tr key={i}>
-                        <td>
-                          {t(`section_schedules_time_table_type_${article.schedule.timeType}_${i}`)}
-                        </td>
-                        <td>
-                          {startHour !== -1 && startMinute !== undefined
-                            ? `${startHour}:${startMinute < 10 ? `0${startMinute}` : startMinute}`
-                            : `${t('section_schedules_time_table_time_not_specified')}`}
-                        </td>
-                        <td>
-                          {endHour !== -1 && endMinute !== undefined
-                            ? `${endHour}:${endMinute < 10 ? `0${endMinute}` : endMinute}`
-                            : `${t('section_schedules_time_table_time_not_specified')}`}
-                        </td>
-                        <td>{diff}</td>
+              {(article as ArticleData).schedule.time &&
+              (article as ArticleData).schedule.time!.flat(3).filter((v) => v !== '-1').length !==
+                0 ? (
+                <Stack>
+                  <SubTitle>{t('section_schedules_detail')}</SubTitle>
+                  <Table
+                    sx={(theme) => ({
+                      maxWidth: '100%',
+                    })}
+                  >
+                    <thead>
+                      <tr>
+                        <th>{t('section_schedules_time_table_label_day')}</th>
+                        <th>{t('section_schedules_time_table_label_start_time')}</th>
+                        <th>{t('section_schedules_time_table_label_end_time')}</th>
+                        <th>{t('section_schedules_time_table_label_activity_time')}</th>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
+                    </thead>
+                    <tbody>
+                      {(article as ArticleData).schedule.time!.map((day, i) => {
+                        if (day[0] === '-1' && day[1] === '-1') return;
+                        const [startHour, startMinute] = Array.from(day[0].split(':'), (v) =>
+                          Number(v)
+                        );
+                        const [endHour, endMinute] = Array.from(day[1].split(':'), (v) =>
+                          Number(v)
+                        );
+                        const diff =
+                          startHour === -1 ||
+                          endHour === -1 ||
+                          startMinute === undefined ||
+                          endMinute === undefined
+                            ? t('section_schedules_time_table_diff_unavailable')
+                            : `${
+                                startHour < endHour ||
+                                (startHour === endHour && startMinute < endMinute)
+                                  ? Number(
+                                      (
+                                        endHour +
+                                        endMinute / 60 -
+                                        startHour -
+                                        startMinute / 60
+                                      ).toFixed(1)
+                                    )
+                                  : Number(
+                                      (
+                                        24 +
+                                        endHour +
+                                        endMinute / 60 -
+                                        startHour -
+                                        startMinute / 60
+                                      ).toFixed(1)
+                                    )
+                              } ${t('section_schedules_time_table_diff_hours')}`;
+                        // eslint-disable-next-line consistent-return
+                        return (
+                          <tr key={i}>
+                            <td>
+                              {t(
+                                `section_schedules_time_table_type_${
+                                  (article as ArticleData).schedule.timeType
+                                }_${i}`
+                              )}
+                            </td>
+                            <td>
+                              {startHour !== -1 && startMinute !== undefined
+                                ? `${startHour}:${
+                                    startMinute < 10 ? `0${startMinute}` : startMinute
+                                  }`
+                                : `${t('section_schedules_time_table_time_not_specified')}`}
+                            </td>
+                            <td>
+                              {endHour !== -1 && endMinute !== undefined
+                                ? `${endHour}:${endMinute < 10 ? `0${endMinute}` : endMinute}`
+                                : `${t('section_schedules_time_table_time_not_specified')}`}
+                            </td>
+                            <td>{diff}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Stack>
+              ) : (
+                <Text>{t('section_schedules_time_table_not_specified')}</Text>
+              )}
             </Stack>
-          ) : (
-            <Text>{t('section_schedules_time_table_not_specified')}</Text>
-          )}
-        </Stack>
-      ),
-    },
-    description:
-      article.description.replace(/(<([^>]+)>)/gi, '') === '' ? (
-        <Text>{t('section_description_no_description_provided')}</Text>
-      ) : (
-        <Center>
-          <Paper
-            withBorder
-            sx={(theme) => ({
-              padding: theme.spacing.md,
-              width: '90%',
-              [theme.fn.smallerThan('sm')]: {
-                width: '100%',
-              },
-            })}
-          >
-            <TypographyStylesProvider>
-              <div dangerouslySetInnerHTML={{ __html: article.description }} />
-            </TypographyStylesProvider>
-          </Paper>
-        </Center>
-      ),
+          ),
+        },
+    description: !Object.hasOwn(article, 'description') ? undefined : (
+        article as ArticleData
+      ).description.replace(/(<([^>]+)>)/gi, '') === '' ? (
+      <Text>{t('section_description_no_description_provided')}</Text>
+    ) : (
+      <Center>
+        <Paper
+          withBorder
+          sx={(theme) => ({
+            padding: theme.spacing.md,
+            width: '90%',
+            [theme.fn.smallerThan('sm')]: {
+              width: '100%',
+            },
+          })}
+        >
+          <TypographyStylesProvider>
+            <div dangerouslySetInnerHTML={{ __html: (article as ArticleData).description }} />
+          </TypographyStylesProvider>
+        </Paper>
+      </Center>
+    ),
   };
 }
