@@ -51,5 +51,12 @@
   "section_schedules_adjustable": "Schedule Adjustable",
   "section_schedules_average": "Average time per day",
   "section_description_title": "Description",
-  "section_description_no_description_provided": "No description provided."
+  "section_description_no_description_provided": "No description provided.",
+  "section_status_green": "Incomplete",
+  "section_status_yellow": "Warning",
+  "section_status_red": "Complete",
+  "preview_open_jobs": "Open job tags",
+  "preview_close_jobs": "Close job tags",
+  "preview_open_detail_tags": "Open detailed tags",
+  "preview_close_detail_tags": "Close detailed tags"
 }

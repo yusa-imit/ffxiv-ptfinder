@@ -1,1 +1,12 @@
-{}
+{
+  "nav_tab_home": "Home",
+  "nav_tab_article": "Article",
+  "nav_tab_support": "Support",
+  "nav_tab_account": "Account",
+  "nav_tab_settings": "Setting",
+  "user_account": "Account",
+  "user_my_articles": "My articles",
+  "user_pinned_articles": "Pinned articles",
+  "user_alarms": "Alarms",
+  "user_logout": "Log out"
+}

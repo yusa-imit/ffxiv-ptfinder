@@ -1,1 +1,9 @@
-{}
+{
+  "main_section_recent_announcement": "Recent Announcements",
+  "main_section_pinned_article": "Pinned Articles",
+  "main_section_recent_recruits": "Recent Recruits",
+  "main_section_recent_enlists": "Recent Enlists",
+  "main_button_make_recruit": "Create recruit article",
+  "main_button_make_enlist": "Create enlist article",
+  "see_more": "See More"
+}
