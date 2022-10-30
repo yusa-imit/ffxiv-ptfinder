@@ -58,5 +58,12 @@
   "preview_open_jobs": "Open job tags",
   "preview_close_jobs": "Close job tags",
   "preview_open_detail_tags": "Open detailed tags",
-  "preview_close_detail_tags": "Close detailed tags"
+  "preview_close_detail_tags": "Close detailed tags",
+  "click_user_fore_text": "Article created by",
+  "click_user_to_inspect": "Inspect this user by click",
+  "preview_tag_available_jobs": "Available Jobs",
+  "preview_tag_positions": "Positions",
+  "preview_tag_essentials": "Essentials",
+  "preview_tag_additionals": "Additionals",
+  "preview_tag_lang_restrict": "Language Restriction"
 }
