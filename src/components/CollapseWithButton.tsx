@@ -1,4 +1,4 @@
-import { Collapse, CollapseProps, createStyles, UnstyledButton } from '@mantine/core';
+import { Collapse, CollapseProps, createStyles, Sx, UnstyledButton } from '@mantine/core';
 import { ReactNode, useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
@@ -23,12 +23,14 @@ interface CollapseWithButtonProps {
   textOpen: string;
   textClose: string;
   children: ReactNode;
+  sx?: Sx;
 }
 
 export function CollapseWithButton({
   defaultState,
   textOpen,
   textClose,
+  sx,
   children,
 }: CollapseWithButtonProps) {
   const [open, setOpen] = useState(defaultState);
@@ -36,7 +38,8 @@ export function CollapseWithButton({
   return (
     <>
       <UnstyledButton
-        className={classes.button}
+        sx={sx}
+        className={sx ? undefined : classes.button}
         onClick={() => {
           setOpen((p) => !p);
         }}

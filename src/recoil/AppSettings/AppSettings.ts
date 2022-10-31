@@ -4,7 +4,9 @@ import { AppSettingsType } from '@type/Settings';
 import { persistAtomEffect } from '../SSR/persistAtomEffect';
 
 const defaultValue: AppSettingsType = {
-  previewDetail: true,
+  preview_tag_detailed_reveal_as_default: false,
+  preview_tag_job_reveal_as_default: false,
+  preview_tag_reveal_as_default: false,
 };
 
 export const AppSettings = atom<AppSettingsType>({
