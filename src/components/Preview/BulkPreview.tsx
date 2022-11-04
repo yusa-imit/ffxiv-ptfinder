@@ -1,4 +1,5 @@
 import SmallPreview from '@components/Article/Preview/SmallPreview';
+import ArticlePrevSkeleton from '@components/Skeletons/ArticlePrevSkeleton';
 import { Stack } from '@mantine/core';
 import { ArticleDataWithMeta } from '@type/data/ArticleData';
 import { useSWRBulkArticle, useSWRBulkArticleMainPage } from 'src/hook/swr/useSWRArticle';
@@ -23,7 +24,14 @@ function PreviewArticle({ type, withPage }: PreviewArticleProps) {
     withPage?.number
   );
   if (isError) return <></>;
-  if (isLoading) return <></>;
+  if (isLoading)
+    return (
+      <Stack>
+        {new Array(withPage && withPage.number ? withPage.number : 5).fill(null).map((v, i) => (
+          <ArticlePrevSkeleton key={i} />
+        ))}
+      </Stack>
+    );
   return (
     <Stack>
       {Object.keys(articles!).map((v) => (
@@ -45,7 +53,7 @@ interface PreviewProps {
   };
 }
 
-export function Preview({ type, withPage, ...etc }: PreviewProps) {
+export function BulkPreview({ type, withPage, ...etc }: PreviewProps) {
   return type === 'announce' ? (
     <PreviewAnnounce type={type} {...etc} />
   ) : (

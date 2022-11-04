@@ -22,7 +22,7 @@ export function useSWRBulkArticle(type: 'recruit' | 'enlist', page?: number, num
   const query: Record<string, number | undefined> = { page, number };
   const uriString = Object.keys(query)
     .map((v) => {
-      if (!query[v]) return `${v}=${query[v]}`;
+      if (query[v] !== undefined) return `${v}=${query[v]}`;
       return '';
     })
     .filter((v) => v !== '')

@@ -46,20 +46,25 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
                 <SessionProvider session={pageProps.session}>
                   <Viewport>
                     <RouterTransition />
-                    <AppHeader
-                      Logo={<DEV_TOP_ICON />}
-                      LogoForNav={<DEV_TOP_ICON size="xl" />}
-                      title="DEV_APP_TITLE"
-                      buttonText="DEV_BUTTON_TEXT"
-                      display={renderHeader(router)}
-                    />
+                    {renderHeader(router) === 'block' && (
+                      <AppHeader
+                        Logo={<DEV_TOP_ICON />}
+                        LogoForNav={<DEV_TOP_ICON size="xl" />}
+                        title="DEV_APP_TITLE"
+                        buttonText="DEV_BUTTON_TEXT"
+                        display={renderHeader(router)}
+                      />
+                    )}
+
                     <Component {...pageProps} />
-                    <AppFooter
-                      Logo={<DEV_TOP_ICON />}
-                      title="DEV_APP_TITLE"
-                      links={DEV_FOOTER_DATA}
-                      display={renderHeader(router)}
-                    />
+                    {renderHeader(router) === 'block' && (
+                      <AppFooter
+                        Logo={<DEV_TOP_ICON />}
+                        title="DEV_APP_TITLE"
+                        links={DEV_FOOTER_DATA}
+                        display={renderHeader(router)}
+                      />
+                    )}
                   </Viewport>
                 </SessionProvider>
               </ModalsProvider>

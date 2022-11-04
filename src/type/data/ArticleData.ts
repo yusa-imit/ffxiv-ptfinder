@@ -45,7 +45,7 @@ export type ArticleDataWithMeta = {
  * @param answerAddress (optional) answerType이 2(시스템으로 연락을 받음) 일 경우 연락받을 mail address
  */
 export interface ArticleData {
-  articleType: number;
+  articleType: 0 | 1;
   status: number;
   title: string;
   description: string;

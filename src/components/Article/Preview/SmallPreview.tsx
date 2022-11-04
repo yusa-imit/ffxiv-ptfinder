@@ -1,24 +1,14 @@
 import { CollapseWithButton } from '@components/CollapseWithButton';
-import {
-  Box,
-  Button,
-  Card,
-  Collapse,
-  Divider,
-  Group,
-  Space,
-  Stack,
-  Tooltip,
-  useMantineTheme,
-} from '@mantine/core';
+import { getArticleType } from '@lib/getArticleType';
+import { Button, Card, Collapse, Group, Space, Stack, Tooltip } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
 import { useState } from 'react';
-import { Tags } from 'tabler-icons-react';
+import { ChevronRight, Tags } from 'tabler-icons-react';
 import { ArticleDataSummaryWithMeta } from '../../../type/data/ArticleData';
 import { User } from '../../../type/data/User';
 import ArticleNodeGenerator from '../ArticleView/ArticleNodeGenerator';
 import { MetaNodeGenerator } from '../ArticleView/MetaNodeGenerator';
-import SubGroup from '../ArticleView/SubGroup';
 import SubTitle from '../ArticleView/SubTitle';
 
 interface SmallPreviewProps {
@@ -28,7 +18,6 @@ interface SmallPreviewProps {
 export default function SmallPreview({ articleWithMeta, userData }: SmallPreviewProps) {
   const articleNode = ArticleNodeGenerator(articleWithMeta.article, 'compact');
   const metaNode = MetaNodeGenerator(articleWithMeta.meta, userData);
-  const MantineTheme = useMantineTheme();
   const { t } = useTranslation('article_view');
   const [detail, setDetail] = useState(false);
   return (
@@ -37,7 +26,7 @@ export default function SmallPreview({ articleWithMeta, userData }: SmallPreview
       sx={(theme) => ({
         display: 'flex',
         padding: theme.spacing.md,
-        cursor: 'pointer',
+        //cursor: 'pointer',
       })}
     >
       <Stack style={{ width: '100%' }}>
@@ -82,11 +71,19 @@ export default function SmallPreview({ articleWithMeta, userData }: SmallPreview
             spacing={2}
           >
             <Tooltip label={t('preview_go_to_article')} position="bottom">
-              <Button style={{ flexGrow: 3 }}>{'>'}</Button>
+              <Link
+                href={`/article/${getArticleType(articleWithMeta.article.articleType)}/${
+                  articleWithMeta.meta.articleId
+                }`}
+              >
+                <Button style={{ flexGrow: 3, paddingRight: 12, paddingLeft: 12 }}>
+                  <ChevronRight size={16} />
+                </Button>
+              </Link>
             </Tooltip>
-            <Tooltip label={t('preview_see_more_tags')} position="bottom">
+            <Tooltip label={t('preview_see_more_tags')} position="top">
               <Button
-                style={{ flexGrow: 1 }}
+                style={{ flexGrow: 1, paddingRight: 12, paddingLeft: 12 }}
                 onClick={() => {
                   setDetail((p) => !p);
                 }}
