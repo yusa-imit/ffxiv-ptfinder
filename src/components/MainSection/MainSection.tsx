@@ -20,18 +20,17 @@ export default function MainSection({ title, seeMore, href, children, ...etc }: 
           {title}
         </Title>
         {seeMore && (
-          <Link href={href as string} passHref>
-            <Button
-              component="a"
-              compact
-              className={classes.seeMore}
-              size="xs"
-              variant="subtle"
-              rightIcon={<ChevronRight size={16} />}
-            >
-              {t('see_more')}
-            </Button>
-          </Link>
+          <Button
+            component={Link}
+            href={href as string}
+            compact
+            className={classes.seeMore}
+            size="xs"
+            variant="subtle"
+            rightIcon={<ChevronRight size={16} />}
+          >
+            {t('see_more')}
+          </Button>
         )}
       </Group>
       <Divider className={classes.divider} />

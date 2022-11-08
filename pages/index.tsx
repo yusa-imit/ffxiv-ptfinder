@@ -19,12 +19,12 @@ function dev(props: unknown) {
         <Stack spacing="xl">
           <ContentWrapper>
             <Group position="center">
-              <Link href="/maker/recruit" passHref>
-                <Button>{t('main_button_make_recruit')}</Button>
-              </Link>
-              <Link href="/maker/enlist" passHref>
-                <Button>{t('main_button_make_enlist')}</Button>
-              </Link>
+              <Button component={Link} href="/maker/recruit">
+                {t('main_button_make_recruit')}
+              </Button>
+              <Button component={Link} href="/maker/enlist">
+                {t('main_button_make_enlist')}
+              </Button>
             </Group>
           </ContentWrapper>
           <MainSection title={t('main_section_recent_announcement')} seeMore href="/announce" />

@@ -71,15 +71,15 @@ export default function SmallPreview({ articleWithMeta, userData }: SmallPreview
             spacing={2}
           >
             <Tooltip label={t('preview_go_to_article')} position="bottom">
-              <Link
+              <Button
+                component={Link}
                 href={`/article/${getArticleType(articleWithMeta.article.articleType)}/${
                   articleWithMeta.meta.articleId
                 }`}
+                style={{ flexGrow: 3, paddingRight: 12, paddingLeft: 12 }}
               >
-                <Button style={{ flexGrow: 3, paddingRight: 12, paddingLeft: 12 }}>
-                  <ChevronRight size={16} />
-                </Button>
-              </Link>
+                <ChevronRight size={16} />
+              </Button>
             </Tooltip>
             <Tooltip label={t('preview_see_more_tags')} position="top">
               <Button

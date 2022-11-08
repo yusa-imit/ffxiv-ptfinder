@@ -6,6 +6,9 @@ module.exports = withBundleAnalyzer({
   i18n,
   reactStrictMode: false,
   experimental: {
+    transpilePackages: [
+      '@next-auth/firebase-adapter',
+    ],
     swcPlugins: [
       'next-superjson-plugin', {
         excluded: [],
