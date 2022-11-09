@@ -19,6 +19,7 @@ import { RouterTransition } from '../RouterTransition/RouterTransition';
 import AppHeader from '../AppHeader/AppHeader';
 import AppFooter from '../AppFooter/AppFooter';
 import { renderHeader } from '../../../lib/renderHeader';
+import BigContainer from '../BigContainer';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -55,8 +56,9 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
                         display={renderHeader(router)}
                       />
                     )}
-
-                    <Component {...pageProps} />
+                    <BigContainer>
+                      <Component {...pageProps} />
+                    </BigContainer>
                     {renderHeader(router) === 'block' && (
                       <AppFooter
                         Logo={<DEV_TOP_ICON />}
