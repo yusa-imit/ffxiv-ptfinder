@@ -28,7 +28,6 @@ const useStyles = createStyles((theme) => ({
 export function MetaNodeGenerator(meta: ArticleMeta, user: User): MetaNodeGeneratorReturn {
   const { classes } = useStyles();
   const { t } = useTranslation('article_view');
-  console.log(meta);
   return {
     userIcon: (
       <WidthLimitedTooltip label={t('click_user_to_inspect')}>

@@ -27,7 +27,9 @@ function dev(props: unknown) {
               </Button>
             </Group>
           </ContentWrapper>
-          <MainSection title={t('main_section_recent_announcement')} seeMore href="/announce" />
+          <MainSection title={t('main_section_recent_announcement')} seeMore href="/announce">
+            <BulkPreview type="announce" withPage={{ page: 0, number: 5 }} />
+          </MainSection>
           <MainSection title={t('main_section_pinned_article')} seeMore href="/article/pinned">
             <IdPreview limit={5} />
           </MainSection>

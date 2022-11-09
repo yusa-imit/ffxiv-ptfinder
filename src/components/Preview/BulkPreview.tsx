@@ -2,11 +2,34 @@ import SmallPreview from '@components/Article/Preview/SmallPreview';
 import ArticlePrevSkeleton from '@components/Skeletons/ArticlePrevSkeleton';
 import { Stack } from '@mantine/core';
 import { ArticleDataWithMeta } from '@type/data/ArticleData';
+import { Locale } from '@type/Locale';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useSWRBulkArticle, useSWRBulkArticleMainPage } from 'src/hook/swr/useSWRArticle';
+import { useSWRBulkAnnounce } from '../../hook/swr/useSWRAnnounce';
 
-interface PreviewAnnounceProps {}
-function PreviewAnnounce() {
-  return <></>;
+interface PreviewAnnounceProps {
+  withPage?: {
+    page: number;
+    number?: number;
+  };
+}
+function PreviewAnnounce({ withPage }: PreviewAnnounceProps) {
+  const router = useRouter();
+  const { announces, isLoading, isError } = useSWRBulkAnnounce(
+    (router.locale as Locale) || 'en',
+    withPage?.page,
+    withPage?.number
+  );
+  if (isError) return <></>;
+  if (isLoading) return <></>;
+  return (
+    <div>
+      {Object.keys(announces!).map((v, i) => (
+        <div>{JSON.stringify(announces![v])}</div>
+      ))}
+    </div>
+  );
 }
 
 interface PreviewArticleProps {
@@ -55,7 +78,7 @@ interface PreviewProps {
 
 export function BulkPreview({ type, withPage, ...etc }: PreviewProps) {
   return type === 'announce' ? (
-    <PreviewAnnounce type={type} {...etc} />
+    <PreviewAnnounce {...etc} withPage={withPage} />
   ) : (
     <PreviewArticle type={type} {...etc} withPage={withPage} />
   );

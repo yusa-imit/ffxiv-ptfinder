@@ -132,7 +132,7 @@ export default function Phase1({
   const [patch, setPatch] = useState(Major_Patch[0].value);
 
   useEffect(() => {
-    const typeCheck = {
+    const typeCheck: { recruit: 0; enlist: 1 } = {
       recruit: 0,
       enlist: 1,
     };
