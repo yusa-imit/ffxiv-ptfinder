@@ -1,1 +1,1 @@
-export const announceTypes = ['notice', 'update', 'maintenance'] as const;
+export const announceTypes = ['notice', 'update', 'maintenance'];

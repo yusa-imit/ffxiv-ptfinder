@@ -17,4 +17,7 @@ export const BadgeColor: { [key: string]: MantineColor } = {
   adjustable: 'blue',
   dayPerWeek: 'green',
   day: 'green',
+  notice: 'yellow',
+  update: 'blue',
+  maintenance: 'red',
 };

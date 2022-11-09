@@ -46,17 +46,19 @@ export async function getAnnouncementFromFirebase(
       date: cachedValue.date,
     };
   }
+
   const db = getDB();
-  const Announcements = collection(db, 'announces').withConverter(getConverter<DBAnnounceData>());
+  const Announcements = collection(db, 'announces');
   const AnnouncementRef = doc(Announcements, AnnouncementId);
   const AnnouncementSnapshot = await getDoc(AnnouncementRef);
-  if (AnnouncementSnapshot.exists() && Announcements.converter) {
-    const data = Announcements.converter.fromFirestore(AnnouncementSnapshot);
+  if (AnnouncementSnapshot.exists()) {
+    const data = AnnouncementSnapshot.data();
     GlobalCache.getCache().put(
       GlobalCache.getKey(AnnouncementId, 'announce'),
       data,
       GlobalCache.CACHE_TIMEOUT_MS
     );
+    //console.log(data.date);
     return {
       type: data.type,
       title: data.titles[locale],

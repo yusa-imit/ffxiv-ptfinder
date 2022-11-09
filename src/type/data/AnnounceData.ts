@@ -3,7 +3,10 @@ import { FirebaseServerTime } from './FirebaseServerTime';
 import { announceTypes } from '../../constant/announceTypes';
 
 export type DBAnnounceData = {
-  date: FirebaseServerTime;
+  date: {
+    seconds: number;
+    nanoseconds: number;
+  };
   type: keyof typeof announceTypes;
   titles: Record<Locale, string>;
   descriptions: Record<Locale, string>;
@@ -16,14 +19,20 @@ export type PreDBAnnouceData = {
 };
 
 export type AnnounceData = {
-  date: FirebaseServerTime;
+  date: {
+    seconds: number;
+    nanoseconds: number;
+  };
   type: keyof typeof announceTypes;
   title: string;
   description: string;
 };
 
 export type AnnounceSummary = {
-  date: FirebaseServerTime;
+  date: {
+    seconds: number;
+    nanoseconds: number;
+  };
   type: keyof typeof announceTypes;
   title: string;
 };

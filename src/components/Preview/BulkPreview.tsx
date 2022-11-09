@@ -1,3 +1,4 @@
+import { SmallAnnounce } from '@components/Announce/SmallAnnounce';
 import SmallPreview from '@components/Article/Preview/SmallPreview';
 import ArticlePrevSkeleton from '@components/Skeletons/ArticlePrevSkeleton';
 import { Stack } from '@mantine/core';
@@ -24,11 +25,11 @@ function PreviewAnnounce({ withPage }: PreviewAnnounceProps) {
   if (isError) return <></>;
   if (isLoading) return <></>;
   return (
-    <div>
+    <Stack>
       {Object.keys(announces!).map((v, i) => (
-        <div>{JSON.stringify(announces![v])}</div>
+        <SmallAnnounce announce={announces![v]} announceId={v} key={i} />
       ))}
-    </div>
+    </Stack>
   );
 }
 

@@ -41,9 +41,11 @@ export async function getArticleFromFirebase(
   const cachedValue = GlobalCache.getCache().get(
     GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist')
   ) as ArticleDataWithMeta;
+
   if (cachedValue !== null) {
     return [cachedValue, await getUserFromFirebase(cachedValue.meta.userId)];
   }
+
   const db = getDB();
   const ArticleType = type === 0 ? 'recruits' : 'enlists';
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
@@ -58,7 +60,7 @@ export async function getArticleFromFirebase(
       GlobalCache.CACHE_TIMEOUT_MS
     );
     const userData = await getUserFromFirebase(data.meta.userId);
-    console.log(userData);
+    //console.log(data.meta.date);
     return [data, userData];
   }
   throw new Error('failed to get article from db');
