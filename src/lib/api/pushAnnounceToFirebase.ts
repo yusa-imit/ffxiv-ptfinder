@@ -25,19 +25,16 @@ import { getDB } from '@lib/db/getDB';
 import { AnnounceData } from '@type/data/AnnounceData';
 import { ArticleData } from '../../type/data/ArticleData';
 import { getUserFromFirebase } from './getUserFromFirebase';
+import { PreDBAnnouceData, DBAnnounceData } from '../../type/data/AnnounceData';
 
-export async function pushAnnounceToFirebase(data: AnnounceData, userId: string) {
+export async function pushAnnounceToFirebase(data: PreDBAnnouceData) {
   const db = getDB();
-  const UserData = await getUserFromFirebase(userId);
-  if (UserData.role !== 'admin') {
-    throw new Error('Not Admin');
-  }
-  const Announcement = collection(db, 'announces').withConverter(getConverter<AnnounceData>());
+  const Announcement = collection(db, 'announces').withConverter(getConverter<DBAnnounceData>());
   const articleRef = await addDoc(Announcement, {
     date: serverTimestamp(),
     type: data.type,
-    title: data.title,
-    description: data.description,
+    titles: data.titles,
+    descriptions: data.descriptions,
   });
   const articleSnapshot = await getDoc(articleRef);
   if (articleSnapshot.exists() && Announcement.converter) {

@@ -17,7 +17,8 @@ import { GetArticleQueryType } from '../../../../src/type/api/article/get';
  * @returns
  */
 export default async function getFullArticle(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'GET') return res.status(405).json({ message: 'wrong methods' });
+  if (req.method !== 'GET')
+    return res.setHeader('Allow', ['GET']).status(405).json({ message: 'wrong methods' });
   const { id }: GetArticleQueryType = req.query;
   if (id) {
     try {
