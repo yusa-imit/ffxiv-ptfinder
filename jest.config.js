@@ -10,6 +10,7 @@ const customJestConfig = {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
   },
+  modulePathIgnorePatterns: ['<rootDir>/src/auth/'],
   testEnvironment: 'jest-environment-jsdom',
 };
 
