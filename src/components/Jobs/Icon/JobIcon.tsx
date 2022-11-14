@@ -56,6 +56,7 @@ export default function JobIcon({
       )}
       <Image
         src={`/job_icons/${JobSort[job].role}/${JobSort[job].d_role}/${job}.png`}
+        alt={job}
         width={32}
         height={32}
       />

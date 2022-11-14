@@ -1,5 +1,6 @@
 import { SmallAnnounce } from '@components/Announce/SmallAnnounce';
 import SmallPreview from '@components/Article/Preview/SmallPreview';
+import { AnnouncePrevSkeleton } from '@components/Skeletons/AnnouncePrevSkeleton';
 import ArticlePrevSkeleton from '@components/Skeletons/ArticlePrevSkeleton';
 import { Stack } from '@mantine/core';
 import { ArticleDataWithMeta } from '@type/data/ArticleData';
@@ -23,7 +24,14 @@ function PreviewAnnounce({ withPage }: PreviewAnnounceProps) {
     withPage?.number
   );
   if (isError) return <></>;
-  if (isLoading) return <></>;
+  if (isLoading)
+    return (
+      <Stack>
+        {new Array(withPage && withPage.number ? withPage.number : 5).fill(null).map((v, i) => (
+          <AnnouncePrevSkeleton key={i} />
+        ))}
+      </Stack>
+    );
   return (
     <Stack>
       {Object.keys(announces!).map((v, i) => (
