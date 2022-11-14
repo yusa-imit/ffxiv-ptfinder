@@ -88,7 +88,7 @@ export default function ArticleNodeGenerator(
       ),
       props:
         type === 'full' ? (
-          <Group>
+          <Group spacing={2}>
             <ArticleBadge color={BadgeColor.region}>{`${t('section_default_region')} : ${t(
               `region_${article.region}`,
               {
@@ -130,7 +130,7 @@ export default function ArticleNodeGenerator(
     },
     jobs: {
       availables:
-        article.availableJobs.length === 0 ? (
+        !article.availableJobs || article.availableJobs.length === 0 ? (
           <Text>{t('section_jobs_job_not_specified')} </Text>
         ) : (
           <Group spacing="xs">
@@ -372,7 +372,9 @@ export default function ArticleNodeGenerator(
                   </Table>
                 </Stack>
               ) : (
-                <Text>{t('section_schedules_time_table_not_specified')}</Text>
+                !article.isTemporary && (
+                  <Text>{t('section_schedules_time_table_not_specified')}</Text>
+                )
               )}
             </Stack>
           ),
@@ -387,7 +389,7 @@ export default function ArticleNodeGenerator(
           withBorder
           sx={(theme) => ({
             padding: theme.spacing.md,
-            width: '90%',
+            width: '100%',
             [theme.fn.smallerThan('sm')]: {
               width: '100%',
             },
