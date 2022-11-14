@@ -69,6 +69,7 @@ function PreviewArticle({ type, withPage }: PreviewArticleProps) {
       {Object.keys(articles!).map((v) => (
         <SmallPreview
           key={v}
+          id={v}
           articleWithMeta={articles![v]}
           userData={users![articles![v].meta.userId]}
         />
