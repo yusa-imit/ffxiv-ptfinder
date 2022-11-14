@@ -2,13 +2,14 @@ import { FixedLengthArray } from '../structure/FixedLengthArray';
 import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
 
+// * @param status article의 상태 - 0 : 모집 중, 1: 모집완료, 2: 미노출
 export type ArticleMeta = {
   date: {
     seconds: number;
     nanoseconds: number;
   };
   userId: string;
-  articleId: string;
+  status: number;
 };
 export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
 export type ArticleDataSummaryWithMeta = {
@@ -22,7 +23,6 @@ export type ArticleDataWithMeta = {
 /**
  * @interface ArticleData 기사 데이터
  * @param articleType article의 타입 -  0 : 구인, 1: 구직
- * @param status article의 상태 - 0 : 모집 중, 1: 모집완료, 2: 미노출
  * @param userId article 작성한 유저 id (캐릭터 or 계정?)
  * @param title 제목
  * @param description 상세 (inner html document)
@@ -46,7 +46,6 @@ export type ArticleDataWithMeta = {
  */
 export interface ArticleData {
   articleType: 0 | 1;
-  status: number;
   title: string;
   description: string;
   isTemporary: boolean;

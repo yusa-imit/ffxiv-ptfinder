@@ -31,6 +31,7 @@ export async function pushArticleToFirebase(data: ArticleData, userId: string) {
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
   const articleRef = await addDoc(Articles, {
     meta: {
+      status: 0,
       date: serverTimestamp(),
       userId,
     },

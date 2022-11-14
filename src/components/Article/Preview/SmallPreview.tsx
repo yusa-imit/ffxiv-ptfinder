@@ -12,10 +12,11 @@ import { MetaNodeGenerator } from '../ArticleView/MetaNodeGenerator';
 import SubTitle from '../ArticleView/SubTitle';
 
 interface SmallPreviewProps {
+  id: string;
   articleWithMeta: ArticleDataSummaryWithMeta;
   userData: User;
 }
-export default function SmallPreview({ articleWithMeta, userData }: SmallPreviewProps) {
+export default function SmallPreview({ id, articleWithMeta, userData }: SmallPreviewProps) {
   const articleNode = ArticleNodeGenerator(articleWithMeta.article, 'compact');
   const metaNode = MetaNodeGenerator(articleWithMeta.meta, userData);
   const { t } = useTranslation('article_view');
@@ -44,7 +45,7 @@ export default function SmallPreview({ articleWithMeta, userData }: SmallPreview
             spacing={5}
           >
             <Group spacing={2}>
-              {articleNode.status}
+              {metaNode.status}
               {articleNode.default.isTemporary}
               <Group>{articleNode.default.props}</Group>
             </Group>
@@ -73,9 +74,7 @@ export default function SmallPreview({ articleWithMeta, userData }: SmallPreview
             <Tooltip label={t('preview_go_to_article')} position="bottom">
               <Button
                 component={Link}
-                href={`/article/${getArticleType(articleWithMeta.article.articleType)}/${
-                  articleWithMeta.meta.articleId
-                }`}
+                href={`/article/${getArticleType(articleWithMeta.article.articleType)}/${id}`}
                 style={{ flexGrow: 3, paddingRight: 12, paddingLeft: 12 }}
               >
                 <ChevronRight size={16} />

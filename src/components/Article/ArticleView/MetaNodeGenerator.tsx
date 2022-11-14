@@ -7,8 +7,10 @@ import { ChevronRight } from 'tabler-icons-react';
 import { ArticleMeta } from '../../../type/data/ArticleData';
 import TimeFunctions from '../../../lib/TimeFunctions';
 import { WidthLimitedTooltip } from '../../WidthLimitedTooltip';
+import ArticleBadge from './ArticleBadge';
 
 interface MetaNodeGeneratorReturn {
+  status: ReactNode;
   userIcon: ReactNode;
   date: ReactNode;
 }
@@ -29,6 +31,17 @@ export function MetaNodeGenerator(meta: ArticleMeta, user: User): MetaNodeGenera
   const { classes } = useStyles();
   const { t } = useTranslation('article_view');
   return {
+    status: (
+      <Group>
+        {meta.status === 0 ? (
+          <ArticleBadge color="green">{t('section_status_green')}</ArticleBadge>
+        ) : meta.status === 1 ? (
+          <ArticleBadge>{t('section_status_red')}</ArticleBadge>
+        ) : (
+          <ArticleBadge color="yellow">{t('section_status_yellow')}</ArticleBadge>
+        )}
+      </Group>
+    ),
     userIcon: (
       <WidthLimitedTooltip label={t('click_user_to_inspect')}>
         <UnstyledButton className={classes.user}>

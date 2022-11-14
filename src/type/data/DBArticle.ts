@@ -1,4 +1,5 @@
 import { FixedLengthArray } from '../structure/FixedLengthArray';
+import { ArticleMeta } from './ArticleData';
 import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
 /**
@@ -28,22 +29,13 @@ import { Timezone } from './Timezone';
  */
 
 export type DBArticle = {
-  meta: {
-    date: number;
-    userId: string;
-  };
+  meta: ArticleMeta;
   article: DBArticleData;
 };
 
 export interface DBArticleData {
-  author: {
-    name: string;
-    image?: string;
-    verified: boolean;
-  };
   articleType: number;
   status: number;
-  userId: string;
   title: string;
   description: string;
   isTemporary: boolean;

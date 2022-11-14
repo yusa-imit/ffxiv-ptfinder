@@ -24,7 +24,6 @@ import SubTitle from './SubTitle';
 
 interface ArticleViewNode {
   title: ReactNode;
-  status: ReactNode;
   default: {
     isTemporary: ReactNode;
     dungeon: ReactNode;
@@ -62,17 +61,7 @@ export default function ArticleNodeGenerator(
         {article.title}
       </Title>
     ),
-    status: (
-      <Group>
-        {article.status === 0 ? (
-          <ArticleBadge color="green">{t('section_status_green')}</ArticleBadge>
-        ) : article.status === 1 ? (
-          <ArticleBadge>{t('section_status_red')}</ArticleBadge>
-        ) : (
-          <ArticleBadge color="yellow">{t('section_status_yellow')}</ArticleBadge>
-        )}
-      </Group>
-    ),
+
     default: {
       isTemporary: article.isTemporary && (
         <Group>
