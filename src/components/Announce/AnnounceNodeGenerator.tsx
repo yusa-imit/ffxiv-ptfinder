@@ -1,10 +1,15 @@
 import ArticleBadge from '@components/Article/ArticleView/ArticleBadge';
 import { BadgeColor } from '@constant/defaultBadgeColors';
+import ClientTime from '@lib/day/ClientTime';
 import getAnnounceType from '@lib/getAnnounceType';
 import { getArticleType } from '@lib/getArticleType';
 import TimeFunctions from '@lib/TimeFunctions';
 import { Title, Text, Center, Paper, TypographyStylesProvider } from '@mantine/core';
+import { Tz } from '@recoil/Tz';
+import { Locale } from '@type/Locale';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
 import { AnnounceData, AnnounceSummary } from '../../type/data/AnnounceData';
 
 export function AnnounceSummaryNodeGenerator({
@@ -15,6 +20,8 @@ export function AnnounceSummaryNodeGenerator({
   type: 'full' | 'compact';
 }) {
   const { t } = useTranslation(['common']);
+  const tz = useRecoilValue(Tz);
+  const router = useRouter();
   return {
     title: (
       <Title order={type === 'full' ? 1 : 3} style={{ wordBreak: 'break-word', lineBreak: 'auto' }}>
@@ -28,7 +35,10 @@ export function AnnounceSummaryNodeGenerator({
     ),
     date: (
       <Text size={14}>
-        {TimeFunctions.fromDateToString(TimeFunctions.unixTimestampToDay(data.date.seconds))}
+        {
+          ClientTime.translateUnixTimeToLocalTime(data.date.seconds, tz, router.locale as Locale)
+          //TimeFunctions.fromDateToString(TimeFunctions.unixTimestampToDay(data.date.seconds))
+        }
       </Text>
     ),
   };

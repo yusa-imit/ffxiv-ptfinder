@@ -18,6 +18,8 @@ import {
 import { useTranslation } from 'next-i18next';
 import { ReactNode } from 'react';
 import { World } from 'tabler-icons-react';
+import { useRecoilValue } from 'recoil';
+import { Tz } from '@recoil/Tz';
 import { ArticleData, ArticleSummary } from '../../../type/data/ArticleData';
 import ArticleBadge from './ArticleBadge';
 import SubTitle from './SubTitle';

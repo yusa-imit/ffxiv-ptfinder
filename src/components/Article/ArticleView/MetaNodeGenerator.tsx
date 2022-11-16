@@ -4,10 +4,15 @@ import { User } from '@type/data/User';
 import { ReactNode } from 'react';
 import { useTranslation } from 'next-i18next';
 import { ChevronRight } from 'tabler-icons-react';
+import { useRecoilValue } from 'recoil';
+import { Tz } from '@recoil/Tz';
+import { useRouter } from 'next/router';
+import { Locale } from '@type/Locale';
 import { ArticleMeta } from '../../../type/data/ArticleData';
 import TimeFunctions from '../../../lib/TimeFunctions';
 import { WidthLimitedTooltip } from '../../WidthLimitedTooltip';
 import ArticleBadge from './ArticleBadge';
+import ClientTime from '../../../lib/day/ClientTime';
 
 interface MetaNodeGeneratorReturn {
   status: ReactNode;
@@ -30,6 +35,8 @@ const useStyles = createStyles((theme) => ({
 export function MetaNodeGenerator(meta: ArticleMeta, user: User): MetaNodeGeneratorReturn {
   const { classes } = useStyles();
   const { t } = useTranslation('article_view');
+  const tz = useRecoilValue(Tz);
+  const router = useRouter();
   return {
     status: (
       <Group>
@@ -58,7 +65,10 @@ export function MetaNodeGenerator(meta: ArticleMeta, user: User): MetaNodeGenera
     ),
     date: (
       <Text size={14}>
-        {TimeFunctions.fromDateToString(TimeFunctions.unixTimestampToDay(meta.date.seconds))}
+        {ClientTime.translateUnixTimeToLocalTime(meta.date.seconds, tz, router.locale as Locale)}
+        {
+          //TimeFunctions.fromDateToString( TimeFunctions.unixTimestampToDay(meta.date.seconds))
+        }
       </Text>
     ),
   };
