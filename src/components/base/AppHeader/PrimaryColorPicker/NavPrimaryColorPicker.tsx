@@ -3,6 +3,7 @@ import {
   CheckIcon,
   ColorSwatch,
   Group,
+  MantineThemeColors,
   Menu,
   UnstyledButton,
   UnstyledButtonProps,
@@ -12,6 +13,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Primary } from '@recoil/Primary';
 import { forwardRef } from 'react';
 import { Palette } from 'tabler-icons-react';
+import { setCookies } from 'cookies-next';
 import { DrawerLinkGroup } from '../HeaderDrawer/DrawerLinkGroup/DrawerLinkGroup';
 
 interface PalleteIconProps extends React.ComponentPropsWithoutRef<'button'> {}
@@ -30,8 +32,12 @@ interface NavPrimaryColorPickerProps {
 }
 export default function NavPrimaryColorPicker({ className }: NavPrimaryColorPickerProps) {
   const primary = useRecoilValue(Primary);
-  const setPrimary = useSetRecoilState(Primary);
   const theme = useMantineTheme();
+  const setter = useSetRecoilState(Primary);
+  function setPrimary(value: keyof MantineThemeColors) {
+    setCookies('mantine-primary', value, { maxAge: 60 * 60 * 24 * 30 });
+    setter(value);
+  }
   const ColorItems = Object.keys(theme.colors).map((color) => {
     return (
       <ColorSwatch

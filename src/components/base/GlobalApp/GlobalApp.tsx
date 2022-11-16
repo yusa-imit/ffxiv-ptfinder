@@ -21,7 +21,7 @@ import AppFooter from '../AppFooter/AppFooter';
 import { renderHeader } from '../../../lib/renderHeader';
 import BigContainer from '../BigContainer';
 
-export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
+export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary: string }) {
   const { Component, pageProps } = props;
   const app_primary = useRecoilValue(Primary);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
@@ -30,6 +30,7 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
     setColorScheme(nextColorScheme);
     setCookies('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
   };
+  const [temp_primary, set_temp_primary] = useState(props.primary);
   const router = useRouter();
   const setSSRCompleted = useSSRCompletedState();
   useEffect(setSSRCompleted, [setSSRCompleted]);
@@ -47,25 +48,29 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme }) {
                 <SessionProvider session={pageProps.session}>
                   <Viewport>
                     <RouterTransition />
-                    {renderHeader(router) === 'block' && (
-                      <AppHeader
-                        Logo={<DEV_TOP_ICON />}
-                        LogoForNav={<DEV_TOP_ICON size="xl" />}
-                        title="DEV_APP_TITLE"
-                        buttonText="DEV_BUTTON_TEXT"
-                        display={renderHeader(router)}
-                      />
-                    )}
-                    <BigContainer>
+                    {renderHeader(router) === 'block' ? (
+                      <>
+                        <AppHeader
+                          Logo={<DEV_TOP_ICON />}
+                          LogoForNav={<DEV_TOP_ICON size="xl" />}
+                          title="DEV_APP_TITLE"
+                          buttonText="DEV_BUTTON_TEXT"
+                          display={renderHeader(router)}
+                        />
+
+                        <BigContainer>
+                          <Component {...pageProps} />
+                        </BigContainer>
+
+                        <AppFooter
+                          Logo={<DEV_TOP_ICON />}
+                          title="DEV_APP_TITLE"
+                          links={DEV_FOOTER_DATA}
+                          display={renderHeader(router)}
+                        />
+                      </>
+                    ) : (
                       <Component {...pageProps} />
-                    </BigContainer>
-                    {renderHeader(router) === 'block' && (
-                      <AppFooter
-                        Logo={<DEV_TOP_ICON />}
-                        title="DEV_APP_TITLE"
-                        links={DEV_FOOTER_DATA}
-                        display={renderHeader(router)}
-                      />
                     )}
                   </Viewport>
                 </SessionProvider>

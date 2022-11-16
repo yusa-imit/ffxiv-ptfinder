@@ -1,6 +1,16 @@
-import { Center, CheckIcon, ColorSwatch, Group, Menu, useMantineTheme } from '@mantine/core';
+import {
+  Center,
+  CheckIcon,
+  ColorSwatch,
+  Group,
+  MantineThemeColors,
+  Menu,
+  useMantineTheme,
+} from '@mantine/core';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Primary } from '@recoil/Primary';
+import { setPrimary as globalSetPrimary } from '@recoil/Primary/setPrimary';
+import { setCookies } from 'cookies-next';
 import PaletteIconForwarded from './PaletteIconForwarded';
 
 interface PrimaryColorPickerProps {
@@ -8,8 +18,13 @@ interface PrimaryColorPickerProps {
 }
 export default function PrimaryColorPicker({ className }: PrimaryColorPickerProps) {
   const primary = useRecoilValue(Primary);
-  const setPrimary = useSetRecoilState(Primary);
   const theme = useMantineTheme();
+  const setter = useSetRecoilState(Primary);
+  function setPrimary(value: keyof MantineThemeColors) {
+    setCookies('mantine-primary', value, { maxAge: 60 * 60 * 24 * 30 });
+    setter(value);
+  }
+
   const ColorItems = Object.keys(theme.colors).map((color) => {
     return (
       <ColorSwatch

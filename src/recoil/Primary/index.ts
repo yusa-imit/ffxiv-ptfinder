@@ -5,5 +5,4 @@ import { persistAtomEffect } from '../SSR/persistAtomEffect';
 export const Primary = atom<keyof MantineThemeColors>({
   key: 'app_primary',
   default: 'blue',
-  effects_UNSTABLE: [persistAtomEffect],
 });
