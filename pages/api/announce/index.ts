@@ -37,8 +37,10 @@ export default async function getSummarizedAnnounce(req: NextApiRequest, res: Ne
         page ? Number(page) : undefined,
         number ? Number(number) : undefined
       );
-      res.setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate');
-      return res.status(200).json({ message: 'success', data: articles });
+      return res
+        .setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate')
+        .status(200)
+        .json({ message: 'success', data: articles });
     } catch (e) {
       return res.status(401).json({
         message: 'API-DB transaction failed or possibly request parameter is invalid.',

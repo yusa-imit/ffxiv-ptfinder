@@ -8,7 +8,8 @@ import '@extType/ExtendedAdapterUser';
 import { PushArticleBodyType, PushArticleReturnType } from '../../../../src/type/api/article/push';
 
 export default async function pushArticle(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(403).json({ message: 'wrong methods' });
+  if (req.method !== 'POST')
+    return res.setHeader('Allow', ['POST']).status(403).json({ message: 'wrong methods' });
   // @ts-ignore
   const session: ServerSession | null = await unstable_getServerSession(req, res, authOptions);
   if (!session) {

@@ -23,5 +23,8 @@ export default async function getAnnounce(req: NextApiRequest, res: NextApiRespo
   const locale: Locale = (req.query.locale as Locale | undefined) || 'en';
   const { id }: GetAnnounceQueryType = req.query;
   const article = await getAnnouncementFromFirebase(locale, id!);
-  return res.status(200).json({ message: 'success', data: article });
+  return res
+    .setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate')
+    .status(200)
+    .json({ message: 'success', data: article });
 }
