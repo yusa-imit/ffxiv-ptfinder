@@ -1,19 +1,27 @@
 import BigContainer from '@components/base/BigContainer';
 import { Group, Stack } from '@mantine/core';
-import { ArticleData } from '@type/data/ArticleData';
+import { ArticleData, ArticleMeta } from '@type/data/ArticleData';
+import { User } from '@type/data/User';
 import { useTranslation } from 'next-i18next';
 import ArticleNodeGenerator from './ArticleNodeGenerator';
+import { MetaNodeGenerator } from './MetaNodeGenerator';
 import Section from './Section';
 import SubGroup from './SubGroup';
 import SubTitle from './SubTitle';
 
 interface ArticleViewProps {
   article: ArticleData;
+  meta?: ArticleMeta;
+  userData?: User;
 }
 
-export default function ArticleView({ article }: ArticleViewProps) {
+export default function ArticleView({ article, meta, userData }: ArticleViewProps) {
   const { t } = useTranslation(['article_view', 'data']);
   const ArticleNode = ArticleNodeGenerator(article);
+  if ((meta && !userData) || (!meta && userData)) {
+    throw new Error('Both article metadata and user data needed to generate article view');
+  }
+  const MetaNode = meta && userData ? MetaNodeGenerator(meta, userData) : null;
   return (
     <BigContainer
       sx={(theme) => ({
@@ -26,6 +34,17 @@ export default function ArticleView({ article }: ArticleViewProps) {
     >
       <article style={{ width: '100%', position: 'relative' }}>
         <Stack>
+          {MetaNode !== null && (
+            <Section title={t('section_title_status')}>
+              <Stack spacing={2}>
+                {MetaNode.status}
+                <Group spacing={2}>
+                  {MetaNode.userIcon}
+                  {MetaNode.date}
+                </Group>
+              </Stack>
+            </Section>
+          )}
           <Section title={t('section_title_title')}>{ArticleNode.title}</Section>
           <Section title={t('section_default_title')}>
             <SubGroup>

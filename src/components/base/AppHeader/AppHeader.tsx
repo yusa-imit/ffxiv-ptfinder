@@ -203,6 +203,9 @@ export default function AppHeader({
         <Tabs
           classNames={{ root: classes.tabs, tabsList: classes.tabsList, tab: classes.tab }}
           value={router.pathname.split('/')[1] === '' ? 'home' : router.pathname.split('/')[1]}
+          onTabChange={(value) => {
+            router.push(value === 'home' ? '/' : `/${value}`);
+          }}
         >
           <Tabs.List>{tabsItems}</Tabs.List>
         </Tabs>

@@ -29,7 +29,7 @@ function IdRecruitPage({ data }: InferGetServerSidePropsType<typeof getServerSid
   const [articleWithMeta, user] = data;
   return (
     <>
-      <ArticleView article={articleWithMeta.article} />
+      <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
     </>
   );
 }

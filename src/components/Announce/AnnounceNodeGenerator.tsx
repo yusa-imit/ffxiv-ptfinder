@@ -60,6 +60,7 @@ export function AnnounceNodeGenerator({
       ) : (
         <Center>
           <Paper
+            withBorder
             sx={(theme) => ({
               padding: theme.spacing.md,
               width: '90%',

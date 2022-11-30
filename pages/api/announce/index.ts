@@ -16,13 +16,6 @@ import {
 } from '@lib/api/getAnnounceFromFirebase';
 import { GetAnnounceQueryType } from '@type/api/annouce/get';
 
-/**
- * @example /api/article/get/summary?type=0&id=akldjfi;
- * @example /api/article/get/summary?type=0&number=15&page=0;
- * @param req
- * @param res
- * @returns
- */
 export default async function getSummarizedAnnounce(req: NextApiRequest, res: NextApiResponse) {
   const locale: Locale = (req.query.locale as Locale | undefined) || 'en';
   if (req.method !== 'GET')

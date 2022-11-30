@@ -1,24 +1,19 @@
+import AnnounceView from '@components/Announce/AnnounceView';
 import ArticleView from '@components/Article/ArticleView/ArticleView';
 import { baseUrl } from '@constant/baseUrl';
+import { GetAnnounceReturnType } from '@type/api/annouce/get';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
-import { GetArticleReturnType } from '../../../src/type/api/article/get';
 
 export async function getServerSideProps({ req, res, locale, query }: GetServerSidePropsContext) {
   const { id } = query;
-  const { message, data }: GetArticleReturnType = await (
-    await fetch(`${baseUrl}/api/article/enlist/${id}`)
+  const { message, data }: GetAnnounceReturnType = await (
+    await fetch(`${baseUrl}/api/announce/${id}?locale=${locale}`)
   ).json();
   return {
     props: {
-      ...(await serverSideTranslations(locale || 'en', [
-        'common',
-        'data',
-        'nav',
-        'article',
-        'article_view',
-      ])),
+      ...(await serverSideTranslations(locale || 'en', ['common', 'data', 'nav'])),
       message,
       data,
     },
@@ -26,10 +21,9 @@ export async function getServerSideProps({ req, res, locale, query }: GetServerS
 }
 
 function IdEnlistPage({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [articleWithMeta, user] = data;
   return (
     <>
-      <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
+      <AnnounceView data={data} />
     </>
   );
 }

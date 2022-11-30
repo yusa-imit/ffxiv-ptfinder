@@ -30,7 +30,6 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary:
     setColorScheme(nextColorScheme);
     setCookies('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
   };
-  const [temp_primary, set_temp_primary] = useState(props.primary);
   const router = useRouter();
   const setSSRCompleted = useSSRCompletedState();
   useEffect(setSSRCompleted, [setSSRCompleted]);

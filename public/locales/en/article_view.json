@@ -1,4 +1,5 @@
 {
+  "section_title_status": "Status",
   "section_title_title": "Title",
   "section_default_title": "Default properties",
   "section_default_isTemporary_badge": "Recruit Temporary",
@@ -26,6 +27,7 @@
   "section_details_no_language_restrictions_provided": "No language restriction provided.",
   "section_schedules_article_timezone": "Author's Timezone",
   "section_schedules_title": "Schedule",
+  "section_schedules_summary": "Schedule Summary",
   "section_schedules_detail": "Detailed Schedule",
   "section_schedules_writtenInDescription": "Schedule written in description below.",
   "section_schedules_dayPerWeek": "Day Per Week",

@@ -13,7 +13,7 @@ const style = createStyles((theme) => ({
   },
   title: {
     fontWeight: 700,
-    fontSize: theme.fontSizes.sm,
+    fontSize: theme.fontSizes.lg,
     color: theme.colorScheme === 'light' ? theme.colors.gray[7] : theme.colors.gray[2],
     marginLeft: -1 * theme.spacing.md,
   },

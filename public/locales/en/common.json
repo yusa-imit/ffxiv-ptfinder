@@ -9,5 +9,8 @@
   "announce_type_notice": "Notice",
   "announce_type_update": "Update",
   "announce_type_maintenance": "Maintenance",
-  "announce_no_description_provided": "Announce description did not provided."
+  "announce_no_description_provided": "Announce description did not provided.",
+  "announce_status": "Status",
+  "announce_title": "Title",
+  "announce_desc": "Description"
 }

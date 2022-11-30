@@ -45,7 +45,7 @@ export function SmallAnnounce({ announce, announceId }: SmallAnnounceProps) {
           <Tooltip label={t('go_to_announce')} position="bottom">
             <Button
               component={Link}
-              href={`/announce/${announceId}`}
+              href={`/support/announce/${announceId}`}
               style={{ flexGrow: 1, paddingRight: 12, paddingLeft: 12 }}
             >
               <ChevronRight size={16} />
