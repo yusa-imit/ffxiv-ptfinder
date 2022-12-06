@@ -1,35 +1,18 @@
-import { initializeApp } from 'firebase/app';
-import type { FirebaseOptions } from 'firebase/app';
+import { getDB } from '@lib/db/getDB';
+import { Locale } from '@type/Locale';
 import {
-  addDoc,
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
-  getFirestore,
   limit,
-  query,
-  runTransaction,
-  setDoc,
-  where,
-  connectFirestoreEmulator,
-  serverTimestamp,
   orderBy,
+  query,
   startAfter,
-  updateDoc,
 } from 'firebase/firestore';
-import { firebaseConfig } from '@pages/api/auth/api_config';
-import { getConverter } from '@lib/firebaseConverter';
-import { AdapterUser } from 'next-auth/adapters';
-import { getDB } from '@lib/db/getDB';
-import { Locale } from '@type/Locale';
-import { ArticleData } from '../../type/data/ArticleData';
-import { articleConverToData } from '../transform/articleConvertToData';
-import { DBArticle } from '../../type/data/DBArticle';
 import { AnnounceData, AnnounceSummary, DBAnnounceData } from '../../type/data/AnnounceData';
-import { summarizeAnnounce } from '../transform/summarizeAnnounce';
 import { GlobalCache } from '../cache/GlobalCache';
+import { summarizeAnnounce } from '../transform/summarizeAnnounce';
 
 export async function getAnnouncementFromFirebase(
   locale: Locale,
@@ -58,7 +41,6 @@ export async function getAnnouncementFromFirebase(
       data,
       GlobalCache.CACHE_TIMEOUT_MS
     );
-    //console.log(data.date);
     return {
       type: data.type,
       title: data.titles[locale],

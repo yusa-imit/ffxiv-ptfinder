@@ -1,5 +1,7 @@
+import ArticleHandler from '@components/Article/ArticleView/ArticleHandler';
 import ArticleView from '@components/Article/ArticleView/ArticleView';
 import { baseUrl } from '@constant/baseUrl';
+import { Space } from '@mantine/core';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
@@ -30,6 +32,8 @@ function IdRecruitPage({ data }: InferGetServerSidePropsType<typeof getServerSid
   return (
     <>
       <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
+      <Space h="xl" />
+      <ArticleHandler type="recruit" />
     </>
   );
 }

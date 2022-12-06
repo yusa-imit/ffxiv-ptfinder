@@ -1,3 +1,4 @@
+import ArticleHandler from '@components/Article/ArticleView/ArticleHandler';
 import ArticleView from '@components/Article/ArticleView/ArticleView';
 import { baseUrl } from '@constant/baseUrl';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
@@ -30,6 +31,7 @@ function IdEnlistPage({ data }: InferGetServerSidePropsType<typeof getServerSide
   return (
     <>
       <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
+      <ArticleHandler type="enlist" />
     </>
   );
 }

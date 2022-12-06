@@ -13,9 +13,10 @@ interface ArticleViewProps {
   article: ArticleData;
   meta?: ArticleMeta;
   userData?: User;
+  underMaker?: boolean;
 }
 
-export default function ArticleView({ article, meta, userData }: ArticleViewProps) {
+export default function ArticleView({ article, meta, userData, underMaker }: ArticleViewProps) {
   const { t } = useTranslation(['article_view', 'data']);
   const ArticleNode = ArticleNodeGenerator(article);
   if ((meta && !userData) || (!meta && userData)) {
@@ -30,6 +31,7 @@ export default function ArticleView({ article, meta, userData }: ArticleViewProp
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        padding: underMaker ? undefined : '0',
       })}
     >
       <article style={{ width: '100%', position: 'relative' }}>
