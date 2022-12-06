@@ -12,5 +12,14 @@
   "announce_no_description_provided": "Announce description did not provided.",
   "announce_status": "Status",
   "announce_title": "Title",
-  "announce_desc": "Description"
+  "announce_desc": "Description",
+  "controller_go_home": "Home",
+  "controller_support_main": "Support Main",
+  "controller_announce_list": "Announce List",
+  "controller_next": "Next",
+  "controller_prev": "Previous",
+  "404_title": "Something Bad Happend...",
+  "404_description": "Cannot find the page. If you came this page by button or link contact administrator or link uploader, if not check your typed address. Maybe there's possibility that article author deleted their article.",
+  "404_go_main": "Go to Main",
+  "404_go_back": "Go to previous page"
 }

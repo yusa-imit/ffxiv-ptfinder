@@ -2,6 +2,7 @@ import { NextRouter } from 'next/router';
 import { PreventRenderHeader } from '@constant/PreventRenderHeader';
 
 export const renderHeader: (router: NextRouter) => 'none' | 'block' = (router: NextRouter) => {
+  if (router.pathname === '/404') return 'none';
   const distructure = router.pathname.split('/');
   for (let i = 0; i < PreventRenderHeader.length; i++) {
     const prevent = PreventRenderHeader[i].split('/');
