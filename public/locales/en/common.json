@@ -16,6 +16,7 @@
   "controller_go_home": "Home",
   "controller_support_main": "Support Main",
   "controller_announce_list": "Announce List",
+  "controller_go_list": "Article List",
   "controller_next": "Next",
   "controller_prev": "Previous",
   "404_title": "Something Bad Happend...",
