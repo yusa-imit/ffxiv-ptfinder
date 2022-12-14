@@ -3,7 +3,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
-    ...serverSideTranslations(locale || 'en', ['common', 'data', 'nav']),
+    props: {
+      ...(await serverSideTranslations(locale || 'en', ['common', 'data', 'nav'])),
+    },
     revalidate: 3600,
   };
 }
