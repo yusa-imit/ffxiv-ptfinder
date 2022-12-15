@@ -37,8 +37,9 @@ export interface Game {
   patch: string;
 }
 
+export const DungeonTypeValues = ['raid', 'extreme', 'ultimate', 'alliance', 'etc'] as const;
 /**
  * @type DungeonType
  * 어떤 종류의 던전인지 ex) 영식 레이드, 극만신, 절, 24인 레이드, 기타
  */
-export type DungeonType = 'raid' | 'extreme' | 'ultimate' | 'alliance' | 'etc';
+export type DungeonType = typeof DungeonTypeValues[number];

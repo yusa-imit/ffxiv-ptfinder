@@ -153,7 +153,6 @@ function signin({ csrfToken, providers, _nextI18Next }: SignInPageServerSideProp
   const { classes } = buttonTheme();
   return (
     <Center style={{ width: '100%', height: '100%' }}>
-      <p>{JSON.stringify(route.query)}</p>
       <Container size="xs" p="xl" fluid>
         <Stack>
           {providers &&

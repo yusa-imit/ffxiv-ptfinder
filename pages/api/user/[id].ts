@@ -12,10 +12,10 @@ import { getUserFromFirebase } from '@lib/api/getUserFromFirebase';
 import { GetArticleQueryType } from '../../../src/type/api/article/get';
 
 /**
- * @example /api/article/get/full?id=kjdifdlskdf;
+ * @example /api/user/ckuiodfkjer
  * @param req
  * @param res
- * @returns
+ * @returns User Data
  */
 export default async function getFullArticle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'wrong methods' });

@@ -3,6 +3,7 @@ import { useDocumentVisibility } from '@mantine/hooks';
 import { Locale } from '@type/Locale';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect } from 'react';
+import { GetStaticPropsContext } from 'next';
 
 function maker() {
   const documentState = useDocumentVisibility();
@@ -10,9 +11,9 @@ function maker() {
   return <ArticleMaker type="recruit" />;
 }
 
-export const getServerSideProps = async ({ locale }: { locale: Locale }) => ({
+export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['article', 'article_view', 'data'])),
+    ...(await serverSideTranslations(locale || 'en', ['article', 'article_view', 'data'])),
   },
 });
 

@@ -52,7 +52,7 @@ export default function Phase1({
   const route = useRouter();
   const { classes } = PhaseStyles();
   const { t } = useTranslation(['article', 'data']);
-  const [titleCheck, setTitleCheck] = useState(false);
+  const [titleCheck, setTitleCheck] = useState(true);
   const [contentCheck, setContentCheck] = useState(false);
   const [article, changeArticle] = useRecoilState(Article);
   const phase1Error = {
@@ -88,6 +88,11 @@ export default function Phase1({
     },
   };
   const titleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') {
+      setTitleCheck(false);
+    } else if (event.target.value !== '' && !titleCheck) {
+      setTitleCheck(true);
+    }
     changeArticle((prev) => {
       const newArticle = { ...prev };
       newArticle.title = event.currentTarget.value;
@@ -168,8 +173,8 @@ export default function Phase1({
 
   // title checker
   useEffect(() => {
-    if (article.title === '') setTitleCheck(false);
-    else setTitleCheck(true);
+    //if (article.title === '') setTitleCheck(false);
+    //else setTitleCheck(true);
   }, [article.title]);
   // content checker
   useEffect(() => {
@@ -205,6 +210,11 @@ export default function Phase1({
           label={t('phase1_title_label')}
           required
           onChange={titleOnChange}
+          onBlur={(event) => {
+            if (event.target.value === '') {
+              setTitleCheck(false);
+            }
+          }}
           error={phase1Error.getTitleErrorLabelText()}
         />
         <WidthLimitedTooltip label={t(`phase1_${articleType}_isTemporary_tooltip_label`)}>
