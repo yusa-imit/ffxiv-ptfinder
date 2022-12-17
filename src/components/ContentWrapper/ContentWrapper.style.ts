@@ -5,4 +5,7 @@ export const ContentWrapperStyle = createStyles((theme) => ({
     width: '100%',
     padding: theme.spacing.md,
   },
+  responsive: {
+    padding: theme.spacing.md,
+  },
 }));

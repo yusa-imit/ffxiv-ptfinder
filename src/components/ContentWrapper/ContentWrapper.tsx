@@ -17,3 +17,17 @@ export default function ContentWrapper({ withoutBorder, children, ...etc }: Cont
     </Paper>
   );
 }
+
+export function ResponsiveContentWrapper({ withoutBorder, children, ...etc }: ContentWrapperProps) {
+  const { classes } = ContentWrapperStyle();
+  return (
+    <Paper
+      shadow="md"
+      withBorder={withoutBorder ? !withoutBorder : true}
+      {...etc}
+      className={classes.responsive}
+    >
+      {children}
+    </Paper>
+  );
+}
