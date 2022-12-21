@@ -61,20 +61,22 @@ export interface ArticleData {
   availableJobs: Job[];
   minimumWeek: number;
   voiceChat: 0 | 1 | 2;
-  additional: {
-    heading?: boolean;
-    firstTime?: boolean;
-    firstWeekClear?: boolean;
-    worldFirstRace?: boolean;
-    farm?: boolean;
-    boxNumber?: 0 | 1 | 2;
-  };
+  additional: ArticleAdditional;
   region: Region;
   language: Language;
   specifyUserLanguage?: Language[];
   answerType: 0 | 1 | 2;
   answerAddress?: string;
   timezone: Timezone;
+}
+
+export interface ArticleAdditional {
+  heading?: boolean;
+  firstTime?: boolean;
+  firstWeekClear?: boolean;
+  worldFirstRace?: boolean;
+  farm?: boolean;
+  boxNumber?: 0 | 1 | 2;
 }
 
 /**

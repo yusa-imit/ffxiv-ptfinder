@@ -54,5 +54,7 @@
   "day_3": "THU",
   "day_4": "FRI",
   "day_5": "SAT",
-  "day_6": "SUN"
+  "day_6": "SUN",
+  "article_type_recruit": "recruit",
+  "article_type_enlist": "enlist"
 }
