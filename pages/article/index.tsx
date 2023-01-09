@@ -1,3 +1,4 @@
+import SearchPanel from '@components/Article/SearchPanel';
 import ContentWrapper, {
   ResponsiveContentWrapper,
 } from '@components/ContentWrapper/ContentWrapper';
@@ -20,6 +21,7 @@ function ArticleMain() {
   const { t } = useTranslation('common');
   return (
     <Stack>
+      <SearchPanel />
       <Group
         sx={(theme) => ({
           [theme.fn.smallerThan('sm')]: {

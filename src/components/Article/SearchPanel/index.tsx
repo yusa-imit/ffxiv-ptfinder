@@ -17,10 +17,12 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { getDefulatProps } from '../../../lib/getDefaultProps';
+import { PanelNodeGenerator } from './PanelNodeGenerator';
 
 const useStyle = createStyles((theme) => ({
   formWrapper: {
     width: '100%',
+    padding: theme.spacing.md,
   },
 }));
 
@@ -29,6 +31,7 @@ export default function SearchPanel() {
   const [open, setOpen] = useState(false);
   const { classes } = useStyle();
   const defaultProps = getDefulatProps();
+  const Node = PanelNodeGenerator();
   const form = useForm<SearchIndexContext>({
     initialValues: {
       articleType: 0,
@@ -50,20 +53,16 @@ export default function SearchPanel() {
   });
   return (
     <Box>
-      <Button>{t('search_button_text')}</Button>
+      <Button
+        onClick={() => {
+          setOpen((prev) => !prev);
+        }}
+      >
+        {t('search_button_text')}
+      </Button>
       <Collapse in={open}>
         <Paper className={classes.formWrapper} withBorder>
-          <Select data />
-          <Input />
-          <Checkbox />
-          <Select />
-          <Select />
-          {
-            //TODO
-            //JOB Selection
-          }
-          <NumberInput />
-          <Checkbox />
+          {Node.content}
         </Paper>
       </Collapse>
     </Box>

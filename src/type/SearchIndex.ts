@@ -19,12 +19,12 @@ export type SearchKeys =
 
 export interface SearchIndexContext {
   articleType: 0 | 1;
-  title: string;
-  isTemporary: boolean;
-  content: number;
-  availableJobs: Job[];
-  minimumWeek: number;
-  voiceChat: (0 | 1 | 2)[];
+  title?: string;
+  isTemporary?: boolean;
+  content?: number;
+  availableJobs?: Job[];
+  minimumWeek?: number;
+  voiceChat?: (0 | 1 | 2)[];
   region: Region;
   language: Language;
   heading?: boolean;
