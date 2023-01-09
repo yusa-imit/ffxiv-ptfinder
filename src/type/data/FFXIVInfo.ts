@@ -43,3 +43,11 @@ export const DungeonTypeValues = ['raid', 'extreme', 'ultimate', 'alliance', 'et
  * 어떤 종류의 던전인지 ex) 영식 레이드, 극만신, 절, 24인 레이드, 기타
  */
 export type DungeonType = typeof DungeonTypeValues[number];
+
+export const DungeonTypeToNumber: Record<DungeonType, number> = {
+  raid: 0,
+  extreme: 1,
+  alliance: 2,
+  ultimate: 3,
+  etc: 4,
+};

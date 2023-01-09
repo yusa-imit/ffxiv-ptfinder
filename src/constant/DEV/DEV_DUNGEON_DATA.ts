@@ -1371,8 +1371,48 @@ export const DEV_DUNGEON_DATA: Record<number, DBInstance> = {
     },
   },
   // alliance 6.3
+  6320: {
+    type: Type.alliance,
+    code: 6320,
+    partyNumber: 8,
+    title: {
+      kr: '6.3 얼라이언스 레이드 (미정)',
+      en: 'Euphrosyne',
+      jp: '喜びの神域 エウプロシュネ',
+    },
+  },
   // extreme 6.3
+  6310: {
+    type: Type.extreme,
+    code: 6310,
+    partyNumber: 8,
+    title: {
+      kr: '??? 토벌전',
+      en: '??? (extreme)',
+      jp: '極 ???',
+    },
+  },
+  6311: {
+    type: Type.extreme,
+    code: 6311,
+    partyNumber: 8,
+    title: {
+      kr: '환 여신 소피아 토벌전',
+      en: 'Containment Bay P1T6 (Unreal)',
+      jp: '幻女神ソフィア討滅戦',
+    },
+  },
   // ultimate 6.3
+  6330: {
+    type: Type.ultimate,
+    code: 6330,
+    partyNumber: 8,
+    title: {
+      kr: '절 오메가 검증전',
+      en: 'The Omega Protocol (Ultimate)',
+      jp: '絶オメガ検証戦',
+    },
+  },
   // raid 6.4
   // extreme 6.4
   // extreme 6.5
