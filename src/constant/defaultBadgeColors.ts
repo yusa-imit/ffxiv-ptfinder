@@ -1,4 +1,5 @@
 import { MantineColor } from '@mantine/core';
+import { DungeonType } from '../type/data/FFXIVInfo';
 
 export const BadgeColor: { [key: string]: MantineColor } = {
   isTemporary: 'red',
@@ -20,4 +21,20 @@ export const BadgeColor: { [key: string]: MantineColor } = {
   notice: 'yellow',
   update: 'blue',
   maintenance: 'red',
+};
+
+export const VersionColor: { [key: string]: MantineColor } = {
+  '2': 'teal',
+  '3': 'blue',
+  '4': 'red',
+  '5': 'dark',
+  '6': 'violet',
+};
+
+export const DungeonTypeColor: Record<DungeonType, MantineColor> = {
+  raid: 'violet',
+  extreme: 'red',
+  ultimate: 'dark',
+  alliance: 'cyan',
+  etc: 'green',
 };
