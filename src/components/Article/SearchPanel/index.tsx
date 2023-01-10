@@ -16,6 +16,7 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import ContentRetriever from '@components/ContentRetriever';
 import { getDefulatProps } from '../../../lib/getDefaultProps';
 import { PanelNodeGenerator } from './PanelNodeGenerator';
 
@@ -62,7 +63,11 @@ export default function SearchPanel() {
       </Button>
       <Collapse in={open}>
         <Paper className={classes.formWrapper} withBorder>
-          {Node.content}
+          <ContentRetriever
+            returnSelected={(value) => {
+              form.setFieldValue('content', value);
+            }}
+          />
         </Paper>
       </Collapse>
     </Box>

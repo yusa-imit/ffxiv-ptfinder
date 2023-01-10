@@ -1,44 +1,38 @@
-import { DBInstance } from '@type/data/DBInstance';
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from '@mantine/form';
-import { Button, Input, Modal, ScrollArea, Select, Stack, Title } from '@mantine/core';
-import { useRouter } from 'next/router';
-import { Locale } from '@type/Locale';
-import { useTranslation } from 'next-i18next';
 import { baseUrl } from '@constant/baseUrl';
-import { useElementSize, useResizeObserver, useViewportSize } from '@mantine/hooks';
-import { Current } from '../../constant/Current';
-import { DungeonType, DungeonTypeValues, DungeonTypeToNumber } from '../../type/data/FFXIVInfo';
+import { Carousel, Embla, useAnimationOffsetEffect } from '@mantine/carousel';
+import { Input, Modal, Title } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { ContentQueryString } from '@type/QueryString';
+import { DBInstance } from '@type/data/DBInstance';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import InstanceContent, { EmptyInstanceContent } from '../InstanceContent/InstanceContent';
+import Searcher from './Searcher';
+import Selector from './Selector';
 
-interface QueryStringForm {
-  version: null | string;
-  patch: null | string;
-  title: string;
-  type: null | string;
+export interface ContentRetrieverProps {
+  returnSelected: (value: number) => void;
 }
 
-export default function ContentRetriever() {
+export default function ContentRetriever({ returnSelected }: ContentRetrieverProps) {
   const { locale } = useRouter();
-  const { t } = useTranslation('article');
+  const { t } = useTranslation('common');
   const [selected, setSelected] = useState<DBInstance | null>(null);
+
   const [open, setOpen] = useState(false);
+  const [embla, setEmbla] = useState<Embla | null>(null);
+  useAnimationOffsetEffect(embla, 150);
+  const [view, setView] = useState(0);
+  useEffect(() => {
+    embla?.scrollTo(view);
+  }, [view, embla]);
+
   const [query, setQuery] = useState('&');
   const [data, setData] = useState<{ [key: string]: DBInstance } | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const [height, setHeight] = useState(0);
-  const iRef = useRef<HTMLDivElement>(null);
-  const fRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    console.log(iRef);
-    if (iRef.current && fRef.current) {
-      console.log(fRef.current.offsetHeight);
-      console.log(iRef.current.offsetHeight);
-      setHeight(fRef.current.offsetHeight - iRef.current.offsetHeight - 50);
-    }
-  }, [iRef, fRef, open]);
-
-  const form = useForm<QueryStringForm>({
+  const form = useForm<ContentQueryString>({
     initialValues: {
       version: null,
       patch: null,
@@ -46,25 +40,6 @@ export default function ContentRetriever() {
       type: null,
     },
   });
-  const transfromValues = (values: QueryStringForm) => {
-    const keyValue = Object.entries(values);
-    const arr: [string, any][] = [];
-    keyValue.forEach(([key, value]) => {
-      if (key === 'title') {
-        if (value === '') return;
-        arr.push([key, value]);
-      } else {
-        if (value === null) return;
-        arr.push([key, value]);
-      }
-    });
-    return arr.reduce((prev, [key, value]) => {
-      return `${prev}${prev.length === 1 ? '' : '&'}${key}=${value}`;
-    }, '?');
-  };
-  useEffect(() => {
-    setQuery(transfromValues(form.values));
-  }, [form.values]);
   useEffect(() => {
     if (query.length <= 1) return;
     const queryfunction = async () => {
@@ -72,109 +47,85 @@ export default function ContentRetriever() {
       try {
         const response = await (await fetch(`${baseUrl}/api/contents${query}`)).json();
         setData(response);
-        console.log(data);
       } finally {
         setLoading(false);
       }
     };
     queryfunction();
   }, [query]);
+  console.log(selected);
   return (
     <>
       <Input.Wrapper
         label={t('content_form_label')}
         placeholder={t('content_form_placeholder')}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           setOpen((prev) => !prev);
         }}
       >
-        <Input
-          component="button"
-          value={
-            selected === null
-              ? t('content_form_placeholder')
-              : selected.title[(locale || 'en') as Locale]
-          }
-          onClick={(e) => {
-            e.preventDefault();
-            () => {
-              setOpen((prev) => !prev);
-            };
-          }}
-          style={{ cursor: 'pointer' }}
-        />
+        {selected === null ? <EmptyInstanceContent /> : <InstanceContent data={selected} />}
       </Input.Wrapper>
+
       <Modal
+        size={378}
         opened={open}
         onClose={() => {
           form.reset();
           setOpen(false);
           setData(null);
+          setView(0);
         }}
         centered
         title={<Title order={6}>{t('content_form_title')}</Title>}
+        overflow="inside"
         styles={(theme) => ({
-          modal: {
-            height: '90vh',
-          },
           body: {
-            height: '100%',
+            overflow: 'visible',
           },
         })}
-        overflow="inside"
       >
-        <Stack style={{ height: '100%', overflow: 'hidden' }} ref={fRef}>
-          <Stack ref={iRef}>
-            <Select
-              data={Current.version.map((v) => v.toString())}
-              label={t('content_form_version')}
-              unselectable="on"
-              onChange={(value) => {
-                form.setFieldValue('version', value);
+        <Carousel
+          slideSize="340px"
+          slideGap="lg"
+          sx={() => ({ maxHeight: '90vh', width: '340px', overflow: 'visible' })}
+          styles={(theme) => ({
+            viewport: {
+              overflow: 'hidden visible',
+            },
+          })}
+          withControls={false}
+          getEmblaApi={setEmbla}
+          draggable={false}
+        >
+          <Carousel.Slide>
+            <Searcher
+              form={form}
+              setQuery={setQuery}
+              toNext={() => {
+                setView((v) => (v >= 1 ? v : v + 1));
               }}
             />
-            <Select
-              data={Current.patch.map((v) => v.toString())}
-              label={t('content_form_patch')}
-              unselectable="on"
-              onChange={(value) => {
-                form.setFieldValue('patch', value);
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <Selector
+              render={view === 1}
+              loading={loading}
+              data={data}
+              toBack={() => {
+                setView((v) => (v <= 0 ? v : v - 1));
+              }}
+              returnSelected={returnSelected}
+              setSelected={setSelected}
+              close={() => {
+                form.reset();
+                setOpen(false);
+                setData(null);
+                setView(0);
               }}
             />
-            <Select
-              label={t('content_form_type')}
-              data={DungeonTypeValues.map((v) => ({
-                label: t(`dungeon_type_${v}`, { ns: 'data' }),
-                value: v,
-              }))}
-              unselectable="on"
-              onChange={(value) => {
-                form.setFieldValue('type', DungeonTypeToNumber[value as DungeonType].toString());
-              }}
-            />
-            <Input.Wrapper label={t('content_form_content_title_title')}>
-              <Input
-                placeholder={t('content_form_content_title_placeholder')}
-                onChange={(event) => {
-                  form.setFieldValue('title', event.target.value.trim());
-                }}
-              />
-            </Input.Wrapper>
-          </Stack>
-          <Input.Wrapper label={t('content_select')}>
-            <ScrollArea style={{ height }}>
-              <Stack>
-                {data === null ? (
-                  <>{t('content_data_is_null')}</>
-                ) : (
-                  Object.keys(data).map((v) => (
-                    <Button key={v}>{data[v].title[(locale as Locale) || 'en']}</Button>
-                  ))
-                )}
-              </Stack>
-            </ScrollArea>
-          </Input.Wrapper>
-        </Stack>
+          </Carousel.Slide>
+        </Carousel>
       </Modal>
     </>
   );

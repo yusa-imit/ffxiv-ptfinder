@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Checkbox, Input, NumberInput, Select, SelectItem } from '@mantine/core';
-import ContentRetriever from '@components/ContentRetriever';
+import ContentRetriever, { ContentRetrieverProps } from '@components/ContentRetriever';
 import { SearchIndexContext } from '../../../type/SearchIndex';
 import { SearchData, SearchDataValue } from './SearchPanelData';
 
@@ -34,12 +34,15 @@ function NodeGenerator(searchData: SearchData) {
       break;
   }
 }
-export function PanelNodeGenerator(): Record<keyof SearchIndexContext, ReactNode> {
+export function PanelNodeGenerator(): Record<
+  keyof SearchIndexContext,
+  ReactNode | ((props: ContentRetrieverProps) => JSX.Element)
+> {
   return {
     articleType: NodeGenerator(SearchDataValue.articleType),
     title: NodeGenerator(SearchDataValue.title),
     isTemporary: NodeGenerator(SearchDataValue.isTemporary),
-    content: <ContentRetriever />,
+    content: <></>,
     availableJobs: <></>,
     minimumWeek: NodeGenerator(SearchDataValue.minimumWeek),
     voiceChat: NodeGenerator(SearchDataValue.voiceChat),
