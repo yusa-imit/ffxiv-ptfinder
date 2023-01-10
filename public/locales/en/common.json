@@ -22,5 +22,18 @@
   "404_title": "Something Bad Happend...",
   "404_description": "Cannot find the page. If you came this page by button or link contact administrator or link uploader, if not check your typed address. Maybe there's possibility that article author deleted their article.",
   "404_go_main": "Go to Main",
-  "404_go_back": "Go to previous page"
+  "404_go_back": "Go to previous page",
+  "content_form_label": "Search for Content",
+  "content_form_placeholder": "Click to Search Content",
+  "content_form_title": "Search Content",
+  "content_form_version": "Content Version",
+  "content_form_patch": "Content Patch",
+  "content_form_type": "Content Type",
+  "content_form_content_title_title": "Content Title",
+  "content_form_content_title_placeholder": "Insert Content Title",
+  "content_form_error_need_parameter": "Content search function needs at least one parameter above.",
+  "content_form_loading": "Loading...",
+  "content_form_no_data": "No Data",
+  "button_search": "Search",
+  "button_back": "Back"
 }
