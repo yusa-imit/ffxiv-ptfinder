@@ -28,7 +28,7 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
     embla?.scrollTo(view);
   }, [view, embla]);
 
-  const [query, setQuery] = useState('&');
+  const [query, setQuery] = useState('');
   const [data, setData] = useState<{ [key: string]: DBInstance } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -57,14 +57,26 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
   return (
     <>
       <Input.Wrapper
+        style={{ pointerEvents: 'none' }}
         label={t('content_form_label')}
         placeholder={t('content_form_placeholder')}
-        onClick={(e) => {
-          e.preventDefault();
-          setOpen((prev) => !prev);
-        }}
       >
-        {selected === null ? <EmptyInstanceContent /> : <InstanceContent data={selected} />}
+        {selected === null ? (
+          <EmptyInstanceContent
+            style={{ pointerEvents: 'all' }}
+            onClick={() => {
+              setOpen((prev) => !prev);
+            }}
+          />
+        ) : (
+          <InstanceContent
+            data={selected}
+            style={{ pointerEvents: 'all' }}
+            onClick={() => {
+              setOpen((prev) => !prev);
+            }}
+          />
+        )}
       </Input.Wrapper>
 
       <Modal
@@ -74,6 +86,7 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
           form.reset();
           setOpen(false);
           setData(null);
+          setQuery('');
           setView(0);
         }}
         centered
@@ -121,6 +134,7 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
                 form.reset();
                 setOpen(false);
                 setData(null);
+                setQuery('');
                 setView(0);
               }}
             />
