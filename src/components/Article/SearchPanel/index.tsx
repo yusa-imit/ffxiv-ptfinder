@@ -63,11 +63,24 @@ export default function SearchPanel() {
       </Button>
       <Collapse in={open}>
         <Paper className={classes.formWrapper} withBorder>
+          <Node.ArticleType />
+          <Node.Title />
+          <Node.IsTemporary />
           <ContentRetriever
             returnSelected={(value) => {
               form.setFieldValue('content', value);
             }}
           />
+          <Node.MinimumWeek />
+          <Node.VoiceChat />
+          <Node.Region />
+          <Node.Language />
+          <Node.Heading />
+          <Node.FirstTime />
+          <Node.FirstWeekClear />
+          <Node.WorldFirstRace />
+          <Node.Farm />
+          <Node.BoxNumber />
         </Paper>
       </Collapse>
     </Box>
