@@ -1,6 +1,7 @@
 import { SelectItem } from '@mantine/core/lib/Select/types';
 import { ReactNode } from 'react';
 import { Region_Value } from '@type/data/FFXIVInfo';
+import { TFunction } from 'next-i18next';
 import { SearchIndexContext, SearchKeys } from '../../../type/SearchIndex';
 import { Language_Value } from '../../../type/data/FFXIVInfo';
 
@@ -13,83 +14,86 @@ export interface SearchData {
     min?: number;
   };
 }
-export const SearchDataValue: Record<SearchKeys, SearchData> = {
+export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> = (t) => ({
   articleType: {
     component: 'Select',
-    label: 'search_article_type',
+    label: t('search_article_type'),
     data: [
-      { value: 'recruit', label: 'article_type_recruit' },
-      { value: 'enlist', label: 'article_type_enlist' },
+      { value: 'recruit', label: t('article_type_recruit', { ns: 'data' }) },
+      { value: 'enlist', label: t('article_type_enlist', { ns: 'data' }) },
     ],
   },
   title: {
     component: 'Input',
-    label: 'phase1_title_label',
+    label: t('search_title_label'),
   },
   isTemporary: {
     component: 'Checkbox',
-    label: 'phase1_isTemporary',
+    label: t('search_isTemporary'),
   },
   content: {
     component: 'None',
-    label: 'phase1_content',
+    label: t('search_content'),
   },
   availableJobs: {
     component: 'None',
-    label: 'phase2_my_job_selection',
+    label: t('search_my_job_selection'),
   },
   minimumWeek: {
     component: 'NumberInput',
-    label: 'phase2_minimum_week_label',
+    label: t('search_minimum_week_label'),
     limit: {
       min: 0,
     },
   },
   voiceChat: {
     component: 'Checkbox.Group',
-    label: 'phase2_voicechat_title',
+    label: t('search_voicechat_title'),
     data: [
-      { value: '0', label: 'phase2_voicechat_value_0' },
-      { value: '1', label: 'phase2_voicechat_value_1' },
-      { value: '2', label: 'phase2_voicechat_value_2' },
+      { value: '0', label: t('phase2_voicechat_value_0') },
+      { value: '1', label: t('phase2_voicechat_value_1') },
+      { value: '2', label: t('phase2_voicechat_value_2') },
     ],
   },
   region: {
     component: 'Select',
-    label: 'phase1_region',
-    data: Array.from(Region_Value, (v) => ({ value: v, label: `phase1_region_${v}` })),
+    label: t('search_region'),
+    data: Array.from(Region_Value, (v) => ({ value: v, label: t(`region_${v}`, { ns: 'data' }) })),
   },
   language: {
     component: 'Select',
-    label: 'phase1_language',
-    data: Array.from(Language_Value, (v) => ({ value: v, label: `phase1_language_${v}` })),
+    label: t('search_language'),
+    data: Array.from(Language_Value, (v) => ({
+      value: v,
+      label: t(`lang_${v}`, { ns: 'data' }),
+    })),
   },
   heading: {
     component: 'Checkbox',
-    label: 'phase2_isHeading_title',
+    label: t('search_isHeading_title'),
   },
   firstTime: {
     component: 'Checkbox',
-    label: 'phase2_isFirstTime_title',
+    label: t('search_isFirstTime_title'),
   },
   firstWeekClear: {
     component: 'Checkbox',
-    label: 'phase2_isFirstWeekClear_title',
+    label: t('search_isFirstWeekClear_title'),
   },
   worldFirstRace: {
     component: 'Checkbox',
-    label: 'phase2_worldFirstRace_title',
+    label: t('search_worldFirstRace_title'),
   },
   farm: {
     component: 'Checkbox',
-    label: 'phase2_isFarm_title',
+    label: t('search_isFarm_title'),
   },
   boxNumber: {
     component: 'NumberInput',
-    label: 'phase2_box_number_label',
+    label: t('search_box_number_label'),
     limit: {
       min: 0,
       max: 2,
     },
   },
-};
+});
