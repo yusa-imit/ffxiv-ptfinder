@@ -18,15 +18,11 @@ import { Article } from '../../../recoil/Article/index';
 
 interface JobSelectionProps extends MenuProps {
   jobs: Job[];
-  index: number;
-  partyNumber: number;
   disableOpen?: boolean;
   onJobIconClick?: (job: Job) => void;
 }
 export default function JobSelection({
   jobs,
-  index,
-  partyNumber,
   disableOpen,
   onJobIconClick,
   ...etc
