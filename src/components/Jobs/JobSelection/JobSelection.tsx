@@ -2,7 +2,7 @@ import { Group, Menu, MenuProps } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { JobSort } from '@constant/JobSort';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   Tank_Value,
   Job,
@@ -21,35 +21,41 @@ interface JobSelectionProps extends MenuProps {
   index: number;
   partyNumber: number;
   disableOpen?: boolean;
+  onJobIconClick?: (job: Job) => void;
 }
 export default function JobSelection({
   jobs,
   index,
   partyNumber,
   disableOpen,
+  onJobIconClick,
   ...etc
 }: JobSelectionProps) {
   const { t } = useTranslation('data');
-  const [article, setArticle] = useRecoilState(Article);
+  //const setArticle = useSetRecoilState(Article);
   const [roles, setRoles] = useState({ t: false, d: false, h: false });
-  const onJobIconClick = (job: Job) => {
-    const newArticle = { ...article };
-    const newPartys = [...article.jobs];
-    const newJobs = [...newPartys[partyNumber]];
-    if (article.jobs[partyNumber][index].includes(job)) {
-      const jobArray: Job[] = [];
-      newJobs[index].forEach((v) => {
-        if (v === job) return;
-        jobArray.push(v);
-      });
-      newJobs[index] = jobArray;
-    } else {
-      newJobs[index] = [...newJobs[index], job];
-    }
-    newPartys[partyNumber] = newJobs;
-    newArticle.jobs = newPartys;
-    setArticle(newArticle);
+  /**
+  const onJobIconClickDefault = (job: Job) => {
+    setArticle((prev) => {
+      const newArticle = { ...prev };
+      const newPartys = [...newArticle.jobs];
+      const newJobs = [...newPartys[partyNumber]];
+      if (newArticle.jobs[partyNumber][index].includes(job)) {
+        const jobArray: Job[] = [];
+        newJobs[index].forEach((v) => {
+          if (v === job) return;
+          jobArray.push(v);
+        });
+        newJobs[index] = jobArray;
+      } else {
+        newJobs[index] = [...newJobs[index], job];
+      }
+      newPartys[partyNumber] = newJobs;
+      newArticle.jobs = newPartys;
+      return newArticle;
+    });
   };
+   */
   useEffect(() => {
     const newState = { t: false, d: false, h: false };
     jobs.forEach((job) => {
@@ -88,9 +94,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}
@@ -102,9 +108,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}
@@ -116,9 +122,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}
@@ -130,9 +136,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}
@@ -144,9 +150,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}
@@ -158,9 +164,9 @@ export default function JobSelection({
             <JobIcon
               job={v}
               key={v + i}
-              isChecked={article.jobs[partyNumber][index].includes(v)}
+              isChecked={jobs.includes(v)}
               onClick={() => {
-                onJobIconClick(v);
+                if (onJobIconClick) onJobIconClick(v);
               }}
             />
           ))}

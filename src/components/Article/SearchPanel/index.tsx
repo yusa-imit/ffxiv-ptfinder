@@ -49,7 +49,6 @@ export default function SearchPanel({ initialFormValue }: SearchPanelProps) {
   const { classes } = useStyle();
   const defaultProps = getDefulatProps();
   const router = useRouter();
-  //const Node = PanelNodeGenerator();
   const form = useForm<SearchIndexContext>({
     initialValues: initialFormValue
       ? Object.assign(defaultProps, initialFormValue)
