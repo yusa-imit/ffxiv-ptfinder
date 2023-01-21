@@ -13,6 +13,7 @@ import {
   Select,
   Stack,
   TextInput,
+  Tooltip,
   createStyles,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -23,6 +24,8 @@ import ContentRetriever from '@components/ContentRetriever';
 import { getNumberedArticleType } from '@lib/getArticleType';
 import { Region } from '@type/data/FFXIVInfo';
 import { getSearchUrlParams } from '@lib/searchUrlParam';
+import { pull, without } from 'lodash';
+import ForwaredRole from '@components/Jobs/JobSelection/ForwardedRole';
 import { getDefulatProps } from '../../../lib/getDefaultProps';
 import { Node } from './PanelNodeGenerator';
 import { getArticleType } from '../../../lib/getArticleType';
@@ -82,6 +85,31 @@ export default function SearchPanel({ initialFormValue }: SearchPanelProps) {
                 }}
               />
               <Node.Title {...form.getInputProps('title')} />
+              <Input.Wrapper label={t('search_by_job')}>
+                <Group>
+                  <Tooltip
+                    label={form.values.availableJobs?.join(', ')}
+                    disabled={
+                      form.values.availableJobs === undefined ||
+                      form.values.availableJobs.length === 0
+                    }
+                  >
+                    <JobSelection
+                      jobs={form.values.availableJobs || []}
+                      onJobIconClick={(job) => {
+                        if (form.values.availableJobs?.includes(job)) {
+                          form.setFieldValue(
+                            'availableJobs',
+                            without(form.values.availableJobs, job)
+                          );
+                        } else if (form.values.availableJobs) {
+                          form.setFieldValue('availableJobs', [...form.values.availableJobs, job]);
+                        } else form.setFieldValue('availableJobs', [job]);
+                      }}
+                    />
+                  </Tooltip>
+                </Group>
+              </Input.Wrapper>
               <Node.IsTemporary {...form.getInputProps('isTemporary', { type: 'checkbox' })} />
               <ContentRetriever
                 returnSelected={(value) => {

@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'next-i18next';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilState_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { HorizontalGroupWithText } from '@components/HorizontalGroupWithText';
 
@@ -22,7 +22,7 @@ import { UseListStateHandlers } from '@mantine/hooks';
 import AddDeleteIcon from '@components/Jobs/Icon/AddDeleteIcon';
 import { JobSort } from '@constant/JobSort';
 import { Article } from '../../../../../recoil/Article/index';
-import { Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
+import { Job, Language, Language_Value } from '../../../../../type/data/FFXIVInfo';
 import { PhaseStyles } from '../Phase.styles';
 import { PhaseStack } from '../PhaseStack';
 
@@ -90,6 +90,26 @@ export default function Phase2({
       if (type === 'add') newJobs.push([[]]);
       else newJobs.pop();
       newArticle.jobs = newJobs;
+      return newArticle;
+    });
+  };
+  const onJobIconClick = (job: Job, index: number, partyIndex: number) => {
+    changeArticle((prev) => {
+      const newArticle = { ...prev };
+      const newPartys = [...newArticle.jobs];
+      const newJobs = [...newPartys[partyIndex]];
+      if (newArticle.jobs[partyIndex][index].includes(job)) {
+        const jobArray: Job[] = [];
+        newJobs[index].forEach((v) => {
+          if (v === job) return;
+          jobArray.push(v);
+        });
+        newJobs[index] = jobArray;
+      } else {
+        newJobs[index] = [...newJobs[index], job];
+      }
+      newPartys[partyIndex] = newJobs;
+      newArticle.jobs = newPartys;
       return newArticle;
     });
   };
@@ -203,7 +223,13 @@ export default function Phase2({
                 </Title>
                 <Group>
                   {party.map((jobs, i) => (
-                    <JobSelection jobs={jobs} key={i} index={i} partyNumber={partyNumber} />
+                    <JobSelection
+                      jobs={jobs}
+                      key={i}
+                      onJobIconClick={(value) => {
+                        onJobIconClick(value, i, partyNumber);
+                      }}
+                    />
                   ))}
                   {party.length < 8 && (
                     <AddDeleteIcon
@@ -232,7 +258,12 @@ export default function Phase2({
             <Stack>
               <Title order={6}>{t('phase2_my_job_selection')}</Title>
               <Group>
-                <JobSelection jobs={article.jobs[0][0]} index={0} partyNumber={0} />
+                <JobSelection
+                  jobs={article.jobs[0][0]}
+                  onJobIconClick={(value) => {
+                    onJobIconClick(value, 0, 0);
+                  }}
+                />
               </Group>
             </Stack>
           </>

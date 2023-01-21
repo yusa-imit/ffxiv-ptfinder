@@ -1,4 +1,4 @@
-import { Group, Menu, MenuProps } from '@mantine/core';
+import { Group, Menu, MenuProps, Tooltip } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useState } from 'react';
 import { JobSort } from '@constant/JobSort';
@@ -19,11 +19,13 @@ import { Article } from '../../../recoil/Article/index';
 interface JobSelectionProps extends MenuProps {
   jobs: Job[];
   disableOpen?: boolean;
+  disableHoverTooltip?: boolean;
   onJobIconClick?: (job: Job) => void;
 }
 export default function JobSelection({
   jobs,
   disableOpen,
+  disableHoverTooltip,
   onJobIconClick,
   ...etc
 }: JobSelectionProps) {
@@ -81,8 +83,11 @@ export default function JobSelection({
   return (
     <Menu {...etc}>
       <Menu.Target>
-        <RoleIcon roles={roles} />
+        <Tooltip label={jobs.join(', ')} disabled={disableHoverTooltip || jobs.length === 0}>
+          <RoleIcon roles={roles} />
+        </Tooltip>
       </Menu.Target>
+
       <Menu.Dropdown style={{ position: 'absolute' }}>
         <Menu.Label>{t('job_sort_TANK')}</Menu.Label>
         <Group spacing="xs" position="left" px={12}>
