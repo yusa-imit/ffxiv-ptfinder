@@ -41,6 +41,7 @@
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.0.4",
     "firebase": "^9.13.0",
+    "lodash": "^4.17.21",
     "next": "^13.0.2",
     "next-auth": "^4.16.4",
     "next-i18next": "^12.1.0",
