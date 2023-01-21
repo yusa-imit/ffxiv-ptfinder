@@ -37,11 +37,6 @@ function login() {
           padding: '20%',
         }}
       >
-        <div>
-          {Object.keys(session).map((v, i) => (
-            <p key={i}>{`${v} : ${JSON.stringify(session[v])}`}</p>
-          ))}
-        </div>
         <Button
           onClick={() => {
             signOut();

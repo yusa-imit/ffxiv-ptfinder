@@ -6,17 +6,16 @@ import { ContentQueryString } from '@type/QueryString';
 import { DBInstance } from '@type/data/DBInstance';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { HTMLAttributes, useEffect, useState } from 'react';
 import InstanceContent, { EmptyInstanceContent } from '../InstanceContent/InstanceContent';
 import Searcher from './Searcher';
 import Selector from './Selector';
 
-export interface ContentRetrieverProps {
+export interface ContentRetrieverProps extends HTMLAttributes<HTMLDivElement> {
   returnSelected: (value: number) => void;
 }
 
-export default function ContentRetriever({ returnSelected }: ContentRetrieverProps) {
-  const { locale } = useRouter();
+export default function ContentRetriever({ returnSelected, ...etc }: ContentRetrieverProps) {
   const { t } = useTranslation('common');
   const [selected, setSelected] = useState<DBInstance | null>(null);
 
@@ -59,6 +58,7 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
         style={{ pointerEvents: 'none' }}
         label={t('content_form_label')}
         placeholder={t('content_form_placeholder')}
+        {...etc}
       >
         {selected === null ? (
           <EmptyInstanceContent

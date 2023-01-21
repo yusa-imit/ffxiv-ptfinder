@@ -40,6 +40,13 @@ const useStyle = createStyles((theme) => ({
   formButton: {
     width: '100%',
   },
+  limitWidth: {
+    minWidth: '80%',
+    maxWidth: '100%',
+    [theme.fn.smallerThan('md')]: {
+      width: '100%',
+    },
+  },
 }));
 
 interface SearchPanelProps {
@@ -115,6 +122,7 @@ export default function SearchPanel({ initialFormValue }: SearchPanelProps) {
                 returnSelected={(value) => {
                   form.setFieldValue('content', value);
                 }}
+                className={classes.limitWidth}
               />
               <Node.MinimumWeek
                 value={form.values.minimumWeek}

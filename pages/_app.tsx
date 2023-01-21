@@ -9,7 +9,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Primary } from '@recoil/Primary';
 import { GlobalApp } from '../src/components/base/GlobalApp/GlobalApp';
 import nextI18NextConfig from '../next-i18next.config';
-import { getServerSideProps } from './index';
 
 function App(props: AppProps & { colorScheme: ColorScheme; primary: string }) {
   return (
