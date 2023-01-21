@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   Checkbox,
   CheckboxGroupProps,
@@ -10,66 +9,105 @@ import {
   Select,
   SelectItem,
   SelectProps,
+  TextInput,
+  TextInputProps,
+  createStyles,
 } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
-import { SearchIndexContext } from '../../../type/SearchIndex';
-import { SearchData, SearchDataValue } from './SearchPanelData';
+import { SearchDataValue } from './SearchPanelData';
 
-export function PanelNodeGenerator() {
-  const { t } = useTranslation('common');
-  const data = SearchDataValue(t);
-  return {
-    ArticleType: (props: Omit<SelectProps, 'data' | 'label' | 'defaultValue'>) => (
+const useFormStyle = createStyles((theme) => ({
+  input: {
+    minWidth: '80%',
+    maxWidth: '100%',
+    [theme.fn.smallerThan('md')]: {
+      width: '100%',
+    },
+  },
+}));
+
+export const Node = {
+  ArticleType: (props: Omit<SelectProps, 'data' | 'label' | 'defaultValue'>) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).articleType;
+    return (
       <Select
-        data={data.articleType.data!}
-        label={data.articleType.label}
-        defaultValue={(data.articleType.data!.at(0) as SelectItem).value}
+        data={data.data!}
+        label={data.label}
+        defaultValue={(data.data!.at(0) as SelectItem).value}
         {...props}
       />
-    ),
-    Title: (props: InputProps) => (
-      <Input.Wrapper label={data.title.label}>
-        <Input {...props} />
+    );
+  },
+  Title: (props: TextInputProps) => {
+    const { classes } = useFormStyle();
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).title;
+    return <TextInput {...props} className={classes.input} label={data.label} />;
+  },
+  IsTemporary: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).isTemporary;
+    return (
+      <Input.Wrapper label={data.label}>
+        <Checkbox label={data.data[0]} {...props} />
       </Input.Wrapper>
-    ),
-    IsTemporary: (props: CheckboxProps) => <Checkbox label={data.isTemporary.label} {...props} />,
-    MinimumWeek: (props: NumberInputProps) => (
-      <NumberInput
-        label={data.minimumWeek.label}
-        defaultValue={0}
-        min={data.minimumWeek.limit!.min!}
-        {...props}
-      />
-    ),
-    VoiceChat: (props: Omit<CheckboxGroupProps, 'children'>) => (
-      <Checkbox.Group defaultValue={[]} {...props}>
-        {(data.voiceChat.data as SelectItem[]).map((v) => (
-          <Checkbox label={v.label} value={v.value} />
+    );
+  },
+  MinimumWeek: (props: NumberInputProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).minimumWeek;
+    return <NumberInput label={data.label} defaultValue={0} min={data.limit.min} {...props} />;
+  },
+  VoiceChat: (props: Omit<CheckboxGroupProps, 'children'>) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).voiceChat;
+    return (
+      <Checkbox.Group defaultValue={[]} {...props} label={data.label}>
+        {data.data.map((v) => (
+          <Checkbox label={v.label} value={v.value} key={v.value} />
         ))}
       </Checkbox.Group>
-    ),
-    Region: (props: Omit<SelectProps, 'data' | 'label'>) => (
-      <Select data={data.region.data!} label={data.region.label} {...props} />
-    ),
-    Language: (props: Omit<SelectProps, 'data' | 'label'>) => (
-      <Select data={data.language.data!} label={data.language.label} {...props} />
-    ),
-    Heading: (props: CheckboxProps) => <Checkbox label={data.heading.label} {...props} />,
-    FirstTime: (props: CheckboxProps) => <Checkbox label={data.firstTime.label} {...props} />,
-    FirstWeekClear: (props: CheckboxProps) => (
-      <Checkbox label={data.firstWeekClear.label} {...props} />
-    ),
-    WorldFirstRace: (props: CheckboxProps) => (
-      <Checkbox label={data.worldFirstRace.label} {...props} />
-    ),
-    Farm: (props: CheckboxProps) => <Checkbox label={data.farm.label} {...props} />,
-    BoxNumber: (props: NumberInputProps) => (
-      <NumberInput
-        label={data.boxNumber.label}
-        min={data.boxNumber.limit!.min!}
-        max={data.boxNumber.limit!.max!}
-        {...props}
-      />
-    ),
-  };
-}
+    );
+  },
+  Region: (props: Omit<SelectProps, 'data' | 'label'>) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).region;
+    return <Select data={data.data} label={data.label} {...props} />;
+  },
+  Language: (props: Omit<SelectProps, 'data' | 'label'>) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).language;
+    return <Select data={data.data} label={data.label} {...props} />;
+  },
+  Heading: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).heading;
+    return <Checkbox label={data.label} {...props} />;
+  },
+  FirstTime: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).firstTime;
+    return <Checkbox label={data.label} {...props} />;
+  },
+  FirstWeekClear: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).firstWeekClear;
+    return <Checkbox label={data.label} {...props} />;
+  },
+  WorldFirstRace: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).worldFirstRace;
+    return <Checkbox label={data.label} {...props} />;
+  },
+  Farm: (props: CheckboxProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).farm;
+    return <Checkbox label={data.label} {...props} />;
+  },
+  BoxNumber: (props: NumberInputProps) => {
+    const { t } = useTranslation('common');
+    const data = SearchDataValue(t).boxNumber;
+    return <NumberInput label={data.label} min={data.limit.min} max={data.limit.max} {...props} />;
+  },
+};

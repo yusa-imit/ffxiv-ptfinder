@@ -25,8 +25,8 @@ export interface SearchIndexContext {
   availableJobs?: Job[];
   minimumWeek?: number;
   voiceChat?: (0 | 1 | 2)[];
-  region: Region;
-  language: Language;
+  region?: Region;
+  language?: Language;
   heading?: boolean;
   firstTime?: boolean;
   firstWeekClear?: boolean;

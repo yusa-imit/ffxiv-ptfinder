@@ -18,7 +18,7 @@ export function getDefulatProps() {
     }
   };
   return {
-    language: (router.locale as Language) || 'EN',
+    language: (router.locale?.toLocaleUpperCase() as Language) || 'EN',
     region: getRegion(router.locale),
   };
 }

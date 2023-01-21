@@ -53,7 +53,6 @@ export default function ContentRetriever({ returnSelected }: ContentRetrieverPro
     };
     queryfunction();
   }, [query]);
-  console.log(selected);
   return (
     <>
       <Input.Wrapper

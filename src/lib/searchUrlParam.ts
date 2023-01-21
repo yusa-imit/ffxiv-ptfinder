@@ -1,38 +1,63 @@
 import { SearchIndexContext } from '@type/SearchIndex';
 import { Job } from '@type/data/FFXIVInfo';
+import { getArticleType } from './getArticleType';
 
-function searchUrlParamValidator(context: SearchIndexContext) {
-  const newContext = { ...context };
-  Object.keys(newContext).forEach((key) => {
-    switch (key) {
-      case 'articleType':
-        return;
-      case 'title':
-        if (newContext.title !== undefined) {
-          newContext.title = newContext.title.trim();
-        }
-        return;
-      case 'isTemporary':
-        if ((context.isTemporary as boolean) === false) {
-          newContext.isTemporary = null;
-        }
-        return;
-      case 'availableJobs':
-        if ((context.availableJobs as Job[]).length === 0) {
-          newContext.availableJobs = null;
-        }
-
-      default:
-        break;
+function urlSearchParamValidator(
+  key: keyof SearchIndexContext,
+  context: Partial<SearchIndexContext>
+): null | string {
+  if (context[key] === undefined) return null;
+  switch (key) {
+    case 'title': {
+      const value = context[key] as string;
+      if (value.length === 0) return null;
+      return value;
     }
-  });
+    case 'content': {
+      const value = context[key] as number;
+      if (value < 1000) return null;
+      return value.toString();
+    }
+    case 'minimumWeek': {
+      const value: number = context[key] as number;
+      if (value <= 0 || value > 2) return null;
+      return value.toString();
+    }
+    case 'voiceChat': {
+      const value: number[] = context[key] as (0 | 1 | 2)[];
+      if (value.length === 0) return null;
+      return `[${value.toString()}]`;
+    }
+    case 'availableJobs': {
+      const value: Job[] = context[key] as Job[];
+      if (value.length === 0) return null;
+      return `[${value.toString()}]`;
+    }
+    case 'boxNumber': {
+      if (context[key]) {
+        const value = context[key] as number;
+        if (value < 0 || value > 2) return null;
+        return value.toString();
+      }
+      return null;
+    }
+    default:
+      if (typeof context[key] === 'boolean' && context[key] === false) return null;
+      return String(context[key]);
+  }
 }
 
 export function getSearchUrlParams(context: SearchIndexContext) {
-  return Object.entries(context).reduce((makeUrl, [key, value]) => {
-    if (key === 'content' && value === -1) return makeUrl;
-    if (key === 'availableJobs' && value.length === 0) return makeUrl;
-    if (value === null || value === undefined) return makeUrl;
-    return `${makeUrl}${makeUrl.length === 1 ? '' : '&'}${key}=${String(value)}`;
-  }, '?');
+  const { articleType, ...inferContext } = context;
+  const type = `article/${getArticleType(articleType)}?`;
+  const url = Object.keys(inferContext).reduce((makeUrl, key) => {
+    const urlValue = urlSearchParamValidator(
+      key as Partial<keyof SearchIndexContext>,
+      inferContext
+    );
+    if (urlValue === null) return makeUrl;
+    return `${makeUrl}${makeUrl === type ? '' : '&'}${key}=${urlValue}`;
+  }, type);
+  if (type === url) return url.slice(0, -1);
+  return url;
 }

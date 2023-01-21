@@ -14,7 +14,7 @@ export interface SearchData {
     min?: number;
   };
 }
-export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> = (t) => ({
+export const SearchDataValue = (t: TFunction) => ({
   articleType: {
     component: 'Select',
     label: t('search_article_type'),
@@ -26,18 +26,12 @@ export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> =
   title: {
     component: 'Input',
     label: t('search_title_label'),
+    data: [t('search_title')],
   },
   isTemporary: {
     component: 'Checkbox',
-    label: t('search_isTemporary'),
-  },
-  content: {
-    component: 'None',
-    label: t('search_content'),
-  },
-  availableJobs: {
-    component: 'None',
-    label: t('search_my_job_selection'),
+    label: t('search_isTemporary_label'),
+    data: [t('search_isTemporary')],
   },
   minimumWeek: {
     component: 'NumberInput',
@@ -48,7 +42,7 @@ export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> =
   },
   voiceChat: {
     component: 'Checkbox.Group',
-    label: t('search_voicechat_title'),
+    label: t('search_voicechat_label'),
     data: [
       { value: '0', label: t('phase2_voicechat_value_0') },
       { value: '1', label: t('phase2_voicechat_value_1') },
@@ -57,12 +51,12 @@ export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> =
   },
   region: {
     component: 'Select',
-    label: t('search_region'),
+    label: t('search_region_label'),
     data: Array.from(Region_Value, (v) => ({ value: v, label: t(`region_${v}`, { ns: 'data' }) })),
   },
   language: {
     component: 'Select',
-    label: t('search_language'),
+    label: t('search_language_label'),
     data: Array.from(Language_Value, (v) => ({
       value: v,
       label: t(`lang_${v}`, { ns: 'data' }),
@@ -70,23 +64,23 @@ export const SearchDataValue: (t: TFunction) => Record<SearchKeys, SearchData> =
   },
   heading: {
     component: 'Checkbox',
-    label: t('search_isHeading_title'),
+    label: t('search_isHeading_label'),
   },
   firstTime: {
     component: 'Checkbox',
-    label: t('search_isFirstTime_title'),
+    label: t('search_isFirstTime_label'),
   },
   firstWeekClear: {
     component: 'Checkbox',
-    label: t('search_isFirstWeekClear_title'),
+    label: t('search_isFirstWeekClear_label'),
   },
   worldFirstRace: {
     component: 'Checkbox',
-    label: t('search_worldFirstRace_title'),
+    label: t('search_worldFirstRace_label'),
   },
   farm: {
     component: 'Checkbox',
-    label: t('search_isFarm_title'),
+    label: t('search_isFarm_label'),
   },
   boxNumber: {
     component: 'NumberInput',
