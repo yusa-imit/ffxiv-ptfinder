@@ -1,4 +1,3 @@
-import { unstable_getServerSession } from '@auth/next-auth/src';
 import { unstable_getServerSession as unstable_origin, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 import '@extType/ExtendedServerSession';

@@ -1,6 +1,5 @@
-import { unstable_getServerSession } from '@auth/next-auth/src';
+import { unstable_getServerSession, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-auth';
 import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
 import {
   getArticleSummaryFromFirebase,

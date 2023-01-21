@@ -24,8 +24,7 @@
       "@lib/*": ["src/lib/*"],
       "@recoil/*": ["src/recoil/*"],
       "@type/*": ["src/type/*"],
-      "@extType/*": ["src/auth/extendedType/*"],
-      "@auth/*": ["src/auth/*"],
+      "@extType/*": ["src/extendedType/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -1,7 +1,7 @@
 import { Button, Center } from '@mantine/core';
 import { Locale } from '@type/Locale';
 import { GetServerSideProps, GetStaticProps } from 'next';
-import { unstable_getServerSession } from '@auth/next-auth/src';
+import { unstable_getServerSession } from 'next-auth';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
@@ -85,7 +85,6 @@ export const getServerSideProps = async (context: any) => {
   return {
     props: {
       ...(await serverSideTranslations(context.locale as Locale)),
-      // @ts-expect-error
       session: await unstable_getServerSession(context.req, context.res, authOptions),
     },
   };

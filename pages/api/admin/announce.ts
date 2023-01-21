@@ -9,7 +9,6 @@ import { authOptions } from '../auth/[...nextauth]';
 export default async function pushArticle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST')
     return res.setHeader('Allow', ['POST']).status(405).json({ message: 'wrong methods' });
-  // @ts-ignore
   const session: Session | null = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ message: 'You must be logged in.' });
