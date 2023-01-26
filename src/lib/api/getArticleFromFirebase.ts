@@ -17,6 +17,7 @@ import {
   serverTimestamp,
   orderBy,
   startAfter,
+  QueryConstraint,
 } from 'firebase/firestore';
 import { firebaseConfig } from '@pages/api/auth/api_config';
 import { getConverter } from '@lib/firebaseConverter';
@@ -33,6 +34,7 @@ import { articleConverToData } from '../transform/articleConvertToData';
 import { DBArticle } from '../../type/data/DBArticle';
 import { GlobalCache } from '../cache/GlobalCache';
 import { getUserFromFirebase } from './getUserFromFirebase';
+import { SearchIndexContext } from '../../type/SearchIndex';
 
 export async function getArticleFromFirebase(
   type: 0 | 1,
@@ -53,6 +55,7 @@ export async function getArticleFromFirebase(
   const articleSnapshot = await getDoc(articleRef);
   if (articleSnapshot.exists() && Articles.converter) {
     const data = articleConverToData(Articles.converter.fromFirestore(articleSnapshot));
+    // @ts-ignore
     data.meta.articleId = articleSnapshot.id;
     GlobalCache.getCache().put(
       GlobalCache.getKey(articleId, type === 0 ? 'recruit' : 'enlist'),
@@ -75,14 +78,37 @@ export async function getArticleSummaryFromFirebase(
 }
 
 export async function getBulkArticleSummaryFromFirebase(
-  type: 0 | 1 = 0,
+  queryObject: SearchIndexContext,
   page: number = 0,
   number: number = 15
 ): Promise<[Record<string, ArticleDataSummaryWithMeta>, Record<string, User>]> {
   const db = getDB();
-  const ArticleType = type === 0 ? 'recruits' : 'enlists';
+  const ArticleType = queryObject.articleType === 0 ? 'recruits' : 'enlists';
   const Articles = collection(db, ArticleType).withConverter(getConverter<DBArticle>());
-  let q = query(Articles, orderBy('meta.date'), limit(number));
+  const constraints: QueryConstraint[] = [];
+  Object.keys(queryObject).forEach((key) => {
+    const castedKey = key as keyof SearchIndexContext;
+    const value = queryObject[castedKey];
+    if (value === undefined) return;
+    switch (castedKey) {
+      case 'articleType':
+        break;
+      case 'voiceChat':
+        constraints.push(where(key, 'in', value));
+        break;
+      case 'boxNumber':
+      case 'minimumWeek':
+        constraints.push(where(key, '>=', value));
+        break;
+      case 'availableJobs':
+        constraints.push(where(key, 'array-contains-any', value));
+        break;
+      default:
+        constraints.push(where(key, '==', value));
+        break;
+    }
+  });
+  let q = query(Articles, orderBy('meta.date'), ...constraints, limit(number));
   let articlesSnapshot = await getDocs(q);
   while (page < 0 || articlesSnapshot.size >= number) {
     q = query(
@@ -98,7 +124,9 @@ export async function getBulkArticleSummaryFromFirebase(
   }
   const articleValue: Record<string, ArticleDataSummaryWithMeta> = {};
   const userValue: Record<string, User> = {};
-  const promises = articlesSnapshot.docs.map((v) => getArticleSummaryFromFirebase(type, v.id));
+  const promises = articlesSnapshot.docs.map((v) =>
+    getArticleSummaryFromFirebase(queryObject.articleType, v.id)
+  );
   const values = await Promise.all(promises);
   for (let i = 0; i < promises.length; i++) {
     [articleValue[articlesSnapshot.docs[i].id], userValue[values[i][0].meta.userId]] = [

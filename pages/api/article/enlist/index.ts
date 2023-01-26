@@ -1,6 +1,5 @@
-import { unstable_getServerSession } from '@auth/next-auth/src';
+import { unstable_getServerSession, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-auth';
 import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
 import {
   getArticleSummaryFromFirebase,
@@ -34,7 +33,7 @@ export default async function getSummarizedArticle(req: NextApiRequest, res: Nex
   } else {
     try {
       const articles = await getBulkArticleSummaryFromFirebase(
-        1,
+        { articleType: 1 },
         page ? Number(page) : undefined,
         number ? Number(number) : undefined
       );
