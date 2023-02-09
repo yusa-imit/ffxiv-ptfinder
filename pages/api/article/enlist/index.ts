@@ -1,11 +1,10 @@
 import { unstable_getServerSession, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
 import {
   getArticleSummaryFromFirebase,
   getArticleFromFirebase,
   getBulkArticleSummaryFromFirebase,
-} from '@lib/api/getArticleFromFirebase';
+} from '@lib/api/deprecated/getArticleFromFirebase';
 import '@extType/ExtendedServerSession';
 import '@extType/ExtendedAdapterUser';
 import { GetArticleQueryType } from '../../../../src/type/api/article/get';

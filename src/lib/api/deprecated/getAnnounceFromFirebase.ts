@@ -10,9 +10,9 @@ import {
   query,
   startAfter,
 } from 'firebase/firestore';
-import { AnnounceData, AnnounceSummary, DBAnnounceData } from '../../type/data/AnnounceData';
-import { GlobalCache } from '../cache/GlobalCache';
-import { summarizeAnnounce } from '../transform/summarizeAnnounce';
+import { AnnounceData, AnnounceSummary, DBAnnounceData } from '../../../type/data/AnnounceData';
+import { GlobalCache } from '../../cache/GlobalCache';
+import { summarizeAnnounce } from '../../transform/summarizeAnnounce';
 
 export async function getAnnouncementFromFirebase(
   locale: Locale,

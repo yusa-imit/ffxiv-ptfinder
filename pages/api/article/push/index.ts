@@ -1,6 +1,6 @@
 import { unstable_getServerSession, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
+import { pushArticleToFirebase } from '@lib/api/deprecated/pushArticleToFirebase';
 import '@extType/ExtendedServerSession';
 import { authOptions } from '../../auth/[...nextauth]';
 import '@extType/ExtendedAdapterUser';

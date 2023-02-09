@@ -1,11 +1,5 @@
 import { unstable_getServerSession, Session } from 'next-auth';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { pushArticleToFirebase } from '@lib/api/pushArticleToFirebase';
-import {
-  getArticleSummaryFromFirebase,
-  getArticleFromFirebase,
-  getBulkArticleSummaryFromFirebase,
-} from '@lib/api/getArticleFromFirebase';
 import '@extType/ExtendedServerSession';
 import '@extType/ExtendedAdapterUser';
 import { Locale } from '@type/Locale';
@@ -13,7 +7,7 @@ import {
   getAnnouncementFromFirebase,
   getAnnouncementSummaryFromFirebase,
   getBulkAnnouncementSummaryFromFirebase,
-} from '@lib/api/getAnnounceFromFirebase';
+} from '@lib/api/deprecated/getAnnounceFromFirebase';
 import { GetAnnounceQueryType } from '@type/api/annouce/get';
 
 export default async function getAnnounce(req: NextApiRequest, res: NextApiResponse) {

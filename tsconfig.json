@@ -27,6 +27,6 @@
       "@extType/*": ["src/extendedType/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/db/cosmos/storedProcedure/bulkDelete.js"],
   "exclude": ["node_modules"],
 }

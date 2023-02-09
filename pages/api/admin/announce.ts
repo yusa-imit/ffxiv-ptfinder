@@ -1,7 +1,7 @@
 import { unstable_getServerSession, Session } from 'next-auth';
 import '@extType/ExtendedAdapterUser';
 import '@extType/ExtendedServerSession';
-import { pushAnnounceToFirebase } from '@lib/api/pushAnnounceToFirebase';
+import { pushAnnounceToFirebase } from '@lib/api/deprecated/pushAnnounceToFirebase';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PushAnnounceBodyType, PushAnnounceReturnType } from '../../../src/type/api/annouce/push';
 import { authOptions } from '../auth/[...nextauth]';

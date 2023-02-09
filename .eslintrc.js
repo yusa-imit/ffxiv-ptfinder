@@ -20,10 +20,11 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
-    'react/self-closing-comp' : 'off',
+    'react/self-closing-comp': 'off',
     // no-unused-vars as warning
-    'no-unused-vars' : 'off',
-    'no-plusplus' : 'off',
+    'no-unused-vars': 'off',
+    'no-plusplus': 'off',
+    'func-names': 'off',
     '@typescript-eslint/no-unused-vars': ["warn"],
   },
 };

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ErrorDict } from '@constant/ErrorDict';
-import { getContents } from '@lib/api/getContents';
+import { getContents } from '@lib/api/deprecated/getContents';
 
 export default async function query(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET')

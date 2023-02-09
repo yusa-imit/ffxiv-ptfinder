@@ -12,6 +12,7 @@ export abstract class GlobalCache {
     recruit: 'recruit:',
     enlist: 'enlist:',
     announce: 'announce:',
+    announce_pagination: 'p_announce',
   };
   static getCache(): CacheClass<string, unknown> {
     if (this.noCache()) {
