@@ -1,9 +1,16 @@
-import { Container, ContainerRequest, CosmosClient, Database, RequestOptions } from '@azure/cosmos';
+import {
+  Container,
+  ContainerRequest,
+  CosmosClient,
+  Database,
+  DatabaseRequest,
+  RequestOptions,
+} from '@azure/cosmos';
 import { db_env } from './environments';
 
 let client: null | CosmosClient = null;
-let db: Database | null = null;
-const container: Record<string, Container> = {};
+const db: Record<string, Database> = {};
+const container: Record<string, Record<string, Container>> = {};
 
 const DEFAULT_DB_NAME = 'ishgard';
 
@@ -17,22 +24,25 @@ function getClient(): CosmosClient {
   return client;
 }
 
-export async function getDB(): Promise<Database> {
-  if (db === null) {
-    db = (await getClient().databases.createIfNotExists({ id: DEFAULT_DB_NAME })).database;
+export async function getDB(dbOptions?: DatabaseRequest): Promise<Database> {
+  if (db[dbOptions?.id || DEFAULT_DB_NAME] === undefined) {
+    db[dbOptions?.id || DEFAULT_DB_NAME] = (
+      await getClient().databases.createIfNotExists(dbOptions || { id: DEFAULT_DB_NAME })
+    ).database;
   }
-  return db;
+  return db[dbOptions?.id || DEFAULT_DB_NAME];
 }
 
 export async function getContainer(
   body: ContainerRequest,
-  options: RequestOptions
+  options: RequestOptions,
+  dbOptions?: DatabaseRequest
 ): Promise<Container> {
   if (!body.id) throw new Error('Container Id is not defined');
   if (!container[body.id]) {
-    container[body.id] = (
-      await (await getDB()).containers.createIfNotExists(body, options)
+    container[dbOptions?.id || DEFAULT_DB_NAME][body.id] = (
+      await (await getDB(dbOptions)).containers.createIfNotExists(body, options)
     ).container;
   }
-  return container[body.id];
+  return container[dbOptions?.id || DEFAULT_DB_NAME][body.id];
 }

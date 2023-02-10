@@ -1,7 +1,7 @@
 const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({
-  dir: './',
+  dir: '../../',
 });
 
 const customJestConfig = {
@@ -13,7 +13,7 @@ const customJestConfig = {
     '^@recoil/(.*)$': '<rootDir>/src/recoil/$1'
   },
   modulePathIgnorePatterns: ['<rootDir>/src/auth/'],
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: 'node',
 };
 
 module.exports = createJestConfig(customJestConfig);

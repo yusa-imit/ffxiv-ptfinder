@@ -5,6 +5,7 @@ import { containerOptions } from '@lib/db/cosmos/containerOptions';
 import { exceptSystemGenerated, isoToTime } from '@lib/dbUtils';
 import { SqlQuerySpec } from '@azure/cosmos';
 import { PaginationCache } from '@type/PaginationCache';
+import { paginated } from '@lib/db/cosmos/paginated';
 import { GlobalCache } from '../cache/GlobalCache';
 import { DBAnnounceData, AnnounceSummary } from '../../type/data/AnnounceData';
 import { summarizeAnnounce } from '../transform/summarizeAnnounce';
@@ -54,49 +55,12 @@ export const getBulkAnnounceSummary: GetBulkAnnounceSummary = async function (lo
   const q: SqlQuerySpec = {
     query: 'select * from announce c order by c.date desc',
   };
-  const checkPageCache = GlobalCache.getCache().get(
-    GlobalCache.getKey('', 'announce_pagination')
-  ) as null | PaginationCache;
-  const paginationCache = checkPageCache || ({} as PaginationCache);
-  if (!paginationCache[num.toString()]) {
-    paginationCache[num.toString()] = [undefined, undefined];
-  }
-  const cur_tokens = paginationCache[num.toString()];
-  // page 1 is start
-  // token[0], token[1] is predefined as undefined
-  // token[2] is for page 2
-  // requesting page 2 will initialize cache with token for page 3
-  // for example, token[6] !== undefined means page 6's token is ready
-  let cur_page =
-    page <= cur_tokens.length - 1
-      ? page
-      : cur_tokens[cur_tokens.length - 1] === null
-      ? cur_tokens.length - 2
-      : cur_tokens.length - 1;
-  let res: any[];
+  const cacheKey = GlobalCache.getKey(`${page}:${num}`, 'announce_pagination');
+  const checkPageCache = GlobalCache.getCache().get(cacheKey) as null | PaginationCache;
+  const { data, cache } = await paginated(q, container, checkPageCache, page, num);
+  GlobalCache.getCache().put(cacheKey, cache);
   const result: Record<string, AnnounceSummary> = {};
-  while (cur_page < page + 1) {
-    const token = cur_tokens[cur_page] as string | undefined;
-    // eslint-disable-next-line no-await-in-loop
-    const { resources, hasMoreResults, continuationToken } = await container.items
-      .query(q, {
-        maxItemCount: num,
-        continuationToken: token,
-      })
-      .fetchNext();
-    if (resources) {
-      cur_page++;
-      res = resources;
-      if (!hasMoreResults) {
-        cur_tokens[cur_page] = null;
-        break;
-      } else cur_tokens[cur_page] = continuationToken;
-    } else {
-      throw new Error('Failed while trying query on announce');
-    }
-  }
-  // @ts-ignore
-  res.forEach((v) => {
+  data.forEach((v) => {
     const value = exceptSystemGenerated<DBAnnounceData & { id: string }>(v);
     GlobalCache.getCache().put(GlobalCache.getKey(value.id, 'announce'), value);
     result[value.id] = summarizeAnnounce(getLocalData(locale, value));
