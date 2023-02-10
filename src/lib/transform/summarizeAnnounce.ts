@@ -5,7 +5,6 @@ interface BeforeSummarizedAnnounce extends AnnounceSummary {
 }
 
 export function summarizeAnnounce(before: BeforeSummarizedAnnounce): AnnounceSummary {
-  const newAnnounce = { ...before };
-  if (newAnnounce.description) delete newAnnounce.description;
-  return newAnnounce;
+  const { description, ...summarized } = before;
+  return summarized;
 }

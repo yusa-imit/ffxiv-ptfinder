@@ -3,6 +3,7 @@ import { FirebaseServerTime } from './FirebaseServerTime';
 import { announceTypes } from '../../constant/announceTypes';
 
 export type DBAnnounceData = {
+  id: string;
   date: number;
   type: keyof typeof announceTypes;
   titles: Record<Locale, string>;

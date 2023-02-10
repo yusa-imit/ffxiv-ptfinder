@@ -10,7 +10,7 @@ import { db_env } from './environments';
 
 let client: null | CosmosClient = null;
 const db: Record<string, Database> = {};
-const container: Record<string, Record<string, Container>> = {};
+const container: Record<string, Container> = {};
 
 const DEFAULT_DB_NAME = 'ishgard';
 
@@ -25,24 +25,28 @@ function getClient(): CosmosClient {
 }
 
 export async function getDB(dbOptions?: DatabaseRequest): Promise<Database> {
-  if (db[dbOptions?.id || DEFAULT_DB_NAME] === undefined) {
-    db[dbOptions?.id || DEFAULT_DB_NAME] = (
-      await getClient().databases.createIfNotExists(dbOptions || { id: DEFAULT_DB_NAME })
+  const key = dbOptions ? (dbOptions.id ? dbOptions.id : DEFAULT_DB_NAME) : DEFAULT_DB_NAME;
+  if (db[key] === undefined) {
+    db[key] = (
+      await getClient().databases.createIfNotExists({ id: DEFAULT_DB_NAME, ...dbOptions })
     ).database;
   }
-  return db[dbOptions?.id || DEFAULT_DB_NAME];
+  return db[key];
 }
 
 export async function getContainer(
   body: ContainerRequest,
-  options: RequestOptions,
+  options?: RequestOptions,
   dbOptions?: DatabaseRequest
 ): Promise<Container> {
   if (!body.id) throw new Error('Container Id is not defined');
+  const containerKey = `${
+    dbOptions ? (dbOptions.id ? dbOptions.id : DEFAULT_DB_NAME) : DEFAULT_DB_NAME
+  }.${body.id}`;
   if (!container[body.id]) {
-    container[dbOptions?.id || DEFAULT_DB_NAME][body.id] = (
+    container[containerKey] = (
       await (await getDB(dbOptions)).containers.createIfNotExists(body, options)
     ).container;
   }
-  return container[dbOptions?.id || DEFAULT_DB_NAME][body.id];
+  return container[containerKey];
 }
