@@ -50,20 +50,16 @@ export async function getAnnounceSummary(locale: Locale, id: string, dbOptions?:
   return summarizeAnnounce(data);
 }
 
-interface GetBulkAnnounceSummary {
-  (locale: Locale, page: number, num: number): Promise<Record<string, AnnounceSummary>>;
-}
-
-export const getBulkAnnounceSummary: GetBulkAnnounceSummary = async function (
-  locale,
-  page,
-  num,
+export async function getBulkAnnounceSummary(
+  locale: Locale,
+  page: number,
+  num: number,
   dbOptions?: DatabaseRequest
-) {
+): Promise<Record<string, AnnounceSummary>> {
   if (page <= 0 || num <= 0) throw new Error('Invalid parameters');
   const container = await getContainer(...containerOptions.announce, dbOptions);
   const q: SqlQuerySpec = {
-    query: 'select * from announce c order by c.date desc',
+    query: 'select * from c', // order by c.date desc',
   };
   const cacheKey = GlobalCache.getKey(`${page}:${num}`, 'announce_pagination');
   const checkPageCache = GlobalCache.getCache().get(cacheKey) as null | PaginationCache;
@@ -76,4 +72,4 @@ export const getBulkAnnounceSummary: GetBulkAnnounceSummary = async function (
     result[value.id] = summarizeAnnounce(getLocalData(locale, value));
   });
   return result;
-};
+}

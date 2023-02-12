@@ -3,6 +3,7 @@ import { getAnnounce, getAnnounceSummary, getBulkAnnounceSummary } from '../api/
 import { db_env } from '../db/cosmos/environments';
 import { testAnnounce } from './testvalues';
 import { containerOptions } from '../db/cosmos/containerOptions';
+import { AnnounceSummary, DBAnnounceData } from '../../type/data/AnnounceData';
 
 const testdbOption = { id: 'test' };
 
@@ -37,6 +38,16 @@ describe('api function test', () => {
     });
   });
   test('default get bulk summarized announce', async () => {
-    expect(await getBulkAnnounceSummary('en', 2, 15)).toEqual(testAnnounce.slice(16, 31));
+    expect(await getBulkAnnounceSummary('en', 2, 15, testdbOption)).toEqual(
+      (testAnnounce.sort((a, b) => b.date - a.date) as DBAnnounceData[])
+        .slice(16, 31)
+        .reduce((prev: Record<string, AnnounceSummary>, cur: DBAnnounceData) => {
+          const { id, ...rest } = cur;
+
+          // eslint-disable-next-line no-param-reassign
+          prev[id] = { date: rest.date, type: rest.type, title: rest.titles.en };
+          return prev;
+        }, {})
+    );
   });
 });

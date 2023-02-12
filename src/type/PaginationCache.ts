@@ -1,1 +1,1 @@
-export type PaginationCache = Record<string, Array<string | undefined | null>>;
+export type PaginationCache = Array<string | undefined | null>;

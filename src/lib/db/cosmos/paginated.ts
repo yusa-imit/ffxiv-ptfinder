@@ -8,11 +8,8 @@ export async function paginated<T>(
   page: number,
   num: number
 ): Promise<{ data: T[]; cache: PaginationCache }> {
-  const paginationCache = cache || ({} as PaginationCache);
-  if (!paginationCache[num.toString()]) {
-    paginationCache[num.toString()] = [undefined, undefined];
-  }
-  const cur_tokens = paginationCache[num.toString()];
+  const paginationCache = cache ?? [undefined, undefined];
+  const cur_tokens = paginationCache;
   // page 1 is start
   // token[0], token[1] is predefined as undefined
   // token[2] is for page 2
@@ -25,22 +22,22 @@ export async function paginated<T>(
       ? cur_tokens.length - 2
       : cur_tokens.length - 1;
   let res: T[] = [];
+  const iterator = container.items.query(q, {
+    maxItemCount: num,
+    continuationToken: undefined,
+  });
   while (cur_page < page + 1) {
     const token = cur_tokens[cur_page] as string | undefined;
     // eslint-disable-next-line no-await-in-loop
-    const { resources, hasMoreResults, continuationToken } = await container.items
-      .query(q, {
-        maxItemCount: num,
-        continuationToken: token,
-      })
-      .fetchNext();
-    if (resources) {
+    const r = await iterator.fetchNext();
+    console.log(page, cur_page, paginationCache, r);
+    if (r.resources) {
       cur_page++;
-      res = resources;
-      if (!hasMoreResults) {
+      res = r.resources;
+      if (!r.hasMoreResults) {
         cur_tokens[cur_page] = null;
         break;
-      } else cur_tokens[cur_page] = continuationToken;
+      } else cur_tokens[cur_page] = r.continuationToken;
     } else {
       throw new Error('Failed while trying query on announce');
     }
