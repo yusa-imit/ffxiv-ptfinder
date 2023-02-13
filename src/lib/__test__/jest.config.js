@@ -24,6 +24,9 @@ const config = {
   },
   setupFiles: ["<rootDir>/src/lib/__test__/jest.env.js"],
   setupFilesAfterEnv: ["<rootDir>/src/lib/__test__/jest.setup.js"],
+  testMatch: [
+    "<rootDir>/src/lib/__test__/**/*.test.ts"
+  ]
 }
 
 module.exports = config
