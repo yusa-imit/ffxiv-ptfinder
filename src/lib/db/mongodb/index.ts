@@ -1,1 +1,1 @@
-export { db } from './singleton';
+export { getCol, getDB, getMongo } from './singleton';
