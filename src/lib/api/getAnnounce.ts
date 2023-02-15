@@ -63,7 +63,7 @@ export async function getBulkAnnounce(
   );
   let data = await col.find<DBAnnounceData>({}).limit(size).sort('date', 'desc').toArray();
   if (!data.length) return [];
-  const lastId: string = data[data.length]._id;
+  let lastId: string = data[data.length]._id;
   let cur = 1;
   while (cur < page) {
     // eslint-disable-next-line no-await-in-loop
@@ -72,6 +72,7 @@ export async function getBulkAnnounce(
       .limit(size)
       .sort('date', 'desc')
       .toArray();
+    lastId = data[data.length]._id;
     cur++;
   }
   return data.map((single) => {
