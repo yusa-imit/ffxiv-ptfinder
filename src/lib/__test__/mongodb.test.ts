@@ -1,13 +1,14 @@
 import { getAnnounce, getAnnounceSummary, getBulkAnnounce } from '@lib/api/getAnnounce';
 import { mongodb_uris } from '@lib/db/mongodb/environments';
+import { Mongo } from '@lib/db/mongodb/mongo';
 import { getCol, getMongo } from '@lib/db/mongodb/singleton';
 import { MongoClient, Collection } from 'mongodb';
 import { DBAnnounceData } from '../../type/data/AnnounceData';
 import { testAnnounce } from './testValues/testAnnounce';
 
-const uri = mongodb_uris.test;
 describe('mongodb testing', () => {
-  let test_client;
+  const uri = mongodb_uris.test;
+  let test_client: Mongo;
   let col_ann: Collection;
   let ann_single_test_target: DBAnnounceData;
   beforeAll(async () => {
@@ -46,5 +47,8 @@ describe('mongodb testing', () => {
   test('get bulk announce range exceeded', async () => {
     const tests = await getBulkAnnounce('en', 5, 15);
     expect(tests).toHaveLength(0);
+  });
+  afterAll(async () => {
+    await (await test_client.getClient()).close();
   });
 });
