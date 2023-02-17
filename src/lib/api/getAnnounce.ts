@@ -1,5 +1,6 @@
 import { GlobalCache } from '@lib/cache/GlobalCache';
 import { getCol } from '@lib/db/mongodb';
+import { withPage } from '@lib/db/withPage';
 import { AnnounceData, AnnounceSummary, DBAnnounceData } from '@type/data/AnnounceData';
 import { Locale } from '@type/Locale';
 import { ObjectId } from 'mongodb';
@@ -26,7 +27,7 @@ export async function getAnnounce(locale: Locale, id: string): Promise<AnnounceD
     UNDER_TEST ? 'test' : 'ishgard',
     'announce'
   );
-  const result = await col.findOne<DBAnnounceData>({ id: new ObjectId(id) });
+  const result = await col.findOne<DBAnnounceData>({ id });
   if (result === null) throw new Error('Failed to retreive anounce by id');
   else {
     GlobalCache.getCache().put(
@@ -61,20 +62,7 @@ export async function getBulkAnnounce(
     UNDER_TEST ? 'test' : 'ishgard',
     'announce'
   );
-  let data = await col.find<DBAnnounceData>({}).limit(size).sort('date', 'desc').toArray();
-  if (!data.length) return [];
-  let lastId: string = data[data.length]._id;
-  let cur = 1;
-  while (cur < page) {
-    // eslint-disable-next-line no-await-in-loop
-    data = await col
-      .find<DBAnnounceData>({ _id: { $lt: new ObjectId(lastId) } })
-      .limit(size)
-      .sort('date', 'desc')
-      .toArray();
-    lastId = data[data.length]._id;
-    cur++;
-  }
+  const data = await withPage<DBAnnounceData>(col, page, size, { sort: ['date', 'desc'] });
   return data.map((single) => {
     GlobalCache.getCache().put(
       GlobalCache.getKey(single.id, 'announce'),

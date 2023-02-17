@@ -16,6 +16,7 @@ const getLocalData = (locale: Locale, value: DBAnnounceData): AnnounceData => {
     title: value.titles[locale],
     description: value.descriptions[locale],
     date: value.date,
+    id: value.id,
   };
 };
 
