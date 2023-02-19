@@ -1376,7 +1376,7 @@ export const DEV_DUNGEON_DATA: Record<number, DBInstance> = {
     code: 6320,
     partyNumber: 8,
     title: {
-      kr: '6.3 얼라이언스 레이드 (미정)',
+      kr: '환희의 신역 유프로시네',
       en: 'Euphrosyne',
       jp: '喜びの神域 エウプロシュネ',
     },
@@ -1387,9 +1387,9 @@ export const DEV_DUNGEON_DATA: Record<number, DBInstance> = {
     code: 6310,
     partyNumber: 8,
     title: {
-      kr: '??? 토벌전',
-      en: '??? (extreme)',
-      jp: '極 ???',
+      kr: '극 루비칸테 토벌전',
+      en: 'Mount Ordeals (extreme)',
+      jp: '極 ルビカンテ',
     },
   },
   6311: {

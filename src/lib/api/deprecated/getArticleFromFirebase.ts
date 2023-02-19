@@ -29,12 +29,12 @@ import {
   ArticleData,
   ArticleDataSummaryWithMeta,
   ArticleDataWithMeta,
-} from '../../type/data/ArticleData';
-import { articleConverToData } from '../transform/articleConvertToData';
-import { DBArticle } from '../../type/data/DBArticle';
-import { GlobalCache } from '../cache/GlobalCache';
+} from '../../../type/data/ArticleData';
+import { articleConverToData } from '../../transform/articleConvertToData';
+import { DBArticle } from '../../../type/data/DBArticle';
+import { GlobalCache } from '../../cache/GlobalCache';
 import { getUserFromFirebase } from './getUserFromFirebase';
-import { SearchIndexContext } from '../../type/SearchIndex';
+import { SearchIndexContext } from '../../../type/SearchIndex';
 
 export async function getArticleFromFirebase(
   type: 0 | 1,

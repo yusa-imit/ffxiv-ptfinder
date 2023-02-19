@@ -1,3 +1,5 @@
+// ** deprecated **
+
 import { ArticleData, ArticleSummary, Schedule } from '../../type/data/ArticleData';
 
 interface BeforeSummurize extends ArticleSummary {

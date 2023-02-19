@@ -1,7 +1,19 @@
 import { FixedLengthArray } from '../structure/FixedLengthArray';
 import { DungeonType, Game, Job, Region, Language } from './FFXIVInfo';
 import { Timezone } from './Timezone';
+import { UserSummary } from './User';
 
+export type ArticleFromDBSummary = Omit<ArticleFromDB, 'schedule' | 'description'>;
+
+export interface ArticleFromDB extends ArticleData {
+  id: string;
+  date: number;
+  authorId: string;
+  authorInfo: UserSummary;
+  status: number;
+}
+
+// **Deprecated**
 // * @param status article의 상태 - 0 : 모집 중, 1: 모집완료, 2: 미노출
 export type ArticleMeta = {
   date: {
@@ -12,10 +24,13 @@ export type ArticleMeta = {
   status: number;
 };
 export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
+
+// **Deprecated**
 export type ArticleDataSummaryWithMeta = {
   meta: ArticleMeta;
   article: ArticleSummary;
 };
+// **Deprecated**
 export type ArticleDataWithMeta = {
   meta: ArticleMeta;
   article: ArticleData;

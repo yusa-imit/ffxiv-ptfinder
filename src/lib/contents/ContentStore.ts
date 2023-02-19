@@ -2,6 +2,9 @@ import { collection, getDocs } from 'firebase/firestore';
 import { DBInstance } from '../../type/data/DBInstance';
 import { getDB } from '../db/getDB';
 
+/**
+ * **deprecated**
+ */
 export abstract class ContentStore {
   private static Content: Record<string, DBInstance> | null = null;
   static async Contents(): Promise<Record<string, DBInstance>> {
