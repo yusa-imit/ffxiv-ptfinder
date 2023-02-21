@@ -4,8 +4,7 @@ import { getCol } from '@lib/db/mongodb';
 import { User } from '@type/data/User';
 import { WithId } from 'mongodb';
 import { mongodb_uris } from '../db/mongodb/environments';
-
-const UNDER_TEST = process.env.NODE_ENV === 'test';
+import { UNDER_TEST } from './UNDER_TEST';
 
 export async function getUser(id: string): Promise<User> {
   const col = await getCol(

@@ -8,8 +8,7 @@ import { WithId } from 'mongodb';
 import { GlobalCache } from '../cache/GlobalCache';
 import { dbIdRemover } from '../db/dbIdRemover';
 import { mongodb_uris } from '../db/mongodb/environments';
-
-const UNDER_TEST = process.env.NODE_ENV === 'test';
+import { UNDER_TEST } from './UNDER_TEST';
 
 export async function getArticle(type: 0 | 1, id: string): Promise<ArticleFromDB> {
   if (type !== 0 && type !== 1) throw new Error('Invalid parameter');

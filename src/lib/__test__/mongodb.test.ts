@@ -5,6 +5,7 @@ import { getCol, getMongo } from '@lib/db/mongodb/singleton';
 import { MongoClient, Collection } from 'mongodb';
 import { DBAnnounceData } from '../../type/data/AnnounceData';
 import { testAnnounce } from './testValues/testAnnounce';
+import appendData from './appendData';
 
 describe('mongodb testing', () => {
   const uri = mongodb_uris.test;
@@ -12,6 +13,7 @@ describe('mongodb testing', () => {
   let col_ann: Collection;
   let ann_single_test_target: DBAnnounceData;
   beforeAll(async () => {
+    await appendData();
     test_client = await getMongo(uri);
     col_ann = await getCol(uri, 'test', 'announce');
     ann_single_test_target = (await col_ann.findOne<DBAnnounceData>({})) as DBAnnounceData;

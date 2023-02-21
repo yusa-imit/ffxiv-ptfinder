@@ -5,6 +5,7 @@ import { UserSummary } from './User';
 
 export type ArticleFromDBSummary = Omit<ArticleFromDB, 'schedule' | 'description'>;
 
+// * @param status article의 상태 - 0 : 모집 중, 1: 모집완료, 2: 미노출
 export interface ArticleFromDB extends ArticleData {
   id: string;
   date: number;

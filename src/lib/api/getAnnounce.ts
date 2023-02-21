@@ -6,8 +6,7 @@ import { Locale } from '@type/Locale';
 import { ObjectId } from 'mongodb';
 import { mongodb_uris } from '../db/mongodb/environments';
 import { summarizeAnnounce } from '../transform/summarizeAnnounce';
-
-const UNDER_TEST = process.env.NODE_ENV === 'test';
+import { UNDER_TEST } from './UNDER_TEST';
 
 export async function getAnnounce(locale: Locale, id: string): Promise<AnnounceData> {
   const cachedValue = GlobalCache.getCache().get(

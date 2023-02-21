@@ -1,3 +1,4 @@
+import { Document } from 'mongodb';
 import { Mongo, DBInitOptions } from './mongo';
 
 let mongo: Mongo | null = null;
@@ -15,12 +16,12 @@ export async function getDB(uri: string, dbName: string, options?: DBInitOptions
   return (await mgc.getClient()).db(dbName);
 }
 
-export async function getCol(
+export async function getCol<T extends Document>(
   uri: string,
   dbName: string,
   collectionName: string,
   options?: DBInitOptions
 ) {
   const db = await getDB(uri, dbName, options);
-  return db.collection(collectionName);
+  return db.collection<T>(collectionName);
 }

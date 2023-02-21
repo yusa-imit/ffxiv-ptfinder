@@ -12,5 +12,4 @@ export type User = {
 export interface UserSummary {
   name: string;
   image?: string;
-  characters: Array<string>;
 }

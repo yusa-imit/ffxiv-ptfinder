@@ -15,7 +15,6 @@ export type DBAnnounceData = {
 };
 
 export type PreDBAnnouceData = {
-  id: string;
   type: AnnounceType;
   titles: Record<Locale, string>;
   descriptions: Record<Locale, string>;
