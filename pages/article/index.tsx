@@ -10,8 +10,8 @@ export async function getServerSideProps({ locale }: GetServerSidePropsContext) 
   return {
     props: {
       ...(await serverSideTranslations(locale || 'en', ['common', 'data', 'nav'])),
+      revalidate: 3600,
     },
-    revalidate: 3600,
   };
 }
 

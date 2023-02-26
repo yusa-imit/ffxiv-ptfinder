@@ -1,0 +1,64 @@
+Unhandled Runtime Error
+TypeError: Cannot read properties of undefined (reading 'call')
+
+Call Stack
+options.factory
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (661:31)
+__webpack_require__
+/_next/static/chunks/webpack.js (37:33)
+fn
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (316:21)
+require
+node_modules/next/dist/client/link.js (10:19)
+./node_modules/next/dist/client/link.js
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/pages/_app.js (6177:1)
+options.factory
+/_next/static/chunks/webpack.js (661:31)
+__webpack_require__
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (37:33)
+fn
+/_next/static/chunks/webpack.js (316:21)
+eval
+node_modules/next/link.js (1:0)
+./node_modules/next/link.js
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/pages/_app.js (6604:1)
+options.factory
+/_next/static/chunks/webpack.js (661:31)
+__webpack_require__
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (37:33)
+fn
+/_next/static/chunks/webpack.js (316:21)
+eval
+webpack-internal:///./src/components/base/AppHeader/AppHeader.tsx (8:67)
+./src/components/base/AppHeader/AppHeader.tsx
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/pages/_app.js (6287:1)
+options.factory
+/_next/static/chunks/webpack.js (661:31)
+__webpack_require__
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (37:33)
+fn
+/_next/static/chunks/webpack.js (316:21)
+eval
+webpack-internal:///./src/components/base/GlobalApp/GlobalApp.tsx (25:79)
+./src/components/base/GlobalApp/GlobalApp.tsx
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/pages/_app.js (6419:1)
+options.factory
+/_next/static/chunks/webpack.js (661:31)
+__webpack_require__
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (37:33)
+fn
+/_next/static/chunks/webpack.js (316:21)
+eval
+webpack-internal:///./pages/_app.tsx (11:98)
+./pages/_app.tsx
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/pages/_app.js (6210:1)
+options.factory
+/_next/static/chunks/webpack.js (661:31)
+__webpack_require__
+file:///home/gacha/ffxiv/ptfinder/.next/static/chunks/webpack.js (37:33)
+fn
+/_next/static/chunks/webpack.js (316:21)
+eval
+node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=private-next-pages%2F_app&page=%2F_app! (5:15)
+execute
+node_modules/next/dist/client/route-loader.js (211:50)

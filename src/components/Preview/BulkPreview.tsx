@@ -21,6 +21,7 @@ function PreviewAnnounce({ withPage }: PreviewAnnounceProps) {
     withPage?.page,
     withPage?.number
   );
+  if (!announces) return <></>;
   if (isError) return <></>;
   if (isLoading)
     return (
