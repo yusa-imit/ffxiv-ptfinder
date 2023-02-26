@@ -1,8 +1,16 @@
 import { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { redirect } from 'next/dist/server/api-utils';
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   console.log(locale);
+  if (!locale) {
+    return {
+      redirect: {
+        destination: '/en',
+      },
+    };
+  }
   return {
     props: {
       ...(await serverSideTranslations(locale ?? 'en', ['common', 'data', 'nav', 'article_view'])),
