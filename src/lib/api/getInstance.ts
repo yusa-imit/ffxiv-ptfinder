@@ -1,7 +1,7 @@
 import { InstanceStore } from '@lib/contents/InstanceStore';
 import { DBInstance } from '@type/data/DBInstance';
 
-export async function getinstances(query: { [key: string]: string | undefined | string[] }) {
+export async function getInstance(query: { [key: string]: string | undefined | string[] }) {
   const { code, version, patch, type, title } = query;
   const instances = await InstanceStore.get();
   if (!version && !patch && !type && !title && !code) {

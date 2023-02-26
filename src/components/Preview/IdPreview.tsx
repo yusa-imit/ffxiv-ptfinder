@@ -8,9 +8,10 @@ import { useSWRArticle } from '../../hook/swr/useSWRArticle';
 import { PinnedArticles } from '../../recoil/PinnedArticles/PinnedArticles';
 
 function FetchingDataWithId({ type, id }: { type: 'recruit' | 'enlist'; id: string }) {
-  const { article, user, isLoading, isError } = useSWRArticle(type, id);
+  const { article, isLoading, isError } = useSWRArticle(type, id);
+  if (!article) return <></>;
   if (isLoading) return <ArticlePrevSkeleton />;
-  return <SmallPreview userData={user!} articleWithMeta={article!} />;
+  return <SmallPreview article={article} id={id} />;
 }
 
 function NoPinnedArticles() {

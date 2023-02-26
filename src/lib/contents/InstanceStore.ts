@@ -3,6 +3,7 @@ import { mongodb_uris } from '@lib/db/mongodb/environments';
 import { WithId } from 'mongodb';
 import { DBInstance } from '../../type/data/DBInstance';
 import { dbIdRemover } from '../db/dbIdRemover';
+import { dbRoute } from '../db/dbRoute';
 
 const UNDER_TEST = process.env.NODE_ENV === 'test';
 
@@ -19,11 +20,7 @@ export abstract class InstanceStore {
   private static async set(): Promise<boolean> {
     if (this.Content !== null) return true;
     try {
-      const col = await getCol(
-        UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-        UNDER_TEST ? 'test' : 'ishgard',
-        'user'
-      );
+      const col = await getCol(...dbRoute('instance'));
       const docs = col.find<WithId<DBInstance>>({});
       const contents: { [key: string]: DBInstance } = {};
       docs.forEach((doc) => {

@@ -1,10 +1,7 @@
 import ArticleBadge from '@components/Article/ArticleView/ArticleBadge';
 import { BadgeColor } from '@constant/defaultBadgeColors';
 import ClientTime from '@lib/day/ClientTime';
-import getAnnounceType from '@lib/getAnnounceType';
-import { getArticleType } from '@lib/getArticleType';
-import TimeFunctions from '@lib/TimeFunctions';
-import { Title, Text, Center, Paper, TypographyStylesProvider } from '@mantine/core';
+import { Center, Paper, Text, Title, TypographyStylesProvider } from '@mantine/core';
 import { Tz } from '@recoil/Tz';
 import { Locale } from '@type/Locale';
 import { useTranslation } from 'next-i18next';
@@ -29,14 +26,14 @@ export function AnnounceSummaryNodeGenerator({
       </Title>
     ),
     type: (
-      <ArticleBadge color={BadgeColor[getAnnounceType(data.type) as string]}>
-        {t(`announce_type_${getAnnounceType(data.type)}`)}
+      <ArticleBadge color={BadgeColor[data.type] as string}>
+        {t(`announce_type_${data.type}`)}
       </ArticleBadge>
     ),
     date: (
       <Text size={14}>
         {
-          ClientTime.translateUnixTimeToLocalTime(data.date.seconds, tz, router.locale as Locale)
+          ClientTime.translateUnixTimeToLocalTime(data.date, tz, router.locale as Locale)
           //TimeFunctions.fromDateToString(TimeFunctions.unixTimestampToDay(data.date.seconds))
         }
       </Text>

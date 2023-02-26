@@ -11,6 +11,11 @@ export async function getMongo(uri: string, options?: DBInitOptions) {
   return mongo;
 }
 
+export async function getClient(uri: string, options?: DBInitOptions) {
+  console.log(uri);
+  return (await getMongo(uri, options)).getClient();
+}
+
 export async function getDB(uri: string, dbName: string, options?: DBInitOptions) {
   const mgc = await getMongo(uri, options);
   return (await mgc.getClient()).db(dbName);

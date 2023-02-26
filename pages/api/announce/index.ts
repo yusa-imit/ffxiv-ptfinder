@@ -1,13 +1,9 @@
-import { unstable_getServerSession, Session } from 'next-auth';
-import { NextApiRequest, NextApiResponse } from 'next';
-import '@extType/ExtendedServerSession';
 import '@extType/ExtendedAdapterUser';
-import { Locale } from '@type/Locale';
-import {
-  getAnnouncementSummaryFromFirebase,
-  getBulkAnnouncementSummaryFromFirebase,
-} from '@lib/api/deprecated/getAnnounceFromFirebase';
+import '@extType/ExtendedServerSession';
+import { getAnnounceSummary, getBulkAnnounce } from '@lib/api/getAnnounce';
 import { GetAnnounceQueryType } from '@type/api/annouce/get';
+import { Locale } from '@type/Locale';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function getSummarizedAnnounce(req: NextApiRequest, res: NextApiResponse) {
   const locale: Locale = (req.query.locale as Locale | undefined) || 'en';
@@ -17,7 +13,7 @@ export default async function getSummarizedAnnounce(req: NextApiRequest, res: Ne
   if (s) {
     if (!id) return res.status(401).json({ message: 'wrong request parameters' });
     try {
-      const article = await getAnnouncementSummaryFromFirebase(locale, id);
+      const article = await getAnnounceSummary(locale, id);
       res.setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate');
       return res.status(200).json({ message: 'success', data: article });
     } catch (e) {
@@ -25,7 +21,7 @@ export default async function getSummarizedAnnounce(req: NextApiRequest, res: Ne
     }
   } else {
     try {
-      const articles = await getBulkAnnouncementSummaryFromFirebase(
+      const articles = await getBulkAnnounce(
         locale,
         page ? Number(page) : undefined,
         number ? Number(number) : undefined

@@ -1,4 +1,5 @@
 import { GlobalCache } from '@lib/cache/GlobalCache';
+import { dbRoute } from '@lib/db/dbRoute';
 import { getCol } from '@lib/db/mongodb';
 import { withPage } from '@lib/db/withPage';
 import { AnnounceData, AnnounceSummary, DBAnnounceData } from '@type/data/AnnounceData';
@@ -21,11 +22,7 @@ export async function getAnnounce(locale: Locale, id: string): Promise<AnnounceD
       date: cachedValue.date,
     };
   }
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    'announce'
-  );
+  const col = await getCol(...dbRoute('announce'));
   const result = await col.findOne<DBAnnounceData>({ id });
   if (result === null) throw new Error('Failed to retreive anounce by id');
   else {
@@ -55,12 +52,7 @@ export async function getBulkAnnounce(
   page: number = 1,
   size: number = 15
 ): Promise<AnnounceSummary[]> {
-  if (page < 1 || size < 2) throw new Error('Invalid parameters');
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    'announce'
-  );
+  const col = await getCol(...dbRoute('announce'));
   const data = await withPage<DBAnnounceData>(col, page, size, { sort: ['date', 'desc'] });
   return data.map((single) => {
     GlobalCache.getCache().put(

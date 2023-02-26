@@ -25,7 +25,7 @@ export type ArticleMeta = {
   status: number;
 };
 export type ArticleSummary = Omit<ArticleData, 'schedule' | 'description'>;
-
+/*
 // **Deprecated**
 export type ArticleDataSummaryWithMeta = {
   meta: ArticleMeta;
@@ -36,6 +36,7 @@ export type ArticleDataWithMeta = {
   meta: ArticleMeta;
   article: ArticleData;
 };
+*/
 /**
  * @interface ArticleData 기사 데이터
  * @param articleType article의 타입 -  0 : 구인, 1: 구직
@@ -83,7 +84,7 @@ export interface ArticleData {
   specifyUserLanguage?: Language[];
   answerType: 0 | 1 | 2;
   answerAddress?: string;
-  timezone: Timezone;
+  timezone?: Timezone;
 }
 
 export interface ArticleAdditional {

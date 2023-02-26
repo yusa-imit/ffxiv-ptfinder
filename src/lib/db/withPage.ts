@@ -43,6 +43,7 @@ export async function withPage<T extends WithId<Document>>(
     .limit(size)
     .sort(options?.sort ? options.sort : ['_id', 'desc'])
     .toArray();
+  if (data.length === 0) return [];
   let cur = page > curKey.length - 1 ? curKey.length - 1 : page;
   let lastValue = options?.sort ? data[data.length - 1][options.sort[0]] : undefined;
   let lastId: ObjectId | undefined = data[data.length - 1]._id;

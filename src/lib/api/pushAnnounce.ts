@@ -1,3 +1,4 @@
+import { dbRoute } from '@lib/db/dbRoute';
 import { getCol } from '@lib/db/mongodb';
 import { mongodb_uris } from '@lib/db/mongodb/environments';
 import { OptionalId } from 'mongodb';
@@ -6,11 +7,7 @@ import { PreDBAnnouceData, AnnounceData, DBAnnounceData } from '../../type/data/
 import { UNDER_TEST } from './UNDER_TEST';
 
 export async function pushAnnounce(data: PreDBAnnouceData) {
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    'announce'
-  );
+  const col = await getCol(...dbRoute('announce'));
   const insertThis: OptionalId<DBAnnounceData> = { id: nanoid(), date: Date.now(), ...data };
   await col.insertOne(insertThis);
   return insertThis.id;

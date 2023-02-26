@@ -1,12 +1,7 @@
-import { unstable_getServerSession, Session } from 'next-auth';
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  getArticleSummaryFromFirebase,
-  getArticleFromFirebase,
-  getBulkArticleSummaryFromFirebase,
-} from '@lib/api/deprecated/getArticleFromFirebase';
-import '@extType/ExtendedServerSession';
 import '@extType/ExtendedAdapterUser';
+import '@extType/ExtendedServerSession';
+import { getArticleSummary, getBulkArticleSummary } from '@lib/api/getArticle';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { GetArticleQueryType } from '../../../../src/type/api/article/get';
 
 /**
@@ -23,7 +18,7 @@ export default async function getSummarizedArticle(req: NextApiRequest, res: Nex
   if (s) {
     if (!id) return res.status(401).json({ message: 'wrong request parameters' });
     try {
-      const article = await getArticleSummaryFromFirebase(0, id);
+      const article = await getArticleSummary(0, id);
       res.setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate');
       return res.status(200).json({ message: 'success', data: article });
     } catch (e) {
@@ -31,7 +26,8 @@ export default async function getSummarizedArticle(req: NextApiRequest, res: Nex
     }
   } else {
     try {
-      const articles = await getBulkArticleSummaryFromFirebase(
+      const articles = await getBulkArticleSummary(
+        0,
         { articleType: 0 },
         page ? Number(page) : undefined,
         number ? Number(number) : undefined

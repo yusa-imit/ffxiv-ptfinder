@@ -27,10 +27,10 @@ export async function getServerSideProps({ req, res, locale, query }: GetServerS
 }
 
 function IdEnlistPage({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [articleWithMeta, user] = data;
+  const article = data;
   return (
     <>
-      <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
+      <ArticleView article={article} />
       <ArticleHandler type="enlist" />
     </>
   );

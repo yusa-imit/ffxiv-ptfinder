@@ -23,7 +23,6 @@ import BigContainer from '../BigContainer';
 
 export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary: string }) {
   const { Component, pageProps } = props;
-  const app_primary = useRecoilValue(Primary);
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
   const toggleColorScheme = (value?: ColorScheme) => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
@@ -38,7 +37,7 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary:
       <SWRConfig value={{ fetcher: swrFetcher }}>
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider
-            theme={{ primaryColor: app_primary, colorScheme }}
+            theme={{ primaryColor: props.primary, colorScheme }}
             withGlobalStyles
             withNormalizeCSS
           >
@@ -54,7 +53,6 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary:
                           LogoForNav={<DEV_TOP_ICON size="xl" />}
                           title="DEV_APP_TITLE"
                           buttonText="DEV_BUTTON_TEXT"
-                          display={renderHeader(router)}
                         />
 
                         <BigContainer>
@@ -65,7 +63,6 @@ export function GlobalApp(props: AppProps & { colorScheme: ColorScheme; primary:
                           Logo={<DEV_TOP_ICON />}
                           title="DEV_APP_TITLE"
                           links={DEV_FOOTER_DATA}
-                          display={renderHeader(router)}
                         />
                       </>
                     ) : (

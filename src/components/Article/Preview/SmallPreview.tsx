@@ -5,20 +5,19 @@ import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ChevronRight, Tags } from 'tabler-icons-react';
-import { ArticleDataSummaryWithMeta } from '../../../type/data/ArticleData';
-import { User } from '../../../type/data/User';
+import { User, UserSummary } from '../../../type/data/User';
 import ArticleNodeGenerator from '../ArticleView/ArticleNodeGenerator';
 import { MetaNodeGenerator } from '../ArticleView/MetaNodeGenerator';
 import SubTitle from '../ArticleView/SubTitle';
+import { ArticleFromDB } from '../../../type/data/ArticleData';
 
 interface SmallPreviewProps {
   id: string;
-  articleWithMeta: ArticleDataSummaryWithMeta;
-  userData: User;
+  article: ArticleFromDB;
 }
-export default function SmallPreview({ id, articleWithMeta, userData }: SmallPreviewProps) {
-  const articleNode = ArticleNodeGenerator(articleWithMeta.article, 'compact');
-  const metaNode = MetaNodeGenerator(articleWithMeta.meta, userData);
+export default function SmallPreview({ id, article }: SmallPreviewProps) {
+  const articleNode = ArticleNodeGenerator(article, 'compact');
+  const metaNode = MetaNodeGenerator(article, article.authorInfo);
   const { t } = useTranslation('article_view');
   const [detail, setDetail] = useState(false);
   return (
@@ -74,7 +73,7 @@ export default function SmallPreview({ id, articleWithMeta, userData }: SmallPre
             <Tooltip label={t('preview_go_to_article')} position="bottom">
               <Button
                 component={Link}
-                href={`/article/${getArticleType(articleWithMeta.article.articleType)}/${id}`}
+                href={`/article/${getArticleType(article.articleType)}/${id}`}
                 style={{ flexGrow: 3, paddingRight: 12, paddingLeft: 12 }}
               >
                 <ChevronRight size={16} />

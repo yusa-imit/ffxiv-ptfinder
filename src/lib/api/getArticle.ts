@@ -1,9 +1,11 @@
+import { dbRoute } from '@lib/db/dbRoute';
 import { getItemById, getSummaryById } from '@lib/db/getItemById';
 import { getCol } from '@lib/db/mongodb';
 import { withPage } from '@lib/db/withPage';
 import { getArticleType } from '@lib/getArticleType';
 import { articleSummarizer } from '@lib/transform/articleSummarizer';
 import { ArticleFromDB, ArticleFromDBSummary } from '@type/data/ArticleData';
+import { SearchIndexContext } from '@type/SearchIndex';
 import { WithId } from 'mongodb';
 import { GlobalCache } from '../cache/GlobalCache';
 import { dbIdRemover } from '../db/dbIdRemover';
@@ -12,11 +14,7 @@ import { UNDER_TEST } from './UNDER_TEST';
 
 export async function getArticle(type: 0 | 1, id: string): Promise<ArticleFromDB> {
   if (type !== 0 && type !== 1) throw new Error('Invalid parameter');
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    getArticleType(type)
-  );
+  const col = await getCol(...dbRoute(getArticleType(type)));
   const data = await getItemById<WithId<ArticleFromDB>, ArticleFromDB>(
     col,
     id,
@@ -28,11 +26,7 @@ export async function getArticle(type: 0 | 1, id: string): Promise<ArticleFromDB
 }
 
 export async function getArticleSummary(type: 0 | 1, id: string): Promise<ArticleFromDBSummary> {
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    getArticleType(type)
-  );
+  const col = await getCol(...dbRoute(getArticleType(type)));
   const data = await getSummaryById<WithId<ArticleFromDB>, ArticleFromDB, ArticleFromDBSummary>(
     col,
     id,
@@ -46,15 +40,11 @@ export async function getArticleSummary(type: 0 | 1, id: string): Promise<Articl
 
 export async function getBulkArticleSummary(
   type: 0 | 1,
+  query: SearchIndexContext,
   page: number = 1,
-  size: number = 15,
-  query?: string
+  size: number = 15
 ): Promise<ArticleFromDBSummary[]> {
-  const col = await getCol(
-    UNDER_TEST ? mongodb_uris.test : mongodb_uris.ishgard,
-    UNDER_TEST ? 'test' : 'ishgard',
-    getArticleType(type)
-  );
+  const col = await getCol(...dbRoute(getArticleType(type)));
   const datas = await withPage<WithId<ArticleFromDB>>(col, page, size);
   return datas.map((data) => {
     const no_IdData = dbIdRemover<WithId<ArticleFromDB>, ArticleFromDB>(data);
