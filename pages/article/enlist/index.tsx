@@ -1,4 +1,4 @@
-import { getBulkArticleSummaryFromFirebase } from '@lib/api/getArticleFromFirebase';
+import { getBulkArticleSummary } from '@lib/api/getArticle';
 import { searchParamSolver } from '@lib/searchParamSolver';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -17,7 +17,8 @@ export async function getServerSideProps({ req, query, locale }: GetServerSidePr
   return {
     props: {
       ...(await serverSideTranslations(locale || 'en', ['common', 'nav', 'data', 'article_view'])),
-      articles: await getBulkArticleSummaryFromFirebase(
+      articles: await getBulkArticleSummary(
+        1,
         {
           articleType: 1,
           ...searchIndexContexts,

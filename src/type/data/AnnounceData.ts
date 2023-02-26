@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { Locale } from '../Locale';
 import { FirebaseServerTime } from './FirebaseServerTime';
 import { announceTypesValue } from '../../constant/announceTypes';
@@ -5,6 +6,7 @@ import { announceTypesValue } from '../../constant/announceTypes';
 export type AnnounceType = typeof announceTypesValue[number];
 
 export type DBAnnounceData = {
+  _id: ObjectId;
   id: string;
   date: number;
   type: AnnounceType;
@@ -19,6 +21,7 @@ export type PreDBAnnouceData = {
 };
 
 export type AnnounceData = {
+  id: string;
   date: number;
   type: AnnounceType;
   title: string;
@@ -26,6 +29,7 @@ export type AnnounceData = {
 };
 
 export type AnnounceSummary = {
+  id: string;
   date: number;
   type: AnnounceType;
   title: string;

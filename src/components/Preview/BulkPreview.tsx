@@ -3,11 +3,9 @@ import SmallPreview from '@components/Article/Preview/SmallPreview';
 import { AnnouncePrevSkeleton } from '@components/Skeletons/AnnouncePrevSkeleton';
 import ArticlePrevSkeleton from '@components/Skeletons/ArticlePrevSkeleton';
 import { Stack } from '@mantine/core';
-import { ArticleDataWithMeta } from '@type/data/ArticleData';
 import { Locale } from '@type/Locale';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useSWRBulkArticle, useSWRBulkArticleMainPage } from 'src/hook/swr/useSWRArticle';
+import { useSWRBulkArticle } from 'src/hook/swr/useSWRArticle';
 import { useSWRBulkAnnounce } from '../../hook/swr/useSWRAnnounce';
 
 interface PreviewAnnounceProps {
@@ -34,8 +32,8 @@ function PreviewAnnounce({ withPage }: PreviewAnnounceProps) {
     );
   return (
     <Stack>
-      {Object.keys(announces!).map((v, i) => (
-        <SmallAnnounce announce={announces![v]} announceId={v} key={i} />
+      {announces!.map((v, i) => (
+        <SmallAnnounce announce={v} announceId={v.id} key={i} />
       ))}
     </Stack>
   );
@@ -50,12 +48,12 @@ interface PreviewArticleProps {
 }
 
 function PreviewArticle({ type, withPage }: PreviewArticleProps) {
-  const { articles, users, isLoading, isError } = useSWRBulkArticle(
+  const { articles, isLoading, isError } = useSWRBulkArticle(
     type,
     withPage?.page,
     withPage?.number
   );
-  if (isError) return <></>;
+  if (isError || articles === null || articles === undefined) return <></>;
   if (isLoading)
     return (
       <Stack>
@@ -66,13 +64,8 @@ function PreviewArticle({ type, withPage }: PreviewArticleProps) {
     );
   return (
     <Stack>
-      {Object.keys(articles!).map((v) => (
-        <SmallPreview
-          key={v}
-          id={v}
-          articleWithMeta={articles![v]}
-          userData={users![articles![v].meta.userId]}
-        />
+      {articles!.map((v) => (
+        <SmallPreview key={v.id} id={v.id} article={v} />
       ))}
     </Stack>
   );

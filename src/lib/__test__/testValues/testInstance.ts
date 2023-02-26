@@ -12,7 +12,7 @@
  */
 
 import { DBInstance } from '@type/data/DBInstance';
-import { DungeonType } from '../../type/data/FFXIVInfo';
+import { DungeonType } from '@type/data/FFXIVInfo';
 
 const Type: Record<DungeonType, DungeonType> = {
   raid: 'raid' as const,
@@ -22,7 +22,7 @@ const Type: Record<DungeonType, DungeonType> = {
   etc: 'etc' as const,
 };
 
-export const DEV_DUNGEON_DATA: Record<number, DBInstance> = {
+export const testInstance: Record<number, DBInstance> = {
   // version 2.0
 
   // raid 2.0

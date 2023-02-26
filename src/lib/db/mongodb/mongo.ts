@@ -1,14 +1,20 @@
 import { MongoClient } from 'mongodb';
 
+export interface DBInitOptions {
+  reconnect?: boolean;
+}
+
 export class Mongo {
   client: MongoClient | null = null;
   private saved_uri: string | null = null;
-  constructor(uri: string) {
-    this.setClient(uri);
+  constructor(uri: string, options?: DBInitOptions) {
+    this.setClient(uri, options);
   }
-  private setClient(uri: string) {
-    this.saved_uri = uri;
-    this.client = new MongoClient(uri);
+  private setClient(uri: string, options?: DBInitOptions) {
+    if (options?.reconnect || this.client === null) {
+      this.saved_uri = uri;
+      this.client = new MongoClient(uri);
+    }
   }
   async connect() {
     if (this.client === null) throw new Error('Cannot connect to db');

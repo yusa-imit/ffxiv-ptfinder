@@ -1,75 +1,71 @@
-import { AnnounceData } from '@type/data/AnnounceData';
+import { GlobalCache } from '@lib/cache/GlobalCache';
+import { dbRoute } from '@lib/db/dbRoute';
+import { getCol } from '@lib/db/mongodb';
+import { withPage } from '@lib/db/withPage';
+import { AnnounceData, AnnounceSummary, DBAnnounceData } from '@type/data/AnnounceData';
 import { Locale } from '@type/Locale';
-import { getContainer } from '@lib/db/cosmos/cosmos';
-import { containerOptions } from '@lib/db/cosmos/containerOptions';
-import { exceptSystemGenerated, isoToTime } from '@lib/dbUtils';
-import { DatabaseRequest, SqlQuerySpec, ContainerRequest } from '@azure/cosmos';
-import { PaginationCache } from '@type/PaginationCache';
-import { paginated } from '@lib/db/cosmos/paginated';
-import { GlobalCache } from '../cache/GlobalCache';
-import { DBAnnounceData, AnnounceSummary } from '../../type/data/AnnounceData';
+import { ObjectId } from 'mongodb';
+import { mongodb_uris } from '../db/mongodb/environments';
 import { summarizeAnnounce } from '../transform/summarizeAnnounce';
+import { UNDER_TEST } from './UNDER_TEST';
 
-const getLocalData = (locale: Locale, value: DBAnnounceData): AnnounceData => {
-  return {
-    type: value.type,
-    title: value.titles[locale],
-    description: value.descriptions[locale],
-    date: value.date,
-  };
-};
-
-export async function getAnnounce(
-  locale: Locale,
-  id: string,
-  dbOptions?: DatabaseRequest,
-  disableCache?: boolean
-): Promise<AnnounceData> {
-  const cacheValue = disableCache
-    ? null
-    : (GlobalCache.getCache().get(GlobalCache.getKey(id, 'announce')) as null | DBAnnounceData);
-  if (cacheValue !== null) {
-    return getLocalData(locale, cacheValue);
+export async function getAnnounce(locale: Locale, id: string): Promise<AnnounceData> {
+  const cachedValue = GlobalCache.getCache().get(
+    GlobalCache.getKey(id, 'announce')
+  ) as null | DBAnnounceData;
+  if (cachedValue !== null) {
+    return {
+      id: cachedValue.id,
+      type: cachedValue.type,
+      title: cachedValue.titles[locale],
+      description: cachedValue.descriptions[locale],
+      date: cachedValue.date,
+    };
   }
-  const conatiner = await getContainer(...containerOptions.announce, dbOptions);
-  const { resource } = await conatiner.item(id).read();
-  if (resource) {
-    const data = exceptSystemGenerated<DBAnnounceData>(resource);
+  const col = await getCol(...dbRoute('announce'));
+  const result = await col.findOne<DBAnnounceData>({ id });
+  if (result === null) throw new Error('Failed to retreive anounce by id');
+  else {
     GlobalCache.getCache().put(
       GlobalCache.getKey(id, 'announce'),
-      data,
+      result,
       GlobalCache.CACHE_TIMEOUT_MS
     );
-    return getLocalData(locale, data);
+
+    return {
+      id: result.id,
+      type: result.type,
+      title: result.titles[locale],
+      description: result.descriptions[locale],
+      date: result.date,
+    };
   }
-  throw new Error('failed to get Announcement from db');
 }
 
-export async function getAnnounceSummary(locale: Locale, id: string, dbOptions?: DatabaseRequest) {
-  const data = await getAnnounce(locale, id, dbOptions);
+export async function getAnnounceSummary(locale: Locale, id: string): Promise<AnnounceSummary> {
+  const data = await getAnnounce(locale, id);
   return summarizeAnnounce(data);
 }
 
-export async function getBulkAnnounceSummary(
+export async function getBulkAnnounce(
   locale: Locale,
-  page: number,
-  num: number,
-  dbOptions?: DatabaseRequest
-): Promise<Record<string, AnnounceSummary>> {
-  if (page <= 0 || num <= 0) throw new Error('Invalid parameters');
-  const container = await getContainer(...containerOptions.announce, dbOptions);
-  const q: SqlQuerySpec = {
-    query: 'select * from c', // order by c.date desc',
-  };
-  const cacheKey = GlobalCache.getKey(`${page}:${num}`, 'announce_pagination');
-  const checkPageCache = GlobalCache.getCache().get(cacheKey) as null | PaginationCache;
-  const { data, cache } = await paginated(q, container, checkPageCache, page, num);
-  GlobalCache.getCache().put(cacheKey, cache);
-  const result: Record<string, AnnounceSummary> = {};
-  data.forEach((v) => {
-    const value = exceptSystemGenerated<DBAnnounceData & { id: string }>(v);
-    GlobalCache.getCache().put(GlobalCache.getKey(value.id, 'announce'), value);
-    result[value.id] = summarizeAnnounce(getLocalData(locale, value));
+  page: number = 1,
+  size: number = 15
+): Promise<AnnounceSummary[]> {
+  const col = await getCol(...dbRoute('announce'));
+  const data = await withPage<DBAnnounceData>(col, page, size, { sort: ['date', 'desc'] });
+  return data.map((single) => {
+    GlobalCache.getCache().put(
+      GlobalCache.getKey(single.id, 'announce'),
+      single,
+      GlobalCache.CACHE_TIMEOUT_MS
+    );
+    return {
+      id: single.id,
+      title: single.titles[locale],
+      description: single.descriptions[locale],
+      type: single.type,
+      date: single.date,
+    };
   });
-  return result;
 }

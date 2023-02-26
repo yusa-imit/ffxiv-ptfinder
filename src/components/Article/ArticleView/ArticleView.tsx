@@ -1,6 +1,6 @@
 import BigContainer from '@components/base/BigContainer';
 import { Group, Stack } from '@mantine/core';
-import { ArticleData, ArticleMeta } from '@type/data/ArticleData';
+import { ArticleData, ArticleFromDB, ArticleMeta } from '@type/data/ArticleData';
 import { User } from '@type/data/User';
 import { useTranslation } from 'next-i18next';
 import ArticleNodeGenerator from './ArticleNodeGenerator';
@@ -10,19 +10,22 @@ import SubGroup from './SubGroup';
 import SubTitle from './SubTitle';
 
 interface ArticleViewProps {
-  article: ArticleData;
-  meta?: ArticleMeta;
-  userData?: User;
+  article: ArticleData | ArticleFromDB;
   underMaker?: boolean;
 }
 
-export default function ArticleView({ article, meta, userData, underMaker }: ArticleViewProps) {
+export default function ArticleView({ article, underMaker }: ArticleViewProps) {
   const { t } = useTranslation(['article_view', 'data']);
   const ArticleNode = ArticleNodeGenerator(article);
-  if ((meta && !userData) || (!meta && userData)) {
-    throw new Error('Both article metadata and user data needed to generate article view');
+  function hasMeta() {
+    return Object.hasOwn(article, 'authorInfo') && Object.hasOwn(article, 'status');
   }
-  const MetaNode = meta && userData ? MetaNodeGenerator(meta, userData) : null;
+  const MetaNode = hasMeta()
+    ? MetaNodeGenerator(
+        { status: (article as ArticleFromDB).status, date: (article as ArticleFromDB).date },
+        (article as ArticleFromDB).authorInfo
+      )
+    : null;
   return (
     <BigContainer
       sx={(theme) => ({

@@ -16,5 +16,5 @@ export interface GetAnnounceReturnType {
 export interface GetAnnounceBulkReturnType {
   message: string;
   error?: Error;
-  data: Record<string, AnnounceSummary>;
+  data: AnnounceSummary[];
 }

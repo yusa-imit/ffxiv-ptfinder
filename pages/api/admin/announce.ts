@@ -1,8 +1,8 @@
-import { unstable_getServerSession, Session } from 'next-auth';
 import '@extType/ExtendedAdapterUser';
 import '@extType/ExtendedServerSession';
-import { pushAnnounceToFirebase } from '@lib/api/deprecated/pushAnnounceToFirebase';
+import { pushAnnounce } from '@lib/api/pushAnnounce';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Session, unstable_getServerSession } from 'next-auth';
 import { PushAnnounceBodyType, PushAnnounceReturnType } from '../../../src/type/api/annouce/push';
 import { authOptions } from '../auth/[...nextauth]';
 
@@ -18,7 +18,7 @@ export default async function pushArticle(req: NextApiRequest, res: NextApiRespo
   }
   const { data }: PushAnnounceBodyType = JSON.parse(req.body);
   try {
-    const code = await pushAnnounceToFirebase(data);
+    const code = await pushAnnounce(data);
     const returner: PushAnnounceReturnType = { message: 'success', destination: code };
     return res.status(200).json(returner);
   } catch (e) {

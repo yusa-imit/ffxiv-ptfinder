@@ -1,14 +1,12 @@
 import SearchPanel from '@components/Article/SearchPanel';
-import ContentWrapper, {
-  ResponsiveContentWrapper,
-} from '@components/ContentWrapper/ContentWrapper';
-import { Card, Group, Stack, Text, Button } from '@mantine/core';
-import { GetStaticPropsContext } from 'next';
+import { ResponsiveContentWrapper } from '@components/ContentWrapper/ContentWrapper';
+import { Button, Group, Stack, Text } from '@mantine/core';
+import { GetServerSidePropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getServerSideProps({ locale }: GetServerSidePropsContext) {
   return {
     props: {
       ...(await serverSideTranslations(locale || 'en', ['common', 'data', 'nav'])),

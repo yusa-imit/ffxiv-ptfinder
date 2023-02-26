@@ -28,10 +28,10 @@ export async function getServerSideProps({ req, res, locale, query }: GetServerS
 }
 
 function IdRecruitPage({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [articleWithMeta, user] = data;
+  const article = data;
   return (
     <>
-      <ArticleView article={articleWithMeta.article} meta={articleWithMeta.meta} userData={user} />
+      <ArticleView article={article} />
       <Space h="xl" />
       <ArticleHandler type="recruit" />
     </>

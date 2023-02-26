@@ -1,4 +1,3 @@
-import { ArticleDataWithMeta } from '@type/data/ArticleData';
 import useSWR from 'swr';
 import { SWRFetchError } from '@lib/error/SWRFetchError';
 import { Locale } from '@type/Locale';

@@ -1,7 +1,6 @@
-import RTEDynamic, { RTEDynamicForwarded } from '@components/RTEDynamic';
-import { announceTypes } from '@constant/announceTypes';
+import { RTEDynamicForwarded } from '@components/RTEDynamic';
+import { announceTypesValue } from '@constant/announceTypes';
 import confirmAdmin from '@lib/confirmAdmin';
-import getAnnounceType from '@lib/getAnnounceType';
 import { Button, Group, Input, SegmentedControl, Stack, Title } from '@mantine/core';
 import { Editor } from '@mantine/rte';
 import { PushArticleReturnType } from '@type/api/article/push';
@@ -11,7 +10,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { baseUrl } from '../../src/constant/baseUrl';
 
 export const getServerSideProps = async (ctx: any) => {
@@ -26,11 +25,14 @@ export const getServerSideProps = async (ctx: any) => {
 function announce({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { t } = useTranslation(['admin']);
-  const SEG_VALUE_ADMIN: { label: string; value: string }[] = Array.from(announceTypes, (v, i) => ({
-    label: t(`admin_announce_${v}`),
-    value: String(i),
-  }));
-  const [type, setType] = useState('0');
+  const SEG_VALUE_ADMIN: { label: string; value: string }[] = Array.from(
+    announceTypesValue,
+    (v, i) => ({
+      label: t(`admin_announce_${v}`),
+      value: String(i),
+    })
+  );
+  const [type, setType] = useState<typeof announceTypesValue[number]>('maintenance');
   const krRef = useRef<Editor>(null);
   const krTitleRef = useRef<HTMLInputElement>(null);
   const enRef = useRef<Editor>(null);
@@ -49,7 +51,7 @@ function announce({ data }: InferGetServerSidePropsType<typeof getServerSideProp
    */
   function fetchAnnounceToServer() {
     const announceData: PreDBAnnouceData = {
-      type: Number(type),
+      type,
       titles: {
         kr: krTitleRef.current!.value,
         en: enTitleRef.current!.value,
@@ -89,7 +91,11 @@ function announce({ data }: InferGetServerSidePropsType<typeof getServerSideProp
         {t('admin_announce_type')}
       </Title>
       <Group>
-        <SegmentedControl value={type} onChange={setType} data={SEG_VALUE_ADMIN} />
+        <SegmentedControl
+          value={type}
+          onChange={(value) => setType(value as typeof announceTypesValue[number])}
+          data={SEG_VALUE_ADMIN}
+        />
       </Group>
       <Title>KR</Title>
       <Input.Wrapper label="Title">

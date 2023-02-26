@@ -4,14 +4,7 @@ import { ArticleData } from '../../type/data/ArticleData';
 export const Article = atom<ArticleData>({
   key: 'article',
   default: {
-    author: {
-      name: '',
-      image: undefined,
-      verified: false,
-    },
     articleType: 0,
-    status: 0,
-    userId: '',
     title: '',
     description: '',
     isTemporary: false,
@@ -23,7 +16,6 @@ export const Article = atom<ArticleData>({
       dayPerWeek: undefined,
       timeType: undefined,
       time: undefined,
-      timezone: undefined,
       average: undefined,
     },
     content: -1,
@@ -45,5 +37,6 @@ export const Article = atom<ArticleData>({
     specifyUserLanguage: undefined,
     answerType: 0,
     answerAddress: '',
+    timezone: undefined,
   },
 });

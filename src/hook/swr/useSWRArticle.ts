@@ -1,9 +1,8 @@
-import { ArticleDataWithMeta } from '@type/data/ArticleData';
-import useSWR from 'swr';
 import { SWRFetchError } from '@lib/error/SWRFetchError';
+import useSWR from 'swr';
 import { baseUrl } from '../../constant/baseUrl';
-import { GetArticleReturnType, GetArticleBulkReturnType } from '../../type/api/article/get';
 import { swrFetcher } from '../../lib/swrFetcher';
+import { GetArticleBulkReturnType, GetArticleReturnType } from '../../type/api/article/get';
 
 export function useSWRArticle(type: 'recruit' | 'enlist', id: string) {
   const { data, error } = useSWR<GetArticleReturnType, SWRFetchError>(
@@ -11,8 +10,7 @@ export function useSWRArticle(type: 'recruit' | 'enlist', id: string) {
     swrFetcher
   );
   return {
-    article: data?.data[0],
-    user: data?.data[1],
+    article: data?.data,
     isLoading: !error && !data,
     isError: error,
   };
@@ -32,8 +30,7 @@ export function useSWRBulkArticle(type: 'recruit' | 'enlist', page?: number, num
   }`;
   const { data, error } = useSWR<GetArticleBulkReturnType, SWRFetchError>(queryString, swrFetcher);
   return {
-    articles: data?.data[0],
-    users: data?.data[1],
+    articles: data?.data,
     isLoading: !error && !data,
     isError: error,
   };

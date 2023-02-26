@@ -1,8 +1,8 @@
-import { ArticleData, ArticleDataWithMeta } from '@type/data/ArticleData';
+import { ArticleData } from '@type/data/ArticleData';
 import { DBArticle } from '@type/data/DBArticle';
 import { Job } from '@type/data/FFXIVInfo';
 
-export function articleConverToData(articleFromDB: DBArticle): ArticleDataWithMeta {
+export function articleConverToData(articleFromDB: DBArticle) {
   const fromDB = { ...articleFromDB };
   fromDB.article.jobs = JSON.parse(fromDB.article.jobs);
   if (fromDB.article.schedule.time)

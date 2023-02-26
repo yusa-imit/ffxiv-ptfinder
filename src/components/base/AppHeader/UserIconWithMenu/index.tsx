@@ -1,5 +1,5 @@
 import UserButton, { UserButtonProps } from '@components/UserButton';
-import { Menu, MenuProps } from '@mantine/core';
+import { Menu, MenuProps, MenuStylesNames, Styles } from '@mantine/core';
 import { useTranslation } from 'next-i18next';
 import { forwardRef } from 'react';
 import { Alarm, Article, Logout, Pin, User } from 'tabler-icons-react';
@@ -20,7 +20,9 @@ const ForwaredeButton = forwardRef<HTMLDivElement, ForwardedButtonProps>(
   }
 );
 
-interface UserIconMenuProps extends UserButtonProps, MenuProps {}
+interface UserIconMenuProps extends UserButtonProps, MenuProps {
+  styles?: Styles<MenuStylesNames>;
+}
 export default function UserIconWithMenu({ image, name, icon, ...etc }: UserIconMenuProps) {
   const { t } = useTranslation('nav');
   return (

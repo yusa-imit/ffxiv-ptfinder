@@ -9,7 +9,7 @@ const config = {
     ".(ts|tsx)$": ["@swc/jest", swcConfig],
     ".(js|jsx)$": ["@swc/jest", swcConfig],
   },
-  transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
+  transformIgnorePatterns: [],//["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   rootDir: "../../../",
   moduleNameMapper: {

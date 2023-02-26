@@ -1,11 +1,7 @@
-import { unstable_getServerSession, Session } from 'next-auth';
-import { NextApiRequest, NextApiResponse } from 'next';
-import {
-  getArticleFromFirebase,
-  getBulkArticleSummaryFromFirebase,
-} from '@lib/api/deprecated/getArticleFromFirebase';
-import '@extType/ExtendedServerSession';
 import '@extType/ExtendedAdapterUser';
+import '@extType/ExtendedServerSession';
+import { getArticle } from '@lib/api/getArticle';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { GetArticleQueryType } from '../../../../src/type/api/article/get';
 
 /**
@@ -19,7 +15,7 @@ export default async function getFullArticle(req: NextApiRequest, res: NextApiRe
   const { id }: GetArticleQueryType = req.query;
   if (id) {
     try {
-      const article = await getArticleFromFirebase(0, id);
+      const article = await getArticle(0, id);
       res.setHeader('Cache-Control', 's-maxage=59, staile-while-revalidate');
       return res.status(200).json({ message: 'success', data: article });
     } catch (e) {
