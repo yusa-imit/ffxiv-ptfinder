@@ -38,5 +38,3 @@ yarn-error.log*
 storybook-static
 
 # temporary account security
-/pages/api/auth/*
-#/src/auth/**/*
